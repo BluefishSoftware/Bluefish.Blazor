@@ -1,8 +1,8 @@
-﻿.sc-overlay {
+﻿.bf-overlay {
     display: none;
 }
 
-.sc-overlay.show {
+.bf-overlay.show {
     display: block;
     width: 100%;
     height: 100%;
@@ -16,6 +16,6 @@
     cursor: wait;
 }
 
-.sc-overlay .text-box {
+.bf-overlay .text-box {
     color: white;
 }
