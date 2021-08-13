@@ -1,0 +1,60 @@
+﻿@mixin theme-light {
+    --bg-color: #ffffff;
+    --bg-color-dark: #f7f7f7;
+    --bg-color-accent: #007bff;
+    --bg-color-accent-dark: darken(#007bff, 10% );
+    --fg-color: #000000;
+    --fg-color-accent: var(--bg-color);
+    --border-color: #dee2e6;
+}
+
+@mixin theme-dark {
+    --bg-color: #1e1e1e;
+    --bg-color-dark: #151515;
+    --bg-color-accent: #007bff;
+    --bg-color-accent-dark: darken(#007bff, 15% );
+    --fg-color: #cccccc;
+    --fg-color-accent: #fff;
+    --border-color: #4e4e4e;
+}
+
+.theme-lime {
+    @include theme-dark;
+    --bg-color-accent: #82f300;
+    --bg-color-accent-dark: darken(#82f300, 15% );
+}
+
+.theme-orange {
+    @include theme-dark;
+    --bg-color-accent: #ffb300;
+    --bg-color-accent-dark: darken(#ffb300, 15% );
+}
+
+.theme-light {
+    @include theme-light;
+}
+
+.theme-dark {
+    @include theme-dark;
+}
+
+:root {
+    @include theme-light;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        @include theme-light;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        @include theme-dark;
+    }
+}
+
+body {
+    color: var(--fg-color);
+    background-color: var(--bg-color);
+}

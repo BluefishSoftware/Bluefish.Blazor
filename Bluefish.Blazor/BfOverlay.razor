@@ -1,0 +1,14 @@
+﻿<div class="bf-overlay @(_visible ? "show" : "")"
+     @oncontextmenu:preventDefault
+     @oncontextmenu="() => { }">
+
+    @if (_html != null)
+    {
+        <div class="text-container">
+            <div class="text-box">
+                @((MarkupString)_html)
+            </div>
+        </div>
+    }
+
+</div>

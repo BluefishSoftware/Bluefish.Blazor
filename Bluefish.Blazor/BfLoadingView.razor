@@ -1,0 +1,25 @@
+﻿<CascadingValue Value="(BfLoadingView)this">
+
+    <div class="bf-loading-view @(IsLoading ? "loading" : "")">
+
+        @if (IsLoading)
+        {
+            <div class="bf-lv-overlay">
+                <div class="spinner"></div>
+            </div>
+        }
+
+        @if (!IsLoading || ShowContentWhenLoading)
+        {
+            <div>
+                @ChildContent
+            </div>
+        }
+        else
+        {
+            <div style="height: 200px"></div>
+        }
+
+    </div>
+
+</CascadingValue>

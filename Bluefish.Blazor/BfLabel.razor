@@ -1,0 +1,10 @@
+﻿<div class="bf-label">
+    @if (!string.IsNullOrWhiteSpace(IconCssClass))
+    {
+        <i class="@IconCssClass" />
+    }
+    @if (!string.IsNullOrWhiteSpace(Text))
+    {
+        <span class="@(string.IsNullOrWhiteSpace(IconCssClass)? "" : "ms-1") @TextCssClass">@Text</span>
+    }
+</div>

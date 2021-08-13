@@ -1,0 +1,9 @@
+﻿.btn-primary {
+    color: var(--fg-color-accent);
+    background-color: var(--bg-color-accent);
+}
+
+.btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+}

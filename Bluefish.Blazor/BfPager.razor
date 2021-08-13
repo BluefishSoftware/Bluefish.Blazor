@@ -1,0 +1,55 @@
+﻿<nav aria-label="_pager" class="sc-pager d-flex justify-content-between align-items-center @CssClass">
+
+    <div>
+        <BfButton Click="MoveFirst"
+                  Enabled="!PageInfo.IsFirstPage"
+                  IconCssClass="fas fa-fast-backward" />
+
+        <BfButton Click="MovePrevious"
+                  Enabled="!PageInfo.IsFirstPage"
+                  IconCssClass="fas fa-backward" />
+
+        <span class="d-none d-md-inline">Page&nbsp;</span>@PageInfo.Page&nbsp;of&nbsp;@(PageInfo.PageCount == 0 ? 1 : PageInfo.PageCount)
+
+        <BfButton Click="MoveNext"
+                  Enabled="!PageInfo.IsLastPage"
+                  IconCssClass="fas fa-forward" />
+
+        <BfButton Click="MoveLast"
+                  Enabled="!PageInfo.IsLastPage"
+                  IconCssClass="fas fa-fast-forward" />
+    </div>
+
+    @if (ShowPageDescription)
+    {
+        if (PageInfo.TotalCount == 0)
+        {
+            <div class="d-none d-lg-block text-nowrap">
+                @NoItemsText
+            </div>
+        }
+        else
+        {
+            <div class="d-none d-lg-block text-nowrap">
+                <span>Showing</span>
+                <span>@PageInfo.PageRangeStart to @PageInfo.PageRangeEnd</span>
+                <span>of</span>
+                <span>@PageInfo.TotalCount</span>
+            </div>
+        }
+    }
+
+    @if (ShowPageSizes)
+    {
+        <div class="d-none d-sm-flex align-items-center">
+            <div class="pr-2 text-nowrap d-none d-sm-block">Page Size:</div>
+            <select class="form-control form-control-sm" @bind="PageInfo.PageSize">
+                @foreach (var size in PageSizes)
+                {
+                    <option value="@size">@size</option>
+                }
+            </select>
+        </div>
+    }
+
+</nav>

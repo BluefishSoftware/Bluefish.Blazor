@@ -1,0 +1,68 @@
+﻿@typeparam TItem
+@typeparam TKey
+
+<table class="sc-table table @CssClass">
+    <thead>
+        <tr>
+            @foreach (var col in VisibleColumns)
+            {
+                <th class="@col.HeaderCssClass">@col.HeaderText</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (_dataItems == null)
+        {
+            @*<div class="spinner"></div>*@
+        }
+        else if (_dataItems.Count() == 0)
+        {
+            <tr>
+                <td colspan="@VisibleColumns.Length">
+                    @if (NoDataTemplate is null)
+                    {
+                        <div class="text-center">No data</div>
+                    }
+                    else
+                    {
+                        @NoDataTemplate
+                    }
+                </td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in _dataItems)
+            {
+                <tr class="@(TrCssClass?.Invoke(item)) @(GetSelectionCssClass(item))"
+                    @onclick="@((e) => OnRowClickAsync(e, item))">
+                    @foreach (var col in VisibleColumns)
+                    {
+                        <td class="@col.CssClass" title="@col?.ToolTip?.Invoke(item)">
+                            @if (col.Template is null)
+                            {
+                                @col.GetValue(item)
+                            }
+                            else
+                            {
+                                @col.Template(item)
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@if (ShowPager)
+{
+    <div class="bottom-pager pt-2">
+        <BfPager PageInfo="PageInfo"
+                 PageSizes="@WebConstants.DEFAULT_PAGE_SIZES"></BfPager>
+    </div>
+}
+
+<CascadingValue Value="(BfTable<TItem, TKey>)this" Name="Table">
+    @ChildContent
+</CascadingValue>
