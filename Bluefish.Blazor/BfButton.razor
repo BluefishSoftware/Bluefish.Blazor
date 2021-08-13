@@ -1,4 +1,6 @@
-﻿<button @attributes="GetAttributes()"
+﻿@inherits BfComponentBase
+
+<button @attributes="RootAttributes"
         @onclick="Click">
     @if (ChildContent is null)
     {

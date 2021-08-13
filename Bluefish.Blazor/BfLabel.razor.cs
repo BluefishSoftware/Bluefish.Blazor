@@ -5,9 +5,6 @@ namespace Bluefish.Blazor
 {
     public partial class BfLabel
     {
-        [Parameter(CaptureUnmatchedValues = true)]
-        public IReadOnlyDictionary<string, object> AdditionalAttributes { get; set; }
-
         [Parameter]
         public string IconCssClass { get; set; }
 
@@ -16,5 +13,18 @@ namespace Bluefish.Blazor
 
         [Parameter]
         public string TextCssClass { get; set; }
+
+        protected override Dictionary<string, object> RootAttributes
+        {
+            get
+            {
+                var attr = base.RootAttributes;
+                if (!attr.ContainsKey("class"))
+                {
+                    attr.Add("class", $"bf-label {(Enabled ? "" : "disabled")}");
+                }
+                return attr;
+            }
+        }
     }
 }

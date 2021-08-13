@@ -1,4 +1,6 @@
-﻿<div class="bf-label">
+﻿@inherits BfComponentBase
+
+<div @attributes="RootAttributes">
     @if (!string.IsNullOrWhiteSpace(IconCssClass))
     {
         <i class="@IconCssClass" />

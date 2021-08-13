@@ -1,3 +1,7 @@
 ﻿.bf-label {
     display: inline-block;
 }
+
+.bf-label.disabled {
+    opacity: 0.5;
+}
