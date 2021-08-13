@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bluefish.Blazor", "Bluefish.Blazor\Bluefish.Blazor.csproj", "{FFFC404E-1B05-45C8-AC47-6A1A220417D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bluefish.Blazor.Demo", "Bluefish.Blazor.Demo\Bluefish.Blazor.Demo.csproj", "{9F1D1996-D98C-46A5-B066-4E3142FE6F2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bluefish.Blazor.Demo", "Bluefish.Blazor.Demo\Bluefish.Blazor.Demo.csproj", "{9F1D1996-D98C-46A5-B066-4E3142FE6F2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
