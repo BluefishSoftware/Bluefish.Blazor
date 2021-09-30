@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
-using Bluefish.Blazor.Models;
+﻿using Bluefish.Blazor.Models;
+using Microsoft.AspNetCore.Components;
 using System;
 
-namespace Bluefish.Blazor
+namespace Bluefish.Blazor.Components
 {
     public partial class BfPager : IDisposable
     {

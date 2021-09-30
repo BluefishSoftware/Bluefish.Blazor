@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace Bluefish.Blazor
+namespace Bluefish.Blazor.Components
 {
     public partial class BfTitleBar
     {

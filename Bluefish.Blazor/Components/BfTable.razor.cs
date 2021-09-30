@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Bluefish.Blazor
+namespace Bluefish.Blazor.Components
 {
     public partial class BfTable<TItem, TKey> : IDisposable
     {

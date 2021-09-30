@@ -1,0 +1,8 @@
+﻿.bf-progressbar {
+    border: 1px solid var(--border-color);
+}
+
+.bf-progressbar .bar {
+    color: var(--fg-color-accent);
+    background-color: var(--bg-color-accent);
+}

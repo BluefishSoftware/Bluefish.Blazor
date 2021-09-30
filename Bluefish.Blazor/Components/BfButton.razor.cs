@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using System.Collections.Generic;
 
-namespace Bluefish.Blazor
+namespace Bluefish.Blazor.Components
 {
     public partial class BfButton
     {
@@ -31,7 +31,7 @@ namespace Bluefish.Blazor
                 var attr = base.RootAttributes;
                 if (!attr.ContainsKey("class"))
                 {
-                    attr.Add("class", $"bf-button btn btn-sm {(IsPrimary ? "btn-primary" : "btn-secondary")}");
+                    attr.Add("class", $"bf-button btn btn-sm {(IsPrimary ? "btn-primary" : "")}");
                 }
                 return attr;
             }

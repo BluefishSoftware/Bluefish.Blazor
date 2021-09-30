@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 
-namespace Bluefish.Blazor
+namespace Bluefish.Blazor.Components
 {
     public abstract class BfComponentBase : ComponentBase
     {

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using System;
 
-namespace Bluefish.Blazor
+namespace Bluefish.Blazor.Components
 {
     public partial class BfOverlay : IDisposable
     {

@@ -1,21 +1,11 @@
-﻿.theme-lime {
+﻿.theme-orange {
   --bg-color: #1e1e1e;
   --bg-color-dark: #151515;
-  --bg-color-accent: #007bff;
-  --bg-color-accent-dark: #0056b3;
-  --fg-color: #cccccc;
-  --fg-color-accent: #fff;
-  --border-color: #4e4e4e;
   --bg-color-accent: #82f300;
-  --bg-color-accent-dark: #59a700; }
-
-.theme-orange {
-  --bg-color: #1e1e1e;
-  --bg-color-dark: #151515;
-  --bg-color-accent: #007bff;
-  --bg-color-accent-dark: #0056b3;
+  --bg-color-accent-rgb: 130,243,0;
+  --bg-color-accent-dark: #59a700;
   --fg-color: #cccccc;
-  --fg-color-accent: #fff;
+  --fg-color-accent: #1e1e1e;
   --border-color: #4e4e4e;
   --bg-color-accent: #ffb300;
   --bg-color-accent-dark: #b37d00; }
@@ -24,6 +14,7 @@
   --bg-color: #ffffff;
   --bg-color-dark: #f7f7f7;
   --bg-color-accent: #007bff;
+  --bg-color-accent-rgb: 0,123,255;
   --bg-color-accent-dark: #0062cc;
   --fg-color: #000000;
   --fg-color-accent: var(--bg-color);
@@ -32,16 +23,18 @@
 .theme-dark {
   --bg-color: #1e1e1e;
   --bg-color-dark: #151515;
-  --bg-color-accent: #007bff;
-  --bg-color-accent-dark: #0056b3;
+  --bg-color-accent: #82f300;
+  --bg-color-accent-rgb: 130,243,0;
+  --bg-color-accent-dark: #59a700;
   --fg-color: #cccccc;
-  --fg-color-accent: #fff;
+  --fg-color-accent: #1e1e1e;
   --border-color: #4e4e4e; }
 
 :root {
   --bg-color: #ffffff;
   --bg-color-dark: #f7f7f7;
   --bg-color-accent: #007bff;
+  --bg-color-accent-rgb: 0,123,255;
   --bg-color-accent-dark: #0062cc;
   --fg-color: #000000;
   --fg-color-accent: var(--bg-color);
@@ -52,6 +45,7 @@
     --bg-color: #ffffff;
     --bg-color-dark: #f7f7f7;
     --bg-color-accent: #007bff;
+    --bg-color-accent-rgb: 0,123,255;
     --bg-color-accent-dark: #0062cc;
     --fg-color: #000000;
     --fg-color-accent: var(--bg-color);
@@ -61,10 +55,11 @@
   :root {
     --bg-color: #1e1e1e;
     --bg-color-dark: #151515;
-    --bg-color-accent: #007bff;
-    --bg-color-accent-dark: #0056b3;
+    --bg-color-accent: #82f300;
+    --bg-color-accent-rgb: 130,243,0;
+    --bg-color-accent-dark: #59a700;
     --fg-color: #cccccc;
-    --fg-color-accent: #fff;
+    --fg-color-accent: #1e1e1e;
     --border-color: #4e4e4e; } }
 
 body {

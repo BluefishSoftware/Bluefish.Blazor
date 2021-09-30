@@ -2,7 +2,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Bluefish.Blazor
+namespace Bluefish.Blazor.Components
 {
     public partial class BfColumn<TItem, TKey>
     {

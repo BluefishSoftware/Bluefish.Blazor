@@ -1,0 +1,19 @@
+﻿.btn {
+    color: var(--fg-color);
+    background-color: var(--bg-color);
+    border-color: var(--bg-color);
+}
+
+.btn.focus, .btn:focus {
+    box-shadow: 0 0 0 .2rem rgba(var(--bg-color-accent-rgb), 0.6);
+}
+
+.btn-primary {
+    color: var(--fg-color-accent);
+    background-color: var(--bg-color-accent);
+}
+
+.btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+}
