@@ -1,15 +1,26 @@
 ﻿@inherits BfComponentBase
 
-<button @attributes="RootAttributes"
-        @onclick="Click">
+<button @attributes="ActualAttributes"
+        aria-pressed="false"
+        autocomplete="off"
+        data-toggle="button"
+        id="@Id"
+        title="@Title"
+        @onclick="Click"
+        @onclick:preventDefault="PreventDefault"
+        @onclick:stopPropagation="StopPropagation">
+
     @if (ChildContent is null)
     {
         <BfLabel IconCssClass="@IconCssClass"
                  Text="@Text"
-                 TextCssClass="@TextCssClass" />
+                 TextCssClass="@TextCssClass"
+                 Title="@Title">
+        </BfLabel>
     }
     else
     {
         @ChildContent
     }
+
 </button>

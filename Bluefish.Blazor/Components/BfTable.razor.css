@@ -1,10 +1,11 @@
 ﻿.table {
     color: var(--fg-color);
     margin-bottom: 0px;
+    border-color: var(--border-color);
 }
 
 .table thead th {
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color) !important;
 }
 
 .table th, .table td {
@@ -14,6 +15,7 @@
 
 .table-striped tbody tr:nth-of-type(odd) {
     background-color: var(--bg-color-dark);
+    color: var(--fg-color);
 }
 
 tr.selected {
@@ -23,4 +25,8 @@ tr.selected {
 
 .bottom-pager {
     border-top: solid 2px var(--border-color);
+}
+
+.table th {
+    border-top: 0px;
 }

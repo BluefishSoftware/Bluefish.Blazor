@@ -7,6 +7,7 @@
   --fg-color: #cccccc;
   --fg-color-accent: #1e1e1e;
   --border-color: #4e4e4e;
+  --error-color: red;
   --bg-color-accent: #ffb300;
   --bg-color-accent-dark: #b37d00; }
 
@@ -18,7 +19,8 @@
   --bg-color-accent-dark: #0062cc;
   --fg-color: #000000;
   --fg-color-accent: var(--bg-color);
-  --border-color: #dee2e6; }
+  --border-color: #dee2e6;
+  --error-color: red; }
 
 .theme-dark {
   --bg-color: #1e1e1e;
@@ -28,7 +30,8 @@
   --bg-color-accent-dark: #59a700;
   --fg-color: #cccccc;
   --fg-color-accent: #1e1e1e;
-  --border-color: #4e4e4e; }
+  --border-color: #4e4e4e;
+  --error-color: red; }
 
 :root {
   --bg-color: #ffffff;
@@ -38,7 +41,8 @@
   --bg-color-accent-dark: #0062cc;
   --fg-color: #000000;
   --fg-color-accent: var(--bg-color);
-  --border-color: #dee2e6; }
+  --border-color: #dee2e6;
+  --error-color: red; }
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -49,7 +53,8 @@
     --bg-color-accent-dark: #0062cc;
     --fg-color: #000000;
     --fg-color-accent: var(--bg-color);
-    --border-color: #dee2e6; } }
+    --border-color: #dee2e6;
+    --error-color: red; } }
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -60,8 +65,12 @@
     --bg-color-accent-dark: #59a700;
     --fg-color: #cccccc;
     --fg-color-accent: #1e1e1e;
-    --border-color: #4e4e4e; } }
+    --border-color: #4e4e4e;
+    --error-color: red; } }
 
 body {
   color: var(--fg-color);
   background-color: var(--bg-color); }
+
+.cursor-pointer {
+  cursor: pointer; }

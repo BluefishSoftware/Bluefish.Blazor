@@ -7,6 +7,7 @@
     --fg-color: #000000;
     --fg-color-accent: var(--bg-color);
     --border-color: #dee2e6;
+    --error-color: red;
 }
 
 @mixin theme-dark {
@@ -18,6 +19,7 @@
     --fg-color: #cccccc;
     --fg-color-accent: #1e1e1e;
     --border-color: #4e4e4e;
+    --error-color: red;
 }
 
 .theme-orange {
@@ -53,4 +55,8 @@
 body {
     color: var(--fg-color);
     background-color: var(--bg-color);
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }

@@ -1,0 +1,24 @@
+﻿.bf-panel {
+    padding: 5px;
+}
+
+hr {
+    color: var(--border-color);
+    margin: 5px 0px;
+    opacity: 0.75;
+}
+
+.panel-border {
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+
+.panel-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.panel-title {
+    font-size: 1.5rem;
+}

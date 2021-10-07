@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Bluefish.Blazor.Extensions;
+using Bluefish.Blazor.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System.Collections.Generic;
 
@@ -7,10 +9,13 @@ namespace Bluefish.Blazor.Components
     public partial class BfButton
     {
         [Parameter]
-        public EventCallback<MouseEventArgs> Click { get; set; }
+        public Dictionary<string, object> Attributes { get; set; }
 
         [Parameter]
         public RenderFragment ChildContent { get; set; }
+
+        [Parameter]
+        public EventCallback<MouseEventArgs> Click { get; set; }
 
         [Parameter]
         public string IconCssClass { get; set; }
@@ -19,19 +24,35 @@ namespace Bluefish.Blazor.Components
         public bool IsPrimary { get; set; }
 
         [Parameter]
+        public bool PreventDefault { get; set; }
+
+        [Parameter]
+        public Sizes Size { get; set; }
+
+        [Parameter]
+        public bool StopPropagation { get; set; }
+
+        [Parameter]
         public string Text { get; set; }
 
         [Parameter]
-        public string TextCssClass { get; set; }
+        public string TextCssClass { get; set; } = "d-none d-lg-inline-block";
 
-        protected override Dictionary<string, object> RootAttributes
+        [Parameter]
+        public string Title { get; set; }
+
+        private Dictionary<string, object> ActualAttributes
         {
             get
             {
-                var attr = base.RootAttributes;
-                if (!attr.ContainsKey("class"))
+                var attr = new Dictionary<string, object>(Attributes ?? new())
                 {
-                    attr.Add("class", $"bf-button btn btn-sm {(IsPrimary ? "btn-primary" : "")}");
+                    { "disabled", Enabled ? null : true },
+                    { "class", $"bf-button btn {Size.CssClass("btn-sm", "", "btn-lg")} {(IsPrimary ? "btn-primary" : "")} {CssClass}" }
+                };
+                if (!Visible)
+                {
+                    attr.Add("style", "display: none;");
                 }
                 return attr;
             }

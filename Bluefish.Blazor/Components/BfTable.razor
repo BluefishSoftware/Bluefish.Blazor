@@ -1,24 +1,51 @@
-﻿@typeparam TItem
+﻿@inherits BfComponentBase
+@typeparam TItem
 @typeparam TKey
+@using Bluefish.Blazor.Models
 
-<table class="bf-table table @CssClass">
+<table @attributes="ActualAttributes">
     <thead>
         <tr>
+            @if (SelectionMode == SelectionModes.Multiple && ShowCheckboxes)
+            {
+                <th>
+                    @*<BfCheckBox ValueChanged="OnToggleSelection" />*@
+                </th>
+            }
             @foreach (var col in VisibleColumns)
             {
-                <th class="@col.HeaderCssClass">@col.HeaderText</th>
+                <th class="@col.GetHeaderCssClass(this)"
+                    @onclick="() => OnColumnHeaderClick(col)">
+                    <span title="@col.HeaderToolTip">@col.HeaderText</span>
+                    @if (AllowSort && SortInfo != null && col.IsSortable && col.DataField == SortInfo?.DataField)
+                    {
+                        @if (SortInfo.Direction == SortDirections.Ascending)
+                        {
+                            <i class="ml-1 fas fa-fw fa-sort-amount-up-alt" title="Ascending order" />
+                        }
+                        else
+                        {
+                            <i class="ml-1 fas fa-fw fa-sort-amount-down" title="Descending order" />
+                        }
+                    }
+                </th>
+
             }
         </tr>
     </thead>
     <tbody>
-        @if (_dataItems == null)
+        @if (_isLoading)
         {
-            @*<div class="spinner"></div>*@
+            <tr>
+                <td colspan="@(VisibleColumns.Length + (SelectionMode == SelectionModes.Multiple && ShowCheckboxes ? 1 : 0))">
+                    <BfSpinner />
+                </td>
+            </tr>
         }
         else if (_dataItems.Count() == 0)
         {
             <tr>
-                <td colspan="@VisibleColumns.Length">
+                <td colspan="@(VisibleColumns.Length + (SelectionMode == SelectionModes.Multiple && ShowCheckboxes ? 1 : 0))">
                     @if (NoDataTemplate is null)
                     {
                         <div class="text-center">No data</div>
@@ -35,7 +62,18 @@
             foreach (var item in _dataItems)
             {
                 <tr class="@(TrCssClass?.Invoke(item)) @(GetSelectionCssClass(item))"
-                    @onclick="@((e) => OnRowClickAsync(e, item))">
+                    @onclick="@((e) => OnRowClickAsync(e, item))"
+                    @ondblclick="@((e) => OnRowDoubleClickAsync(e, item))">
+
+                    @if (SelectionMode == SelectionModes.Multiple && ShowCheckboxes)
+                    {
+                        <td>
+                            <BfCheckBox Value="@(_selectedKeys.Contains(GetItemKey(item)))"
+                                        ValueChanged="@((chk) => OnItemCheckChange(item, chk))"
+                                        StopPropagation="true" />
+                        </td>
+                    }
+
                     @foreach (var col in VisibleColumns)
                     {
                         <td class="@col.CssClass" title="@col?.ToolTip?.Invoke(item)">
@@ -59,7 +97,8 @@
 {
     <div class="bottom-pager pt-2">
         <BfPager PageInfo="PageInfo"
-                 PageSizes="@WebConstants.DEFAULT_PAGE_SIZES"></BfPager>
+                 PageSizes="@WebConstants.DEFAULT_PAGE_SIZES"
+                 Size="Size"></BfPager>
     </div>
 }
 

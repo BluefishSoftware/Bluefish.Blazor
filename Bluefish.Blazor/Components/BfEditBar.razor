@@ -1,0 +1,27 @@
+﻿<div class="bf-edit-bar d-inline-block">
+
+    <BfButton Click="OnEditAsync"
+              IconCssClass="fas fa-edit"
+              IsPrimary="IsPrimary"
+              PreventDefault="true"
+              Size="Size"
+              Text="Edit"
+              Visible="!IsEditing" />
+
+    <BfButton Click="OnSaveAsync"
+              Enabled="SaveEnabled()"
+              IconCssClass="fas fa-save"
+              IsPrimary="IsPrimary"
+              Size="Size"
+              Text="Save"
+              Visible="IsEditing" />
+
+    <BfButton Click="OnCancelAsync"
+              CssClass=""
+              IconCssClass="fas fa-times"
+              PreventDefault="false"
+              Size="Size"
+              Text="Cancel"
+              type="reset"
+              Visible="IsEditing" />
+</div>
