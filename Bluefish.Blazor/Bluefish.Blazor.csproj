@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Authors>Mark Goldring</Authors>
+    <Company>Bluefish Software Ltd</Company>
+    <Description>A collection of useful Razor components</Description>
+    <PackageIcon>BluefishIcon.png</PackageIcon>
+    <PackageIconUrl />
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <Version>1.0.1</Version>
+    <Copyright>2021 Bluefish Software Ltd</Copyright>
   </PropertyGroup>
 
 
@@ -13,6 +21,17 @@
     <PackageReference Include="Blazored.Toast" Version="3.1.2" />
     <PackageReference Include="CronExpressionDescriptor" Version="2.16.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="wwwroot\images\BluefishIcon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
