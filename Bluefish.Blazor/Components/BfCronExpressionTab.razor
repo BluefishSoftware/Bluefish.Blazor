@@ -1,0 +1,259 @@
+﻿<div class="mt-2 @CssClass">
+
+    <div class="form-check">
+        <input class="form-check-input"
+               type="radio"
+               checked="@(state.Method == "All")"
+               @onchange="@((a) => { state.Method = "All"; Refresh(); })">
+        <label class="form-check-label">@($"Every {ItemName}")</label>
+    </div>
+
+    <div class="mb-2 d-flex align-items-center">
+        <div class="form-check">
+            <input class="form-check-input"
+                   type="radio"
+                   checked="@(state.Method == "Range1")"
+                   @onchange="@((a) => { state.Method = "Range1"; Refresh(); })">
+            <label class="form-check-label">Every</label>
+        </div>
+        <select class="form-control ms-1"
+                value="@state.Occurence"
+                style="width: 80px;"
+                @onchange="@((a) => { state.Occurence = Convert.ToInt32(a.Value); state.Method = "Range1"; Refresh(); })">
+            @foreach (var o in occurrence)
+            {
+                <option value="@o.Item2">@o.Item1</option>
+            }
+        </select>
+        <span class="ms-1">@ItemName<text>(s) starting at @ItemName</text></span>
+        <select class="form-control ms-1"
+                value="@state.Range1"
+                style="width: @DropdownWidth"
+                @onchange="@((a) => { state.Range1 = Convert.ToInt32(a.Value); state.Method = "Range1"; Refresh(); })">
+            @foreach (var i in Items)
+            {
+                <option value="@i.Item2">@i.Item1</option>
+            }
+        </select>
+    </div>
+
+    @if (IsDay)
+    {
+        <div class="mb-2 d-flex align-items-center">
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="radio"
+                       checked="@(state.Method == "Range3")"
+                       @onchange="@((a) => { state.Method = "Range3"; Refresh(); })">
+                <label class="form-check-label">Every</label>
+            </div>
+            <select class="form-control ms-1"
+                    value="@state.Occurence2"
+                    style="width: @DropdownWidth"
+                    @onchange="@((a) => { state.Occurence2 = Convert.ToInt32(a.Value); state.Method = "Range3"; Refresh(); })">
+                @foreach (var d in days)
+                {
+                    <option value="@d.Item2">@d.Item1</option>
+                }
+            </select>
+            <span class="ms-1">@ItemName<text>(s) starting on the</text></span>
+            <select class="form-control ms-1"
+                    value="@state.Range3"
+                    style="width: @DropdownWidth"
+                    @onchange="@((a) => { state.Range3 = Convert.ToInt32(a.Value); state.Method = "Range3"; Refresh(); })">
+                @foreach (var d in dayOfMonth)
+                {
+                    <option value="@d.Item2">@d.Item1</option>
+                }
+            </select>
+            <span class="ms-1">of the month</span>
+        </div>
+    }
+
+    <div class="mb-2">
+        <div class="form-check">
+            <input class="form-check-input"
+                   type="radio"
+                   checked="@(state.Method == "Individual")"
+                   @onchange="@((a) => { state.Method = "Individual"; Refresh(); })">
+            <label class="form-check-label">@(IsDay ? "Specific day of week (choose one or many)" : $"Specific {ItemName} (choose one or many)")</label>
+        </div>
+        <div class="d-flex flex-wrap ms-4 mt-2">
+            @foreach (var item in Items)
+            {
+                <div class="form-check m-1">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           checked="@(state.Individual.Contains(item.Item2))"
+                           @onchange="@((a) => { state.Method = "Individual"; Toggle(item, state.Individual); })">
+                    <label class="form-check-label">@item.Item1</label>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (IsDay)
+    {
+        <div class="mb-2">
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="radio"
+                       checked="@(state.Method == "Individual2")"
+                       @onchange="@((a) => { state.Method = "Individual2"; Refresh(); })">
+                <label class="form-check-label">Specific day of month (choose one or many)</label>
+            </div>
+            <div class="d-flex flex-wrap ms-4 mt-2">
+                @foreach (var item in days)
+                {
+                    <div class="form-check m-1">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               checked="@(state.Individual2.Contains(item.Item2))"
+                               @onchange="@((a) => { state.Method = " Individual2"; Toggle(item, state.Individual2); })">
+                        <label class="form-check-label">@item.Item1.PadLeft(2, '0')</label>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="mb-2 d-flex align-items-center">
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="radio"
+                       checked="@(state.Method == "LastDay")"
+                       @onchange="@((a) => { state.Method = "LastDay"; Refresh(); })">
+                <label class="form-check-label">On the last day of the month</label>
+            </div>
+        </div>
+
+        <div class="mt-3 mb-2 d-flex align-items-center">
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="radio"
+                       checked="@(state.Method == "LastWeekDay")"
+                       @onchange="@((a) => { state.Method = "LastWeekDay"; Refresh(); })">
+                <label class="form-check-label">On the last weekday of the month</label>
+            </div>
+        </div>
+
+        <div class="mb-2 d-flex align-items-center">
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="radio"
+                       checked="@(state.Method == "LastDayOfMonth")"
+                       @onchange="@((a) => { state.Method = "LastDayOfMonth"; Refresh(); })">
+                <label class="form-check-label">On the last</label>
+            </div>
+            <select class="form-control ms-1"
+                    value="@state.LastDayOfMonth"
+                    style="width: @DropdownWidth"
+                    @onchange="@((a) => { state.LastDayOfMonth = Convert.ToInt32(a.Value); state.Method = "LastDayOfMonth"; Refresh(); })">
+                @foreach (var i in Items)
+                {
+                    <option value="@i.Item2">@i.Item1</option>
+                }
+            </select>
+            <span class="ms-1">of the month</span>
+        </div>
+
+        <div class="mb-2 d-flex align-items-center">
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="radio"
+                       checked="@(state.Method == "BeforeEnd")"
+                       @onchange="@((a) => { state.Method = "BeforeEnd"; Refresh(); })">
+                <label class="form-check-label"></label>
+            </div>
+            <select class="form-control ms-1"
+                    value="@state.DaysBeforeEnd"
+                    style="width: @DropdownWidth"
+                    @onchange="@((a) => { state.DaysBeforeEnd = Convert.ToInt32(a.Value); state.Method = "BeforeEnd"; Refresh(); })">
+                @foreach (var d in days)
+                {
+                    <option value="@d.Item2">@d.Item1</option>
+                }
+            </select>
+            <span class="ms-1">day(s) before the end of the month</span>
+        </div>
+
+        <div class="mb-2 d-flex align-items-center">
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="radio"
+                       checked="@(state.Method == "NearestWeekday")"
+                       @onchange="@((a) => { state.Method = "NearestWeekday"; Refresh(); })">
+                <label class="form-check-label">Nearest weekday (Monday to Friday) to the</label>
+            </div>
+            <select class="form-control ms-1"
+                    value="@state.NearestWeekday"
+                    style="width: @DropdownWidth"
+                    @onchange="@((a) => { state.NearestWeekday = Convert.ToInt32(a.Value); state.Method = "NearestWeekday"; Refresh(); })">
+                @foreach (var d in dayOfMonth)
+                {
+                    <option value="@d.Item2">@d.Item1</option>
+                }
+            </select>
+            <span class="text-nowrap ms-1">of the month</span>
+        </div>
+
+        <div class="mb-2 d-flex align-items-center">
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="radio"
+                       checked="@(state.Method == "DayOfMonth")"
+                       @onchange="@((a) => { state.Method = "DayOfMonth"; Refresh(); })">
+                <label class="form-check-label">On the</label>
+            </div>
+            <select class="form-control ms-1"
+                    value="@state.DayOfMonth1"
+                    style="width: @DropdownWidth"
+                    @onchange="@((a) => { state.DayOfMonth1 = Convert.ToInt32(a.Value); state.Method = "DayOfMonth"; Refresh(); })">
+                @foreach (var d in dayOfMonth.Take(5))
+                {
+                    <option value="@d.Item2">@d.Item1</option>
+                }
+            </select>
+            <select class="form-control ms-1"
+                    value="@state.DayOfMonth2"
+                    style="width: @DropdownWidth"
+                    @onchange="@((a) => { state.DayOfMonth2 = Convert.ToInt32(a.Value); state.Method = "DayOfMonth"; Refresh(); })">
+                @foreach (var i in Items)
+                {
+                    <option value="@i.Item2">@i.Item1</option>
+                }
+            </select>
+            <span class="ms-1">of the month</span>
+        </div>
+    }
+    else
+    {
+        <div class="mb-2 d-flex align-items-center">
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="radio"
+                       checked="@(state.Method == "Range2")"
+                       @onchange="@((a) => { state.Method = "Range2"; Refresh(); })">
+                <label class="form-check-label">@($"Every {ItemName} between {ItemName}")</label>
+            </div>
+            <select class="form-control ms-1"
+                    value="@state.Range2a"
+                    style="width: @DropdownWidth"
+                    @onchange="@((a) => { state.Range2a = Convert.ToInt32(a.Value); state.Method = "Range2"; Refresh(); })">
+                @foreach (var i in Items)
+                {
+                    <option value="@i.Item2">@i.Item1</option>
+                }
+            </select>
+            <span class="text-nowrap ms-1">and @ItemName</span>
+            <select class="form-control ms-1"
+                    value="@state.Range2b"
+                    style="width: @DropdownWidth"
+                    @onchange="@((a) => { state.Range2b = Convert.ToInt32(a.Value); state.Method = "Range2"; Refresh(); })">
+                @foreach (var i in Items)
+                {
+                    <option value="@i.Item2">@i.Item1</option>
+                }
+            </select>
+        </div>
+    }
+</div>

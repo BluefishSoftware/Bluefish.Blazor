@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Blazored.Toast" Version="3.1.2" />
+    <PackageReference Include="CronExpressionDescriptor" Version="2.16.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.6" />
   </ItemGroup>
 

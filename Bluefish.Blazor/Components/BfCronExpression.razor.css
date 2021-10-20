@@ -1,0 +1,5 @@
+﻿.bordered {
+    border: 1px solid #dee2e6;
+    border-top: 1px solid #fff;
+    border-radius: 0 0 4px 4px;
+}

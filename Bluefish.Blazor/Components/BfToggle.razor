@@ -1,0 +1,21 @@
+﻿<div class="bf-toggle @CssClass"
+     role="button"
+     @onclick="OnClickAsync"
+     @onclick:preventDefault>
+    @if (Value)
+    {
+        @if (!string.IsNullOrWhiteSpace(OnIconCssClass))
+        {
+            <i class="@OnIconCssClass"></i>
+        }
+        <span>@OnText</span>
+    }
+    else
+    {
+        @if (!string.IsNullOrWhiteSpace(OffIconCssClass))
+        {
+            <i class="@OffIconCssClass"></i>
+        }
+        <span>@OffText</span>
+    }
+</div>

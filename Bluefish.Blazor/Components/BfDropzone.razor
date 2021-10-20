@@ -1,0 +1,28 @@
+﻿<template id="my-dropzone-template">
+    <div class="dz-preview small">
+        <div class="dz-bar d-flex justify-content-between">
+            <span class="dz-name" data-dz-name></span>
+            <div>
+                <span data-dz-errormessage></span>
+                <div class="d-none success-mark">
+                    <i class="far fa-check-circle"></i>
+                </div>
+                <div class="d-none error-mark">
+                    <i class="far fa-times-circle"></i>
+                </div>
+            </div>
+        </div>
+        <div style="width: 0px" class="dz-progress" data-dz-uploadprogress></div>
+    </div>
+</template>
+
+
+<div class="dropzone @CssClass" id="my-dropzone">
+    <div class="dz-message-2" @onclick="OnClick">
+        <span>Drag and drop files here, or click to browse</span>
+    </div>
+</div>
+<button class="btn btn-sm" @onclick="OnClear">
+    <i class="fas fa-times"></i>
+    Clear
+</button>

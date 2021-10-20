@@ -1,0 +1,17 @@
+﻿<div class="bf-tab-panel @CssClass">
+
+    <div class="btn-group d-block" role="group">
+        @foreach (BfTabPage tabPage in Pages)
+        {
+            <button type="button"
+                    class="btn @GetButtonClass(tabPage)"
+                    @onclick=@( () => ActivatePage(tabPage) )>
+                @tabPage.Text
+            </button>
+        }
+    </div>
+
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>

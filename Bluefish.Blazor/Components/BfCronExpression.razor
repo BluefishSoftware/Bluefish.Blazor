@@ -1,0 +1,90 @@
+﻿<div class="bf-cron-expression">
+
+    @if (ShowExpression)
+    {
+        <div class="mb-2 cron-expr">
+            @Value
+        </div>
+    }
+
+    @if (ShowDescription)
+    {
+        <div class="mb-2 cron-desc">
+            @description
+        </div>
+    }
+
+    <BfTabPanel CssClass="@CssClass">
+        <BfTabPage Text="Seconds">
+            <BfCronExpressionTab ItemName="second"
+                                 CssClass="bordered"
+                                 @bind-Value="Seconds"
+                                 Items="@(Enumerable.Range(0,60).Select(x => new Tuple<string, int>(x.ToString("00"), x)).ToArray())">
+            </BfCronExpressionTab>
+        </BfTabPage>
+        <BfTabPage Text="Minutes">
+            <BfCronExpressionTab ItemName="minute"
+                                 CssClass="bordered"
+                                 @bind-Value="Minutes"
+                                 Items="@(Enumerable.Range(0,60).Select(x => new Tuple<string, int>(x.ToString("00"), x)).ToArray())">
+            </BfCronExpressionTab>
+        </BfTabPage>
+        <BfTabPage Text="Hours">
+            <BfCronExpressionTab ItemName="hour"
+                                 CssClass="bordered"
+                                 @bind-Value="Hours"
+                                 Items="@(Enumerable.Range(0,24).Select(x => new Tuple<string, int>(x.ToString("00"), x)).ToArray())">
+            </BfCronExpressionTab>
+        </BfTabPage>
+        <BfTabPage Text="Day">
+            <BfCronExpressionTab ItemName="day"
+                                 DropdownWidth="120px"
+                                 CssClass="bordered"
+                                 @bind-Value="Days"
+                                 IsDay="true"
+                                 Items="@(new [] {
+                                            new Tuple<string, int> ("Sunday", 1),
+                                            new Tuple<string, int> ("Monday", 2),
+                                            new Tuple<string, int> ("Tuesday", 3),
+                                            new Tuple<string, int> ("Wednesday", 4),
+                                            new Tuple<string, int> ("Thursday", 5),
+                                            new Tuple<string, int> ("Friday", 6),
+                                            new Tuple<string, int> ("Saturday", 7)
+                                        })">
+            </BfCronExpressionTab>
+        </BfTabPage>
+        <BfTabPage Text="Month">
+            <BfCronExpressionTab ItemName="month"
+                                 DropdownWidth="140px"
+                                 CssClass="bordered"
+                                 @bind-Value="Months"
+                                 Items="@(new [] {
+                                            new Tuple<string, int> ("January", 1),
+                                            new Tuple<string, int> ("February", 2),
+                                            new Tuple<string, int> ("March", 3),
+                                            new Tuple<string, int> ("April", 4),
+                                            new Tuple<string, int> ("May", 5),
+                                            new Tuple<string, int> ("June", 6),
+                                            new Tuple<string, int> ("July", 7),
+                                            new Tuple<string, int> ("August", 8),
+                                            new Tuple<string, int> ("September", 9),
+                                            new Tuple<string, int> ("October", 10),
+                                            new Tuple<string, int> ("November", 11),
+                                            new Tuple<string, int> ("December", 12)
+                                        })">
+            </BfCronExpressionTab>
+        </BfTabPage>
+        @if (IncludeYears)
+        {
+            <BfTabPage Text="Year">
+                <BfCronExpressionTab ItemName="year"
+                                     DropdownWidth="100px"
+                                     CssClass="bordered"
+                                     @bind-Value="Years"
+                                     Items="@(Enumerable.Range(DateTime.Now.Year, 50).Select(x => new Tuple<string, int>(x.ToString(), x)).ToArray())">
+                </BfCronExpressionTab>
+            </BfTabPage>
+        }
+    </BfTabPanel>
+
+</div>
