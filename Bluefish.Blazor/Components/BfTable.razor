@@ -38,7 +38,9 @@
         {
             <tr>
                 <td colspan="@(VisibleColumns.Length + (SelectionMode == SelectionModes.Multiple && ShowCheckboxes ? 1 : 0))">
-                    <BfSpinner />
+                    <div class="table-spinner">
+                        <BfSpinner />
+                    </div>
                 </td>
             </tr>
         }

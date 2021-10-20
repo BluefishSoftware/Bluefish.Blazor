@@ -1,3 +1,8 @@
-﻿.header {
+﻿.bf-title-bar {
+    background-color: var(--bg-color-dark);
+    border-bottom: 1px solid #48484c;
+}
+
+.header {
     color: var(--fg-color);
 }

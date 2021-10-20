@@ -13,6 +13,12 @@
     border-top: 1px solid var(--border-color);
 }
 
+.table-spinner {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
 .table-striped tbody tr:nth-of-type(odd) {
     background-color: var(--bg-color-dark);
     color: var(--fg-color);

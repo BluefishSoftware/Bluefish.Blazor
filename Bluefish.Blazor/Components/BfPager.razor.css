@@ -1,3 +1,7 @@
-﻿nav {
+﻿.bf-pager {
+    margin: 4px 0px;
+}
+
+nav {
     background-color: transparent;
 }
