@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿namespace Bluefish.Blazor.Components;
 
-namespace Bluefish.Blazor.Components
+public partial class BfToolBar
 {
-    public partial class BfToolBar
-    {
-        [Parameter]
-        public RenderFragment ChildContent { get; set; }
-    }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
 }

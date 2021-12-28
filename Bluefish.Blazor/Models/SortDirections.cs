@@ -1,8 +1,7 @@
-﻿namespace Bluefish.Blazor.Models
+﻿namespace Bluefish.Blazor.Models;
+
+public enum SortDirections
 {
-    public enum SortDirections
-    {
-        Ascending,
-        Descending
-    }
+    Ascending,
+    Descending
 }

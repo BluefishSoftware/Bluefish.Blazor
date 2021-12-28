@@ -1,35 +1,31 @@
-﻿using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
+﻿namespace Bluefish.Blazor.Components;
 
-namespace Bluefish.Blazor.Components
+public partial class BfTabPanel
 {
-    public partial class BfTabPanel
+    private List<BfTabPage> Pages = new List<BfTabPage>();
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string CssClass { get; set; }
+
+    public BfTabPage ActivePage { get; set; }
+
+    internal void AddPage(BfTabPage tabPage)
     {
-        private List<BfTabPage> Pages = new List<BfTabPage>();
+        Pages.Add(tabPage);
+        if (Pages.Count == 1)
+            ActivePage = tabPage;
+        StateHasChanged();
+    }
+    private string GetButtonClass(BfTabPage page)
+    {
+        return page == ActivePage ? "btn-primary" : "btn-secondary";
+    }
 
-        [Parameter]
-        public RenderFragment ChildContent { get; set; }
-
-        [Parameter]
-        public string CssClass { get; set; }
-
-        public BfTabPage ActivePage { get; set; }
-
-        internal void AddPage(BfTabPage tabPage)
-        {
-            Pages.Add(tabPage);
-            if (Pages.Count == 1)
-                ActivePage = tabPage;
-            StateHasChanged();
-        }
-        private string GetButtonClass(BfTabPage page)
-        {
-            return page == ActivePage ? "btn-primary" : "btn-secondary";
-        }
-
-        private void ActivatePage(BfTabPage page)
-        {
-            ActivePage = page;
-        }
+    private void ActivatePage(BfTabPage page)
+    {
+        ActivePage = page;
     }
 }

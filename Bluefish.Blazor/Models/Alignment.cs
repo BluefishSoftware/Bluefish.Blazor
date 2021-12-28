@@ -1,9 +1,8 @@
-﻿namespace Bluefish.Blazor.Models
+﻿namespace Bluefish.Blazor.Models;
+
+public enum Alignment
 {
-    public enum Alignment
-    {
-        Start,
-        Center,
-        End
-    }
+    Start,
+    Center,
+    End
 }

@@ -1,10 +1,9 @@
-﻿namespace Bluefish.Blazor.Models
+﻿namespace Bluefish.Blazor.Models;
+
+public enum Sizes
 {
-    public enum Sizes
-    {
-        Small,
-        Medium,
-        Large,
-        ExtraLarge
-    }
+    Small,
+    Medium,
+    Large,
+    ExtraLarge
 }

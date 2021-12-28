@@ -1,6 +1,5 @@
-﻿namespace Bluefish.Blazor.Components
+﻿namespace Bluefish.Blazor.Components;
+
+public partial class BfSpinner
 {
-    public partial class BfSpinner
-    {
-    }
 }

@@ -1,30 +1,26 @@
-﻿using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
+﻿namespace Bluefish.Blazor.Components;
 
-namespace Bluefish.Blazor.Components
+public partial class BfLabel
 {
-    public partial class BfLabel
+    [Parameter]
+    public string IconCssClass { get; set; }
+
+    [Parameter]
+    public string Text { get; set; }
+
+    [Parameter]
+    public string TextCssClass { get; set; }
+
+    protected override Dictionary<string, object> RootAttributes
     {
-        [Parameter]
-        public string IconCssClass { get; set; }
-
-        [Parameter]
-        public string Text { get; set; }
-
-        [Parameter]
-        public string TextCssClass { get; set; }
-
-        protected override Dictionary<string, object> RootAttributes
+        get
         {
-            get
+            var attr = base.RootAttributes;
+            if (!attr.ContainsKey("class"))
             {
-                var attr = base.RootAttributes;
-                if (!attr.ContainsKey("class"))
-                {
-                    attr.Add("class", $"bf-label {(Enabled ? "" : "disabled")}");
-                }
-                return attr;
+                attr.Add("class", $"bf-label {(Enabled ? "" : "disabled")}");
             }
+            return attr;
         }
     }
 }

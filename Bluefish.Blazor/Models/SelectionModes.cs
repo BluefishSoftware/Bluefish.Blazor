@@ -1,9 +1,8 @@
-﻿namespace Bluefish.Blazor.Models
+﻿namespace Bluefish.Blazor.Models;
+
+public enum SelectionModes
 {
-    public enum SelectionModes
-    {
-        None,
-        Single,
-        Multiple
-    }
+    None,
+    Single,
+    Multiple
 }

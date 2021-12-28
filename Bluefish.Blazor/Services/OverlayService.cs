@@ -1,22 +1,18 @@
-﻿using Bluefish.Blazor.Interfaces;
-using System;
+﻿namespace Bluefish.Blazor.Services;
 
-namespace Bluefish.Blazor.Services
+public class OverlayService : IOverlayService
 {
-    public class OverlayService : IOverlayService
+    public event Action Hidden;
+
+    public event Action<string> Shown;
+
+    public void Hide()
     {
-        public event Action Hidden;
+        Hidden?.Invoke();
+    }
 
-        public event Action<string> Shown;
-
-        public void Hide()
-        {
-            Hidden?.Invoke();
-        }
-
-        public void Show(string html = null)
-        {
-            Shown?.Invoke(html);
-        }
+    public void Show(string html = null)
+    {
+        Shown?.Invoke(html);
     }
 }

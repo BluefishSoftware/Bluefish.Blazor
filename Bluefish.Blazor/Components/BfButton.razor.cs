@@ -1,61 +1,54 @@
-﻿using Bluefish.Blazor.Extensions;
-using Bluefish.Blazor.Models;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using System.Collections.Generic;
+﻿namespace Bluefish.Blazor.Components;
 
-namespace Bluefish.Blazor.Components
+public partial class BfButton
 {
-    public partial class BfButton
+    [Parameter]
+    public Dictionary<string, object> Attributes { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> Click { get; set; }
+
+    [Parameter]
+    public string IconCssClass { get; set; }
+
+    [Parameter]
+    public bool IsPrimary { get; set; }
+
+    [Parameter]
+    public bool PreventDefault { get; set; }
+
+    [Parameter]
+    public Sizes Size { get; set; }
+
+    [Parameter]
+    public bool StopPropagation { get; set; }
+
+    [Parameter]
+    public string Text { get; set; }
+
+    [Parameter]
+    public string TextCssClass { get; set; } = "d-none d-lg-inline-block";
+
+    [Parameter]
+    public string Title { get; set; }
+
+    private Dictionary<string, object> ActualAttributes
     {
-        [Parameter]
-        public Dictionary<string, object> Attributes { get; set; }
-
-        [Parameter]
-        public RenderFragment ChildContent { get; set; }
-
-        [Parameter]
-        public EventCallback<MouseEventArgs> Click { get; set; }
-
-        [Parameter]
-        public string IconCssClass { get; set; }
-
-        [Parameter]
-        public bool IsPrimary { get; set; }
-
-        [Parameter]
-        public bool PreventDefault { get; set; }
-
-        [Parameter]
-        public Sizes Size { get; set; }
-
-        [Parameter]
-        public bool StopPropagation { get; set; }
-
-        [Parameter]
-        public string Text { get; set; }
-
-        [Parameter]
-        public string TextCssClass { get; set; } = "d-none d-lg-inline-block";
-
-        [Parameter]
-        public string Title { get; set; }
-
-        private Dictionary<string, object> ActualAttributes
+        get
         {
-            get
-            {
-                var attr = new Dictionary<string, object>(Attributes ?? new())
+            var attr = new Dictionary<string, object>(Attributes ?? new())
                 {
                     { "disabled", Enabled ? null : true },
                     { "class", $"bf-button btn {Size.CssClass("btn-sm", "", "btn-lg")} {(IsPrimary ? "btn-primary" : "")} {CssClass}" }
                 };
-                if (!Visible)
-                {
-                    attr.Add("style", "display: none;");
-                }
-                return attr;
+            if (!Visible)
+            {
+                attr.Add("style", "display: none;");
             }
+            return attr;
         }
     }
 }
