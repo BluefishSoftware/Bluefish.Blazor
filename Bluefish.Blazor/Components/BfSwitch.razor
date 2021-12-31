@@ -1,0 +1,21 @@
+﻿<div class="form-check form-switch">
+    @if (TextBeforeSwitch)
+    {
+        <ScLabel CssClass="form-check-label"
+                 IconCssClass="@IconCssClass"
+                 Text="@Text"
+                 TextCssClass="@TextCssClass"></ScLabel>
+    }
+    <input id="@Id"
+           class="form-check-input"
+           type="checkbox"
+           checked="@Value"
+           @onchange="OnChangeAsync" />
+    @if (!TextBeforeSwitch)
+    {
+        <ScLabel CssClass="form-check-label"
+                 IconCssClass="@IconCssClass"
+                 Text="@Text"
+                 TextCssClass="@TextCssClass"></ScLabel>
+    }
+</div>
