@@ -5,6 +5,7 @@
     color: var(--fg-color);
 }
 
-.modal-footer {
-    justify-content: space-between;
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
 }

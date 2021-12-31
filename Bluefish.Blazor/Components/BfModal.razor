@@ -25,12 +25,12 @@
             <div class="modal-footer">
                 @if(Footer is null)
                 {
-                    <div>
+                    <div class="modal-buttons">
                         @if (ShowSave)
                         {
                             <BfButton IconCssClass="fas fa-save"
                                       Click="Save"
-                                      CssClass="btn-primary me-1"
+                                      CssClass="btn-primary me-2"
                                       Enabled="SaveEnabled"
                                       Text="@SaveText" />
                         }
