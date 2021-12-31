@@ -1,10 +1,10 @@
 ﻿<div class="form-check form-switch">
     @if (TextBeforeSwitch)
     {
-        <ScLabel CssClass="form-check-label"
+        <BfLabel CssClass="form-check-label"
                  IconCssClass="@IconCssClass"
                  Text="@Text"
-                 TextCssClass="@TextCssClass"></ScLabel>
+                 TextCssClass="@TextCssClass"></BfLabel>
     }
     <input id="@Id"
            class="form-check-input"
@@ -13,9 +13,9 @@
            @onchange="OnChangeAsync" />
     @if (!TextBeforeSwitch)
     {
-        <ScLabel CssClass="form-check-label"
+        <BfLabel CssClass="form-check-label"
                  IconCssClass="@IconCssClass"
                  Text="@Text"
-                 TextCssClass="@TextCssClass"></ScLabel>
+                 TextCssClass="@TextCssClass"></BfLabel>
     }
 </div>
