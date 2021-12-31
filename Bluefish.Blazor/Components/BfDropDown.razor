@@ -1,0 +1,29 @@
+﻿<div class="sc-date-range dropdown @ParentCssClasses">
+    <BfButton Attributes="Attributes"
+              Enabled="Enabled"
+              CssClass="@CssClass"
+              IconCssClass="@IconCssClass"
+              Id="@Id"
+              PreventDefault="PreventDefault"
+              Size="Size"
+              StopPropagation="StopPropagation"
+              Text="@Text"
+              TextCssClass="@TextCssClass"
+              Title="@Title">
+
+        <BfLabel Click="Click"
+                 IconCssClass="@IconCssClass"
+                 StopPropagation="true"
+                 Text="@Text"
+                 TextCssClass="@TextCssClass"
+                 Title="@Title">
+        </BfLabel>
+        @if (ShowCaret)
+        {
+            <i class="ms-2 fas @(_shown ? "fa-angle-up" : "fa-angle-down")"></i>
+        }
+    </BfButton>
+    <div class="dropdown-menu">
+        @ChildContent
+    </div>
+</div>

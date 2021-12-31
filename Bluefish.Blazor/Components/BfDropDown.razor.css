@@ -1,0 +1,6 @@
+﻿.dropdown-menu {
+    background-color: var(--bg-color-dark);
+    border: 1px solid var(--border-color);
+    color: var(--fg-color);
+    padding: 5px;
+}
