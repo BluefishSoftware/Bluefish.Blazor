@@ -4,35 +4,36 @@
 @using Bluefish.Blazor.Models
 
 <table @attributes="ActualAttributes">
-    <thead>
-        <tr>
-            @if (SelectionMode == SelectionModes.Multiple && ShowCheckboxes)
-            {
-                <th>
-                    @*<BfCheckBox ValueChanged="OnToggleSelection" />*@
-                </th>
-            }
-            @foreach (var col in VisibleColumns)
-            {
-                <th class="@col.GetHeaderCssClass(this)"
-                    @onclick="() => OnColumnHeaderClick(col)">
-                    <span title="@col.HeaderToolTip">@col.HeaderText</span>
-                    @if (AllowSort && SortInfo != null && col.IsSortable && col.DataField == SortInfo?.DataField)
-                    {
-                        @if (SortInfo.Direction == SortDirections.Ascending)
+    @if (ShowHeader)
+    {
+        <thead>
+            <tr>
+                @if (SelectionMode == SelectionModes.Multiple && ShowCheckboxes)
+                {
+                    <th>
+                        @*<BfCheckBox ValueChanged="OnToggleSelection" />*@
+                    </th>
+                }
+                @foreach (var col in VisibleColumns)
+                {
+                    <th class="@col.GetHeaderCssClass(this)" @onclick="() => OnColumnHeaderClick(col)">
+                        <span title="@col.HeaderToolTip">@col.HeaderText</span>
+                        @if (AllowSort && SortInfo != null && col.IsSortable && col.DataField == SortInfo?.DataField)
                         {
-                            <i class="ml-1 fas fa-fw fa-sort-amount-up-alt" title="Ascending order" />
+                            @if (SortInfo.Direction == SortDirections.Ascending)
+                            {
+                                <i class="ml-1 fas fa-fw fa-sort-amount-up-alt" title="Ascending order" />
+                            }
+                            else
+                            {
+                                <i class="ml-1 fas fa-fw fa-sort-amount-down" title="Descending order" />
+                            }
                         }
-                        else
-                        {
-                            <i class="ml-1 fas fa-fw fa-sort-amount-down" title="Descending order" />
-                        }
-                    }
-                </th>
-
-            }
-        </tr>
-    </thead>
+                    </th>
+                }
+            </tr>
+        </thead>
+    }
     <tbody>
         @if (_isLoading)
         {

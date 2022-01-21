@@ -47,6 +47,9 @@ public partial class BfTable<TItem, TKey> : IDisposable
     public bool ShowCheckboxes { get; set; }
 
     [Parameter]
+    public bool ShowHeader { get; set; } = true;
+
+    [Parameter]
     public bool ShowPager { get; set; }
 
     [Parameter]
@@ -207,6 +210,13 @@ public partial class BfTable<TItem, TKey> : IDisposable
         {
             return _selectedKeys;
         }
+    }
+
+    public async Task SetSelectionAsync(IEnumerable<TKey> keys)
+    {
+        _selectedKeys.Clear();
+        _selectedKeys.AddRange(keys);
+        await SelectionChanged.InvokeAsync(_selectedKeys).ConfigureAwait(true);
     }
 
     private async Task UpdateSelectionAsync(MouseEventArgs args, TItem item)
