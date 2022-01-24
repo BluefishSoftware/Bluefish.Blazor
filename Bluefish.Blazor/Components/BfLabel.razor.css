@@ -5,3 +5,7 @@
 .bf-label.disabled {
     opacity: 0.5;
 }
+
+span, i {
+    user-select: none;
+}

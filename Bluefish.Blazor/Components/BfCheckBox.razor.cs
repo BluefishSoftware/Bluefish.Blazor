@@ -3,10 +3,22 @@
 public partial class BfCheckBox
 {
     [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public string IconCssClass { get; set; }
+
+    [Parameter]
     public bool PreventDefault { get; set; }
 
     [Parameter]
     public bool StopPropagation { get; set; }
+
+    [Parameter]
+    public string Text { get; set; }
+
+    [Parameter]
+    public string TextCssClass { get; set; }
 
     [Parameter]
     public bool Value { get; set; }

@@ -3,10 +3,11 @@
 <div @attributes="RootAttributes">
     @if (!string.IsNullOrWhiteSpace(IconCssClass))
     {
-        <i class="@IconCssClass" />
+        <i class="@IconCssClass" @onclick="Click" />
     }
     @if (!string.IsNullOrWhiteSpace(Text))
     {
-        <span class="@(string.IsNullOrWhiteSpace(IconCssClass)? "" : "ms-1") @TextCssClass">@Text</span>
+        <span class="@(string.IsNullOrWhiteSpace(IconCssClass)? "" : "ms-1") @TextCssClass"
+              @onclick="Click">@Text</span>
     }
 </div>

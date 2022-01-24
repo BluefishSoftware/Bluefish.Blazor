@@ -3,6 +3,9 @@
 public partial class BfLabel
 {
     [Parameter]
+    public EventCallback<MouseEventArgs> Click { get; set; }
+
+    [Parameter]
     public string IconCssClass { get; set; }
 
     [Parameter]

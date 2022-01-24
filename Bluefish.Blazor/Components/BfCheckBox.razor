@@ -1,6 +1,13 @@
-﻿<input class="form-check-input"
-       type="checkbox"
-       checked="@Value"
-       @onchange="OnChange"
-       @onclick:preventDefault="PreventDefault"
-       @onclick:stopPropagation="StopPropagation" />
+﻿<div class="form-check">
+    <BfLabel Click="() => Value = !Value"
+                CssClass="form-check-label"
+                IconCssClass="@IconCssClass"
+                Text="@Text"
+                TextCssClass="@TextCssClass"></BfLabel>
+    <input class="form-check-input"
+           type="checkbox"
+           checked="@Value"
+           @onchange="OnChange"
+           @onclick:preventDefault="PreventDefault"
+           @onclick:stopPropagation="StopPropagation" />
+</div>
