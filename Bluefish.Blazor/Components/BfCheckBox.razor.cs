@@ -3,9 +3,6 @@
 public partial class BfCheckBox
 {
     [Parameter]
-    public string CssClass { get; set; } = string.Empty;
-
-    [Parameter]
     public string IconCssClass { get; set; }
 
     [Parameter]

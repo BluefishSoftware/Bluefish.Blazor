@@ -1,12 +1,18 @@
-﻿<div class="form-check">
-    <BfLabel Click="() => Value = !Value"
+﻿@inherits BfComponentBase
+
+<div class="form-check @CssClass" @attributes="RootAttributes"
+           >
+    <BfLabel Click="() => { if(Enabled) Value = !Value; }"
                 CssClass="form-check-label"
+                Enabled="Enabled"
                 IconCssClass="@IconCssClass"
                 Text="@Text"
-                TextCssClass="@TextCssClass"></BfLabel>
+                TextCssClass="@TextCssClass"
+                Visible="Visible" />
     <input class="form-check-input"
            type="checkbox"
            checked="@Value"
+           disabled="@(!Enabled)"
            @onchange="OnChange"
            @onclick:preventDefault="PreventDefault"
            @onclick:stopPropagation="StopPropagation" />
