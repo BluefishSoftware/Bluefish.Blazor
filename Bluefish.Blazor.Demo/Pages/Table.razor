@@ -1,0 +1,102 @@
+﻿@page "/table"
+
+<h1>BfTable</h1>
+
+<p>The BfTable component displays requested data in a table layout.</p>
+
+<Example Title="Simple Usage">
+    <Description>
+        <p>Example of a basic table.</p>
+    </Description>
+    <Code>
+        <pre>
+    &lt;BfTable PageInfo="_pageInfo" &gt;
+
+    &lt;/BfTable &gt;
+        </pre>
+    </Code>
+    <Demo>
+        <BfTable @ref="_table"
+                 TItem="Car"
+                 TKey="int"
+                 AllowSort="true"
+                 GetItemKey="(x) => x.Id"
+                 GetPagedDataAsync="OnGetData"
+                 PageInfo="_pageInfo"
+                 ShowPager="true"
+                 SortInfo="_sortInfo">
+
+            <BfColumn TItem="Car"
+                      TKey="int"
+                      Id="Id"
+                      DataMember="x => x.Id"
+                      HeaderText="Id"
+                      IsSortable="true" />
+
+            <BfColumn TItem="Car"
+                      TKey="int"
+                      Id="Make"
+                      DataMember="x => x.Make"
+                      HeaderText="Make"
+                      IsSortable="true" />
+
+            <BfColumn TItem="Car"
+                      TKey="int"
+                      Id="Model"
+                      DataMember="x => x.Model"
+                      HeaderText="Model"
+                      IsSortable="true" />
+
+        </BfTable>
+    </Demo>
+</Example>
+
+@code {
+    private BfTable<Car, int> _table;
+    private PageInfo _pageInfo = new();
+    private SortInfo _sortInfo = new();
+    private Car[] _data = new []
+    {
+        new Car(1, "BMW", "118i"),
+        new Car(2, "BMW", "318i"),
+        new Car(3, "BMW", "320i"),
+        new Car(4, "BMW", "330i"),
+        new Car(5, "BMW", "530i"),
+        new Car(6, "Ford", "Capri"),
+        new Car(7, "Ford", "Cortina"),
+        new Car(8, "Ford", "Escort"),
+        new Car(9, "Ford", "Fiesta"),
+        new Car(10, "Ford", "Mondeo"),
+        new Car(11, "Ford", "Mustang"),
+        new Car(12, "Vauxhall", "Astra"),
+        new Car(13, "Vauxhall", "Calibra"),
+        new Car(14, "Vauxhall", "Corsa"),
+        new Car(15, "Vauxhall", "Vectra")
+    };
+
+    private Task<IEnumerable<Car>> OnGetData(PageInfo pageInfo, SortInfo sortInfo)
+    {
+        var query = _data.AsEnumerable();
+
+        if(pageInfo != null)
+        {
+            query = query.Skip(pageInfo.PageRangeStart - 1).Take(pageInfo.PageSize);
+            pageInfo.TotalCount = _data.Count();
+        }
+
+        if(!string.IsNullOrEmpty(sortInfo?.ColumnId))
+        {
+            var col = _table.AllColumns.FirstOrDefault(x => x.Id == sortInfo.ColumnId);
+            if (col != null)
+            {
+                query = sortInfo.Direction == SortDirections.Ascending
+                    ? query.OrderBy<Car, object>(col.DataMemberFunc)
+                    : query.OrderByDescending<Car, object>(col.DataMemberFunc);
+            }
+        }
+
+        return Task.FromResult(query);
+    }
+
+    private record Car(int Id, string Make, string Model);
+}

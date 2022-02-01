@@ -66,6 +66,10 @@ export function openUrl(url, target) {
 	window.open(url, target);
 }
 
+export function replaceUrl(url) {
+	window.history.replaceState(null, document.title, url);
+}
+
 export function selectText(id, start, end) {
 	var el = document.getElementById(id);
 	if (!el) return;

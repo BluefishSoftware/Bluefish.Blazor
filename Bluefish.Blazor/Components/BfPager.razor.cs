@@ -20,6 +20,10 @@ public partial class BfPager : IDisposable
     [Parameter]
     public bool ShowPageSizes { get; set; } = true;
 
+
+    [Parameter]
+    public Sizes Size { get; set; }
+
     protected override void OnInitialized()
     {
         if (PageInfo != null)

@@ -5,9 +5,11 @@
 /// </summary>
 public class PageInfo
 {
-    private uint _page;
-    private uint _pageSize = 10;
-    private uint _totalCount;
+    public static int DEFAULT_PAGE_SIZE = 10;
+
+    private int _page;
+    private int _pageSize = DEFAULT_PAGE_SIZE;
+    private int _totalCount;
 
     /// <summary>
     /// Initializes a new instance of the PageInfo class.
@@ -23,7 +25,7 @@ public class PageInfo
     /// <param name="page">Page number.</param>
     /// <param name="pageSize">Number of items per page.</param>
     /// <param name="totalCount">The total number of items.</param>
-    public PageInfo(uint page, uint pageSize = 10, uint totalCount = 0)
+    public PageInfo(int page, int pageSize = 10, int totalCount = 0)
     {
         _page = page;
         _pageSize = pageSize;
@@ -40,10 +42,16 @@ public class PageInfo
     /// </summary>
     public event EventHandler TotalCountChanged;
 
+    public void Init(int pageSize, int pageNumber)
+    {
+        _pageSize = pageSize;
+        _page = pageNumber;
+    }
+
     /// <summary>
     /// Gets or sets page number.
     /// </summary>
-    public uint Page
+    public int Page
     {
         get { return _page; }
         set
@@ -61,7 +69,7 @@ public class PageInfo
     /// Gets or sets the number of items per page.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public uint PageSize
+    public int PageSize
     {
         get { return _pageSize; }
         set
@@ -86,7 +94,7 @@ public class PageInfo
     /// <summary>
     /// Gets or sets the total number of items.
     /// </summary>
-    public uint TotalCount
+    public int TotalCount
     {
         get { return _totalCount; }
         set
@@ -111,18 +119,18 @@ public class PageInfo
     /// <summary>
     /// Gets the total number of pages.
     /// </summary>
-    public uint PageCount
+    public int PageCount
     {
         get
         {
-            return (_totalCount / _pageSize) + (uint)(_totalCount % _pageSize > 0 ? 1 : 0);
+            return (_totalCount / _pageSize) + (_totalCount % _pageSize > 0 ? 1 : 0);
         }
     }
 
     /// <summary>
     /// Calculates the index of the first item of the current page.
     /// </summary>
-    public uint PageRangeStart
+    public int PageRangeStart
     {
         get
         {
@@ -133,7 +141,7 @@ public class PageInfo
     /// <summary>
     /// Calculates the index of the last item of the current page.
     /// </summary>
-    public uint PageRangeEnd
+    public int PageRangeEnd
     {
         get
         {
@@ -155,7 +163,7 @@ public class PageInfo
     /// <summary>
     /// Gets the number of items before the current page.
     /// </summary>
-    public uint PreviousItems => (_page - 1) * _pageSize;
+    public int PreviousItems => (_page - 1) * _pageSize;
 
     protected void OnChanged()
     {

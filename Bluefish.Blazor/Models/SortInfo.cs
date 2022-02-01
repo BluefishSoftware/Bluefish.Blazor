@@ -6,9 +6,9 @@
 public class SortInfo
 {
     /// <summary>
-    /// Gets or sets the name of the field the sort operation is performed upon.
+    /// Gets or sets the unique identifier of the column to be sorted.
     /// </summary>
-    public string DataField { get; set; } = string.Empty;
+    public string ColumnId { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the direction of the sort.

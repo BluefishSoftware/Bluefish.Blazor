@@ -1,4 +1,6 @@
-﻿namespace Bluefish.Blazor.Components;
+﻿using Microsoft.AspNetCore.WebUtilities;
+
+namespace Bluefish.Blazor.Components;
 
 public partial class BfTable<TItem, TKey> : IDisposable
 {
@@ -6,6 +8,13 @@ public partial class BfTable<TItem, TKey> : IDisposable
     private readonly List<TKey> _selectedKeys = new();
     private IEnumerable<TItem> _dataItems;
     private bool _isLoading = true;
+    private IJSObjectReference _module;
+
+    [Inject]
+    public IJSRuntime JSRuntime { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
 
     [Parameter]
     public bool AllowSort { get; set; } = false;
@@ -15,6 +24,9 @@ public partial class BfTable<TItem, TKey> : IDisposable
 
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string QueryStringPrefix { get; set; } = string.Empty;
 
     [Parameter]
     public EventCallback<TItem> RowClick { get; set; }
@@ -60,6 +72,8 @@ public partial class BfTable<TItem, TKey> : IDisposable
 
     [Parameter]
     public Func<TItem, string> TrCssClass { get; set; } = (_) => string.Empty;
+
+    public BfColumn<TItem, TKey>[] AllColumns => _columns.ToArray();
 
     public BfColumn<TItem, TKey>[] VisibleColumns => _columns.Where(x => x.IsVisible).ToArray();
 
@@ -129,6 +143,46 @@ public partial class BfTable<TItem, TKey> : IDisposable
     {
         if (firstRender)
         {
+            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/Bluefish.Blazor/js/interop.js").ConfigureAwait(true);
+
+            // Get the requested table parameters from the QueryString
+            var uri = new Uri(NavigationManager.Uri);
+            var query = QueryHelpers.ParseQuery(uri.Query);
+
+            // get initial page info
+            if (PageInfo != null)
+            {
+                var pageSize = PageInfo.PageSize;
+                var pageNumber = PageInfo.Page;
+                if (query.TryGetValue($"{QueryStringPrefix}ps", out var val1))
+                {
+                    pageSize = Convert.ToInt32(val1);
+                }
+                if (query.TryGetValue($"{QueryStringPrefix}p", out var val2))
+                {
+                    pageNumber = Convert.ToInt32(val2);
+                }
+                PageInfo.Init(pageSize, pageNumber);
+                PageInfo.Changed += PageInfo_Changed;
+            }
+
+            // get initial sort info
+            if (SortInfo != null)
+            {
+                var columnId = SortInfo.ColumnId;
+                var direction = SortInfo.Direction;
+                if (query.TryGetValue($"{QueryStringPrefix}s", out var val1))
+                {
+                    columnId = val1.ToString();
+                }
+                if (query.TryGetValue($"{QueryStringPrefix}sd", out var val2))
+                {
+                    direction = Enum.Parse<SortDirections>(val2.ToString());
+                }
+                SortInfo.ColumnId = columnId;
+                SortInfo.Direction = direction;
+            }
+
             if (AutoLoad)
             {
                 await RefreshAsync().ConfigureAwait(true);
@@ -151,24 +205,21 @@ public partial class BfTable<TItem, TKey> : IDisposable
         }
     }
 
-    protected Task OnColumnHeaderClick(BfColumn<TItem, TKey> column)
+    protected async Task OnColumnHeaderClick(BfColumn<TItem, TKey> column)
     {
         if (AllowSort && column.IsSortable && SortInfo != null)
         {
-            SortInfo.Direction = SortInfo.DataField == column.DataField
+            // toggle sort
+            SortInfo.Direction = SortInfo.ColumnId == column.Id
                 ? (SortInfo.Direction == SortDirections.Descending ? SortDirections.Ascending : SortDirections.Descending)
                 : SortDirections.Ascending;
-            SortInfo.DataField = column.DataField;
-            return RefreshAsync();
-        }
-        return Task.CompletedTask;
-    }
+            SortInfo.ColumnId = column.Id;
 
-    protected override void OnInitialized()
-    {
-        if (PageInfo != null)
-        {
-            PageInfo.Changed += PageInfo_Changed;
+            // update current uri with sorting info
+            await UpdateUriAsync().ConfigureAwait(true);
+
+            // refresh table
+            await RefreshAsync().ConfigureAwait(true);
         }
     }
 
@@ -186,6 +237,10 @@ public partial class BfTable<TItem, TKey> : IDisposable
 
     private async void PageInfo_Changed(object sender, EventArgs e)
     {
+        // update current uri with paging info
+        await UpdateUriAsync().ConfigureAwait(true);
+
+        // refresh table
         await InvokeAsync(RefreshAsync).ConfigureAwait(true);
     }
 
@@ -262,5 +317,38 @@ public partial class BfTable<TItem, TKey> : IDisposable
                 break;
         }
         await SelectionChanged.InvokeAsync(_selectedKeys).ConfigureAwait(true);
+    }
+
+    private async Task UpdateUriAsync()
+    {
+        // update current uri with paging and sorting info
+        var dict = new Dictionary<string, object>();
+
+        if (PageInfo != null)
+        {
+            if (PageInfo.Page != 1)
+            {
+                dict.Add($"{QueryStringPrefix}p", PageInfo.Page);
+            }
+            if (PageInfo.PageSize != PageInfo.DEFAULT_PAGE_SIZE)
+            {
+                dict.Add($"{QueryStringPrefix}ps", PageInfo.PageSize);
+            }
+        };
+
+        if (SortInfo != null)
+        {
+            if (!string.IsNullOrWhiteSpace(SortInfo.ColumnId))
+            {
+                dict.Add($"{QueryStringPrefix}s", SortInfo.ColumnId);
+            }
+            if (SortInfo.Direction != SortDirections.Ascending)
+            {
+                dict.Add($"{QueryStringPrefix}sd", SortInfo.Direction.ToString());
+            }
+        }
+
+        var newUri = NavigationManager.GetUriWithQueryParameters(dict);
+        await _module.InvokeVoidAsync("replaceUrl", newUri).ConfigureAwait(true);
     }
 }

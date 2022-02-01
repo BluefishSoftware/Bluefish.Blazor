@@ -18,7 +18,7 @@
                 {
                     <th class="@col.GetHeaderCssClass(this)" @onclick="() => OnColumnHeaderClick(col)">
                         <span title="@col.HeaderToolTip">@col.HeaderText</span>
-                        @if (AllowSort && SortInfo != null && col.IsSortable && col.DataField == SortInfo?.DataField)
+                        @if (AllowSort && SortInfo != null && col.IsSortable && col.Id == SortInfo?.ColumnId)
                         {
                             @if (SortInfo.Direction == SortDirections.Ascending)
                             {
@@ -28,6 +28,10 @@
                             {
                                 <i class="ml-1 fas fa-fw fa-sort-amount-down" title="Descending order" />
                             }
+                        }
+                        else
+                        {
+                            <i class="ml-1 fas fa-fw fa-empty" />
                         }
                     </th>
                 }
@@ -101,7 +105,7 @@
     <div class="bottom-pager pt-2">
         <BfPager PageInfo="PageInfo"
                  PageSizes="@WebConstants.DEFAULT_PAGE_SIZES"
-                 Size="Size"></BfPager>
+                 Size="Size" />
     </div>
 }
 

@@ -11,9 +11,6 @@ public partial class BfColumn<TItem, TKey>
     public string CssClass { get; set; }
 
     [Parameter]
-    public string DataField { get; set; }
-
-    [Parameter]
     public Expression<Func<TItem, object>> DataMember { get; set; }
 
     [Parameter]
@@ -24,6 +21,9 @@ public partial class BfColumn<TItem, TKey>
 
     [Parameter]
     public string HeaderToolTip { get; set; }
+
+    [Parameter]
+    public string Id { get; set; }
 
     [Parameter]
     public bool IsSortable { get; set; } = true;
@@ -40,6 +40,8 @@ public partial class BfColumn<TItem, TKey>
     [Parameter]
     public Func<TItem, string> ToolTip { get; set; }
 
+    public Func<TItem, object> DataMemberFunc => _dataMemberGetter.Value;
+
     private static string GetCssClass(Alignment align) => align switch
     {
         Alignment.Start => "text-start",
@@ -54,24 +56,21 @@ public partial class BfColumn<TItem, TKey>
 
     public object GetValue(TItem item)
     {
-        if (_dataMemberGetter != null)
+        if (_dataMemberGetter is null)
+        {
+            return null;
+        }
+        else
         {
             try
             {
-                return _dataMemberGetter.Value.Invoke(item);
+                return DataMemberFunc(item);
             }
             catch
             {
                 return null;
             }
         }
-
-        var propInfo = item?.GetType()?.GetProperty(DataField);
-        if (propInfo is null)
-        {
-            return null;
-        }
-        return propInfo.GetValue(item);
     }
 
     protected override void OnInitialized()

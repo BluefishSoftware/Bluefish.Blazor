@@ -25,6 +25,7 @@
 	<PackageReference Include="Blazored.Toast" Version="3.2.2" />
 	<PackageReference Include="CronExpressionDescriptor" Version="2.16.0" />
 	<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
 	<PackageReference Include="Nerdbank.GitVersioning" Version="3.4.244">
 	  <PrivateAssets>all</PrivateAssets>
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

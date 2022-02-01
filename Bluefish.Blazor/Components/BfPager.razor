@@ -3,21 +3,25 @@
     <div>
         <BfButton Click="MoveFirst"
                   Enabled="!PageInfo.IsFirstPage"
-                  IconCssClass="fas fa-fast-backward" />
+                  IconCssClass="fas fa-fast-backward"
+                  Size="Size" />
 
         <BfButton Click="MovePrevious"
                   Enabled="!PageInfo.IsFirstPage"
-                  IconCssClass="fas fa-backward" />
+                  IconCssClass="fas fa-backward"
+                  Size="Size" />
 
         <span class="d-none d-md-inline">Page&nbsp;</span>@PageInfo.Page&nbsp;of&nbsp;@(PageInfo.PageCount == 0 ? 1 : PageInfo.PageCount)
 
         <BfButton Click="MoveNext"
                   Enabled="!PageInfo.IsLastPage"
-                  IconCssClass="fas fa-forward" />
+                  IconCssClass="fas fa-forward"
+                  Size="Size" />
 
         <BfButton Click="MoveLast"
                   Enabled="!PageInfo.IsLastPage"
-                  IconCssClass="fas fa-fast-forward" />
+                  IconCssClass="fas fa-fast-forward"
+                  Size="Size" />
     </div>
 
     @if (ShowPageDescription)
