@@ -1,21 +1,26 @@
-﻿<div class="form-check form-switch">
-    @if (TextBeforeSwitch)
-    {
-        <BfLabel CssClass="form-check-label"
-                 IconCssClass="@IconCssClass"
-                 Text="@Text"
-                 TextCssClass="@TextCssClass"></BfLabel>
-    }
-    <input id="@Id"
-           class="form-check-input"
-           type="checkbox"
-           checked="@Value"
-           @onchange="OnChangeAsync" />
-    @if (!TextBeforeSwitch)
-    {
-        <BfLabel CssClass="form-check-label"
-                 IconCssClass="@IconCssClass"
-                 Text="@Text"
-                 TextCssClass="@TextCssClass"></BfLabel>
-    }
-</div>
+﻿@typeparam TValue
+@if (Visible)
+{
+    <div class="form-check form-switch">
+        @if (TextBeforeSwitch)
+        {
+            <BfLabel CssClass="form-check-label"
+                     IconCssClass="@IconCssClass"
+                     Text="@Text"
+                     TextCssClass="@TextCssClass"></BfLabel>
+        }
+        <input id="@Id"
+               class="form-check-input"
+               type="checkbox"
+               checked="@Value"
+               disabled="@(!Enabled)"
+               @onchange="OnChangeAsync" />
+        @if (!TextBeforeSwitch)
+        {
+            <BfLabel CssClass="form-check-label"
+                     IconCssClass="@IconCssClass"
+                     Text="@Text"
+                     TextCssClass="@TextCssClass"></BfLabel>
+        }
+    </div>
+}

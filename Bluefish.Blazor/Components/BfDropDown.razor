@@ -18,6 +18,10 @@
                  TextCssClass="@TextCssClass"
                  Title="@Title">
         </BfLabel>
+        @if(ButtonContent != null)
+        {
+            @ButtonContent
+        }
         @if (ShowCaret)
         {
             <i class="ms-2 fas @(_shown ? "fa-angle-up" : "fa-angle-down")"></i>

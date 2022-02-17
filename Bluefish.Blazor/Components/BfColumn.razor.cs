@@ -1,4 +1,6 @@
-﻿namespace Bluefish.Blazor.Components;
+﻿using System.Globalization;
+
+namespace Bluefish.Blazor.Components;
 
 public partial class BfColumn<TItem, TKey>
 {
@@ -11,7 +13,13 @@ public partial class BfColumn<TItem, TKey>
     public string CssClass { get; set; }
 
     [Parameter]
+    public string CustomFormat { get; set; } = string.Empty;
+
+    [Parameter]
     public Expression<Func<TItem, object>> DataMember { get; set; }
+
+    [Parameter]
+    public string FooterCssClass { get; set; } = string.Empty;
 
     [Parameter]
     public string HeaderCssClass { get; set; }
@@ -42,6 +50,21 @@ public partial class BfColumn<TItem, TKey>
 
     public Func<TItem, object> DataMemberFunc => _dataMemberGetter.Value;
 
+    public string FormatValue(TItem item)
+    {
+        var value = GetValue(item);
+        if (value is null)
+        {
+            return string.Empty;
+        }
+        return (!string.IsNullOrWhiteSpace(CustomFormat) && value is IFormattable formattable) ? formattable.ToString(CustomFormat, CultureInfo.CurrentCulture) : value.ToString();
+    }
+
+    public string GetBodyCssClass()
+    {
+        return $"{CssClass} {GetCssClass(Align)}";
+    }
+
     private static string GetCssClass(Alignment align) => align switch
     {
         Alignment.Start => "text-start",
@@ -49,6 +72,12 @@ public partial class BfColumn<TItem, TKey>
         Alignment.End => "text-end",
         _ => string.Empty
     };
+
+    public string GetFooterCssClass()
+    {
+        return $"{FooterCssClass} {GetCssClass(Align)}";
+    }
+
     public string GetHeaderCssClass(BfTable<TItem, TKey> table)
     {
         return $"{HeaderCssClass} {(table.AllowSort && IsSortable ? "cursor-pointer" : "")} {GetCssClass(Align)}";

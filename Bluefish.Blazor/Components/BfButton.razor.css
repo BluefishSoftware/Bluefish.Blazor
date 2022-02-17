@@ -1,4 +1,8 @@
-﻿.btn:not(.btn-danger, .btn-primary) {
+﻿.bf-button {
+    width: auto;
+}
+
+.btn:not(.btn-danger, .btn-primary, .btn-secondary) {
     color: var(--fg-color);
     background-color: var(--bg-color);
     border-color: var(--bg-color);

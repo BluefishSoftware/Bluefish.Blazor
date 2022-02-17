@@ -20,6 +20,9 @@ public partial class BfDropDown : IAsyncDisposable
     public IJSRuntime JSRuntime { get; set; }
 
     [Parameter]
+    public RenderFragment ButtonContent { get; set; }
+
+    [Parameter]
     public EventCallback<MouseEventArgs> Click { get; set; }
 
     [Parameter]
@@ -63,6 +66,9 @@ public partial class BfDropDown : IAsyncDisposable
 
     [Parameter]
     public string Title { get; set; }
+
+    [Parameter]
+    public bool Visible { get; set; } = true;
 
     private Dictionary<string, object> Attributes
     {

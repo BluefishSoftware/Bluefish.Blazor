@@ -1,0 +1,49 @@
+﻿<BfDropDown @ref="_dropDown"
+            @attributes="ActualAttributes"
+            CssClass="@CssClass"
+            Enabled="Enabled"
+            Id="@Id"
+            Size="Size"
+            Text="@Value.ToString()"
+            TextCssClass="@TextCssClass"
+            Visible="Visible">
+
+    <div class="bf-date-range">
+        <div class="row mt-2">
+            <div class="col-6">
+                <label class="form-label">From:</label>
+                <input class="form-control @FormControlSizeCssClass"
+                       type="date"
+                       value="@Value.DateFrom.ToString("yyyy-MM-dd")"
+                       @onchange="OnDateFromChangeAsync" />
+            </div>
+            <div class="col-6">
+                <label class="form-label">To:</label>
+                <input class="form-control @FormControlSizeCssClass"
+                       type="date"
+                       value="@Value.DateTo.ToString("yyyy-MM-dd")"
+                       @onchange="OnDateToChangeAsync" />
+            </div>
+        </div>
+        <div class="quick-buttons row mt-2 mb-2">
+            <div class="col-12">
+                <BfButton Click="() => SetValueAsync(Models.DateRange.Today)"
+                          Size="Size"
+                          Text="Today" />
+                <BfButton Click="() => SetValueAsync(Models.DateRange.Yesterday)"
+                          CssClass="ml-2 btn-outline-secondary"
+                          Size="Size"
+                          Text="Yesterday" />
+                <BfButton Click="() => SetValueAsync(Models.DateRange.ThisMonth)"
+                          CssClass="ml-2 btn-outline-secondary"
+                          Size="Size"
+                          Text="This Month" />
+                <BfButton Click="() => SetValueAsync(Models.DateRange.LastMonth)"
+                          CssClass="ml-2 btn-outline-secondary"
+                          Size="Size"
+                          Text="Last Month" />
+            </div>
+        </div>
+    </div>
+
+</BfDropDown>

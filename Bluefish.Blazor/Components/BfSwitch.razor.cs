@@ -1,6 +1,6 @@
 ﻿namespace Bluefish.Blazor.Components;
 
-public partial class BfSwitch
+public partial class BfSwitch<TValue>
 {
     private static int _seq;
 
@@ -40,13 +40,16 @@ public partial class BfSwitch
     [Parameter]
     public string TextCssClass { get; set; }
 
-    [Parameter] public bool Value { get; set; }
+    [Parameter] public TValue Value { get; set; }
 
-    [Parameter] public EventCallback<bool> ValueChanged { get; set; }
+    [Parameter] public EventCallback<TValue> ValueChanged { get; set; }
+
+    [Parameter]
+    public bool Visible { get; set; } = true;
 
     private async Task OnChangeAsync(ChangeEventArgs args)
     {
-        Value = args.Value?.ToString() == "True";
+        Value = (TValue)args.Value;
         await ValueChanged.InvokeAsync(Value).ConfigureAwait(true);
     }
 }

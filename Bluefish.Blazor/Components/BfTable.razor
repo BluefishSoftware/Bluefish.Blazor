@@ -8,10 +8,12 @@
     {
         <thead>
             <tr>
-                @if (SelectionMode == SelectionModes.Multiple && ShowCheckboxes)
+                @if(!_isLoading && _dataItems.Count() > 0 && SelectionMode == SelectionModes.Multiple && ShowCheckboxes)
                 {
                     <th>
-                        @*<BfCheckBox ValueChanged="OnToggleSelection" />*@
+                        <BfCheckBox Value="@(GetItemKey != null && _dataItems.Count() > 0 && _dataItems.All(x => _selectedKeys.Contains(GetItemKey(x))))"
+                                    ValueChanged="@((x) => OnAllCheckboxInput(x))"
+                                    StopPropagation="true" />
                     </th>
                 }
                 @foreach (var col in VisibleColumns)
@@ -28,10 +30,6 @@
                             {
                                 <i class="ml-1 fas fa-fw fa-sort-amount-down" title="Descending order" />
                             }
-                        }
-                        else
-                        {
-                            <i class="ml-1 fas fa-fw fa-empty" />
                         }
                     </th>
                 }
@@ -83,10 +81,11 @@
 
                     @foreach (var col in VisibleColumns)
                     {
-                        <td class="@col.CssClass" title="@col?.ToolTip?.Invoke(item)">
+                        <td class="@col.GetBodyCssClass()"
+                            title="@col?.ToolTip?.Invoke(item)">
                             @if (col.Template is null)
                             {
-                                @col.GetValue(item)
+                                @col.FormatValue(item)
                             }
                             else
                             {
@@ -98,6 +97,19 @@
             }
         }
     </tbody>
+    @if (ShowSummaryRow && GetFooterTextAsync != null)
+    {
+        <tfoot>
+            <tr>
+                @foreach (var col in VisibleColumns)
+                {
+                    <th class="@col.GetFooterCssClass()">
+                        <span>@(GetFooterTextAsync(col, _dataItems))</span>
+                    </th>
+                }
+            </tr>
+        </tfoot>
+    }
 </table>
 
 @if (ShowPager)

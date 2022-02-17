@@ -26,6 +26,9 @@ public partial class BfTable<TItem, TKey> : IDisposable
     public RenderFragment ChildContent { get; set; }
 
     [Parameter]
+    public bool IgnoreRowOnClickWhenCheckboxes { get; set; }
+
+    [Parameter]
     public string QueryStringPrefix { get; set; } = string.Empty;
 
     [Parameter]
@@ -36,6 +39,9 @@ public partial class BfTable<TItem, TKey> : IDisposable
 
     [Parameter]
     public Func<TItem, TKey> GetItemKey { get; set; } = (_) => default;
+
+    [Parameter]
+    public Func<BfColumn<TItem, TKey>, IEnumerable<TItem>, string> GetFooterTextAsync { get; set; }
 
     [Parameter]
     public Func<PageInfo, SortInfo, Task<IEnumerable<TItem>>> GetPagedDataAsync { get; set; }
@@ -63,6 +69,10 @@ public partial class BfTable<TItem, TKey> : IDisposable
 
     [Parameter]
     public bool ShowPager { get; set; }
+
+
+    [Parameter]
+    public bool ShowSummaryRow { get; set; }
 
     [Parameter]
     public Sizes Size { get; set; } = Sizes.Medium;
@@ -130,7 +140,7 @@ public partial class BfTable<TItem, TKey> : IDisposable
         }
 
         // when check boxes are shown for selection - do not highlight the row
-        if (!(SelectionMode == SelectionModes.Multiple && ShowCheckboxes))
+        if (!(IgnoreRowOnClickWhenCheckboxes && SelectionMode == SelectionModes.Multiple && ShowCheckboxes))
         {
             var key = GetItemKey(item);
             sb.Append(_selectedKeys.Contains(key) ? "selected " : string.Empty);
@@ -186,6 +196,35 @@ public partial class BfTable<TItem, TKey> : IDisposable
             if (AutoLoad)
             {
                 await RefreshAsync().ConfigureAwait(true);
+            }
+        }
+    }
+
+    private async Task OnAllCheckboxInput(bool isChecked)
+    {
+        if (GetItemKey != null)
+        {
+            var changes = false;
+            foreach (var item in _dataItems)
+            {
+                var key = GetItemKey(item);
+                if (isChecked)
+                {
+                    if (!_selectedKeys.Contains(key))
+                    {
+                        _selectedKeys.Add(key);
+                        changes = true;
+                    }
+                }
+                else if (_selectedKeys.Contains(key))
+                {
+                    _selectedKeys.Remove(key);
+                    changes = true;
+                }
+            }
+            if (changes)
+            {
+                await SelectionChanged.InvokeAsync(_selectedKeys).ConfigureAwait(true);
             }
         }
     }
@@ -277,7 +316,7 @@ public partial class BfTable<TItem, TKey> : IDisposable
     private async Task UpdateSelectionAsync(MouseEventArgs args, TItem item)
     {
         // if multiple selection and check boxes then row click does not adjust selection
-        if (GetItemKey is null || (SelectionMode == SelectionModes.Multiple && ShowCheckboxes))
+        if (GetItemKey is null || (IgnoreRowOnClickWhenCheckboxes && SelectionMode == SelectionModes.Multiple && ShowCheckboxes))
         {
             return;
         }

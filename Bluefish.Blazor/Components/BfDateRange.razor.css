@@ -1,0 +1,12 @@
+﻿.bf-date-range {
+    width: 360px;
+}
+
+.quick-buttons {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.form-control {
+    width: calc(100% - 10px);
+}
