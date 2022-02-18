@@ -41,6 +41,12 @@ public partial class BfModal : IAsyncDisposable
     public bool ShowCloseButton { get; set; }
 
     [Parameter]
+    public bool ShowFooter { get; set; } = true;
+
+    [Parameter]
+    public bool ShowHeader { get; set; } = true;
+
+    [Parameter]
     public bool ShowSave { get; set; } = true;
 
     [Parameter]
@@ -48,6 +54,8 @@ public partial class BfModal : IAsyncDisposable
 
     [Parameter]
     public string Title { get; set; }
+
+    public Task Initialization { get; private set; }
 
     public async ValueTask DisposeAsync()
     {
@@ -81,13 +89,16 @@ public partial class BfModal : IAsyncDisposable
         _ => ""
     };
 
-    protected async override Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
             _objRef = DotNetObjectReference.Create(this);
-            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/Bluefish.Blazor/js/interop.js").ConfigureAwait(true);
-            _modal = await _module.InvokeAsync<IJSObjectReference>("initModal", Id, _objRef).ConfigureAwait(true);
+            Initialization = Task.Run(async () =>
+            {
+                _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/Bluefish.Blazor/js/interop.js").ConfigureAwait(true);
+                _modal = await _module.InvokeAsync<IJSObjectReference>("initModal", Id, _objRef).ConfigureAwait(true);
+            });
         }
     }
 
