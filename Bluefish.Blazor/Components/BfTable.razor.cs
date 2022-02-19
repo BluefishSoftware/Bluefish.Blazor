@@ -288,7 +288,7 @@ public partial class BfTable<TItem, TKey> : IDisposable
         _isLoading = true;
         if (GetPagedDataAsync is null)
         {
-            _dataItems = null;
+            _dataItems = Array.Empty<TItem>();
         }
         else
         {

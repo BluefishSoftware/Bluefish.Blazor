@@ -1,3 +1,23 @@
-﻿<div class="bf-toolbar">
-    @ChildContent
+﻿<div class="bf-toolbar @CssClass">
+    @if(Items?.Count() > 0)
+    {
+        @foreach(var item in Items)
+        {
+            if(item is ToolbarButton btn)
+            {
+                <BfButton Click="(args) => OnButtonClick(btn, args)"
+                        CssClass="@($"{btn.CssClass} {(btn.PositionRight ? "ms-1" : "me-1")}")"
+                        IconCssClass="@btn.IconCssClass"
+                        Enabled="btn.Enabled"
+                        Size="Sizes.Small"
+                        Text="@btn.Text"
+                        TextCssClass="@btn.TextCssClass"
+                        Visible="btn.Visible" />
+            }
+        }
+    }
+    else
+    {
+        @ChildContent
+    }
 </div>

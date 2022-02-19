@@ -35,6 +35,12 @@ public partial class BfButton
     [Parameter]
     public string Title { get; set; }
 
+    [Parameter]
+    public string Url { get; set; } = string.Empty;
+
+    [Parameter]
+    public string UrlTarget { get; set; } = string.Empty;
+
     private Dictionary<string, object> ActualAttributes
     {
         get

@@ -8,7 +8,7 @@
     {
         <thead>
             <tr>
-                @if(!_isLoading && _dataItems.Count() > 0 && SelectionMode == SelectionModes.Multiple && ShowCheckboxes)
+                @if(!_isLoading && _dataItems?.Count() > 0 && SelectionMode == SelectionModes.Multiple && ShowCheckboxes)
                 {
                     <th>
                         <BfCheckBox Value="@(GetItemKey != null && _dataItems.Count() > 0 && _dataItems.All(x => _selectedKeys.Contains(GetItemKey(x))))"
@@ -47,7 +47,7 @@
                 </td>
             </tr>
         }
-        else if (_dataItems.Count() == 0)
+        else if (_dataItems?.Count() == 0)
         {
             <tr>
                 <td colspan="@(VisibleColumns.Length + (SelectionMode == SelectionModes.Multiple && ShowCheckboxes ? 1 : 0))">
