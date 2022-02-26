@@ -153,7 +153,7 @@ public partial class BfTable<TItem, TKey> : IDisposable
     {
         if (firstRender)
         {
-            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/Bluefish.Blazor/js/interop.js").ConfigureAwait(true);
+            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", NavigationManager.ToAbsoluteUri("_content/Bluefish.Blazor/js/interop.js").AbsolutePath).ConfigureAwait(true);
 
             // Get the requested table parameters from the QueryString
             var uri = new Uri(NavigationManager.Uri);

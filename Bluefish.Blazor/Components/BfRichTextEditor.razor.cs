@@ -9,6 +9,8 @@ public partial class BfRichTextEditor : IDisposable
 
     [Inject] public IJSRuntime JSRuntime { get; set; } = null!;
 
+    [Inject] public NavigationManager NavigationManager { get; set; }
+
     [Parameter] public bool Enabled { get; set; } = true;
 
     [Parameter] public EventCallback<string> ValueChanged { get; set; }
@@ -28,7 +30,7 @@ public partial class BfRichTextEditor : IDisposable
     protected override async Task OnInitializedAsync()
     {
         _jsThisRef = DotNetObjectReference.Create<BfRichTextEditor>(this);
-        _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/js/rich-text-editor.js").ConfigureAwait(true);
+        _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", NavigationManager.ToAbsoluteUri("_content/Bluefish.Blazor/js/rich-text-editor.js").AbsolutePath).ConfigureAwait(true);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

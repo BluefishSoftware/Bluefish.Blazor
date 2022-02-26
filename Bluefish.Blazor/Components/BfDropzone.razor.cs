@@ -6,10 +6,14 @@ public partial class BfDropzone : IDisposable
     private IJSObjectReference _jsModule;
     private bool _initialized;
 
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
     [Parameter]
     public string AcceptedFiles { get; set; }
 
-    [Parameter] public EventCallback AllUploadsComplete { get; set; }
+    [Parameter]
+    public EventCallback AllUploadsComplete { get; set; }
 
     [Parameter]
     public string CssClass { get; set; }
@@ -29,7 +33,7 @@ public partial class BfDropzone : IDisposable
     protected async override Task OnInitializedAsync()
     {
         _jsThisRef = DotNetObjectReference.Create<BfDropzone>(this);
-        _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/js/dropzone.js").ConfigureAwait(true);
+        _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", NavigationManager.ToAbsoluteUri("_content/Bluefish.Blazor/js/dropzone.js").AbsolutePath).ConfigureAwait(true);
     }
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
