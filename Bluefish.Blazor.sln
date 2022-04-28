@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		version.json = version.json
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bluefish.Blazor.Tests", "Bluefish.Blazor.Tests\Bluefish.Blazor.Tests.csproj", "{4A677623-7416-4C0B-B504-BAF3523473AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{9F1D1996-D98C-46A5-B066-4E3142FE6F2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F1D1996-D98C-46A5-B066-4E3142FE6F2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F1D1996-D98C-46A5-B066-4E3142FE6F2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A677623-7416-4C0B-B504-BAF3523473AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A677623-7416-4C0B-B504-BAF3523473AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A677623-7416-4C0B-B504-BAF3523473AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A677623-7416-4C0B-B504-BAF3523473AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

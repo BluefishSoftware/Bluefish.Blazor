@@ -6,6 +6,7 @@ global using Microsoft.AspNetCore.Components.Forms;
 global using Microsoft.AspNetCore.Components.Web;
 global using Microsoft.JSInterop;
 global using System;
+global using System.Collections;
 global using System.Collections.Generic;
 global using System.ComponentModel.DataAnnotations;
 global using System.Linq;
