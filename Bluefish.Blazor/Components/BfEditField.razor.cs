@@ -7,8 +7,12 @@ public partial class BfEditField : IAsyncDisposable
     private IJSObjectReference _module;
     private IJSObjectReference _commonModule;
     private DotNetObjectReference<BfEditField> _objRef;
+    private PersistingComponentStateSubscription _stateSubscription;
 
     #region Inject
+
+    [Inject]
+    public PersistentComponentState ApplicationState { get; set; }
 
     [Inject]
     public IJSRuntime JSRuntime { get; set; }
@@ -50,6 +54,7 @@ public partial class BfEditField : IAsyncDisposable
         try
         {
             GC.SuppressFinalize(this);
+            _stateSubscription.Dispose();
             if (_module != null)
             {
                 await _module.InvokeVoidAsync("dispose", Id).ConfigureAwait(true);
@@ -135,11 +140,26 @@ public partial class BfEditField : IAsyncDisposable
         return EndEditAsync();
     }
 
+    protected override void OnInitialized()
+    {
+        _stateSubscription = ApplicationState.RegisterOnPersisting(PersistValue);
+
+        if (ApplicationState.TryTakeFromJson<string>("value", out var stored))
+        {
+            Value = stored;
+        }
+    }
+
     private void OnInputBlur()
     {
         _ = EndEditAsync();
     }
 
+    private Task PersistValue()
+    {
+        ApplicationState.PersistAsJson("value", Value);
+        return Task.CompletedTask;
+    }
 
     private bool Validate(string value)
     {
