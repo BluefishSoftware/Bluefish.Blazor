@@ -2,13 +2,13 @@
 
 namespace Bluefish.Blazor.Components;
 
-public partial class BfTable<TItem, TKey> : IDisposable
+public partial class BfTable<TItem, TKey> : IAsyncDisposable
 {
-    private readonly List<BfColumn<TItem, TKey>> _columns = new();
-    private readonly List<TKey> _selectedKeys = new();
-    private IEnumerable<TItem> _dataItems;
     private bool _isLoading = true;
-    private IJSObjectReference _module;
+    private IEnumerable<TItem> _dataItems;
+    private IJSObjectReference _commonModule;
+    private readonly List<TKey> _selectedKeys = new();
+    private readonly List<BfColumn<TItem, TKey>> _columns = new();
 
     [Inject]
     public IJSRuntime JSRuntime { get; set; }
@@ -120,13 +120,23 @@ public partial class BfTable<TItem, TKey> : IDisposable
         await SelectionChanged.InvokeAsync(Array.Empty<TKey>()).ConfigureAwait(true);
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        if (PageInfo != null)
+        try
         {
-            PageInfo.Changed -= PageInfo_Changed;
+            GC.SuppressFinalize(this);
+            if (PageInfo != null)
+            {
+                PageInfo.Changed -= PageInfo_Changed;
+            }
+            if (_commonModule != null)
+            {
+                await _commonModule.DisposeAsync().ConfigureAwait(true);
+            }
         }
-        GC.SuppressFinalize(this);
+        catch
+        {
+        }
     }
 
     public string GetSelectionCssClass(TItem item)
@@ -153,7 +163,7 @@ public partial class BfTable<TItem, TKey> : IDisposable
     {
         if (firstRender)
         {
-            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", NavigationManager.ToAbsoluteUri("_content/Bluefish.Blazor/js/interop.js").AbsolutePath).ConfigureAwait(true);
+            _commonModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/js/common.js").ConfigureAwait(true);
 
             // Get the requested table parameters from the QueryString
             var uri = new Uri(NavigationManager.Uri);
@@ -388,6 +398,6 @@ public partial class BfTable<TItem, TKey> : IDisposable
         }
 
         var newUri = NavigationManager.GetUriWithQueryParameters(dict);
-        await _module.InvokeVoidAsync("replaceUrl", newUri).ConfigureAwait(true);
+        await _commonModule.InvokeVoidAsync("replaceUrl", newUri).ConfigureAwait(true);
     }
 }

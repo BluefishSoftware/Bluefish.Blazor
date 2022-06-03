@@ -1,4 +1,4 @@
-﻿export function initDropzone(idSelector, opt, dnRef) {
+﻿export function initialize(idSelector, opt, dnRef) {
 	var el = document.querySelector(idSelector);
 	if (el) {
 		if (opt.previewItemTemplate) {
@@ -16,14 +16,14 @@
 	}
 }
 
-export function clearDropzone(idSelector, opt) {
+export function clear(idSelector, opt) {
 	var el = document.querySelector(idSelector);
 	if (el.dropzone) {
 		el.dropzone.removeAllFiles();
 	}
 }
 
-export function dropzoneClick(idSelector) {
+export function click(idSelector) {
 	var el = document.querySelector(idSelector);
 	if (el && el.parentElement) {
 		el.parentElement.click();

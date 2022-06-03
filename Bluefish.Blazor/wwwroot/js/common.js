@@ -1,4 +1,11 @@
-﻿export function debounce(func, wait) {
+﻿export function addClass(id, cls) {
+	var el = document.getElementById(id);
+	if (el && el.classList) {
+		el.classList.add(cls);
+	}
+}
+
+export function debounce(func, wait) {
 	let timeout;
 	return function executedFunction(...args) {
 		const later = () => {
@@ -22,48 +29,34 @@ export function focus(id) {
 	}
 }
 
+export function getValue(id) {
+	var el = document.getElementById(id);
+	if (el) {
+		return el.value;
+	}
+	return null;
+}
+
 export function goBack() {
 	window.history.back();
 }
 
-export function initDropDown(id, ref) {
-	var el = document.getElementById(id);
-	if (el) {
-		el.addEventListener("shown.bs.dropdown", function () {
-			if (ref) {
-				ref.invokeMethodAsync("OnDropDownShown");
-			}
-		});
-		el.addEventListener("hidden.bs.dropdown", function () {
-			if (ref) {
-				ref.invokeMethodAsync("OnDropDownHidden");
-			}
-		});
-		return new bootstrap.Dropdown(el);
-	}
-	return null;
-}
-
-export function initModal(id, ref) {
-	var el = document.getElementById(id);
-	if (el) {
-		el.addEventListener("shown.bs.modal", function () {
-			if (ref) {
-				ref.invokeMethodAsync("OnModalShown");
-			}
-		});
-		el.addEventListener("hidden.bs.modal", function () {
-			if (ref) {
-				ref.invokeMethodAsync("OnModalHidden");
-			}
-		});
-		return new bootstrap.Modal(el);
-	}
-	return null;
-}
-
 export function openUrl(url, target) {
 	window.open(url, target);
+}
+
+export function removeAttribute(id, name) {
+	var el = document.getElementById(id);
+	if (el) {
+		el.removeAttribute(name);
+	}
+}
+
+export function removeClass(id, cls) {
+	var el = document.getElementById(id);
+	if (el && el.classList) {
+		el.classList.remove(cls);
+	}
 }
 
 export function replaceUrl(url) {
@@ -89,5 +82,19 @@ export function selectText(id, start, end) {
 		el.selectionStart = start;
 		el.selectionEnd = end;
 		el.focus();
+	}
+}
+
+export function setAttribute(id, name, val) {
+	var el = document.getElementById(id);
+	if (el) {
+		el.setAttribute(name, val);
+	}
+}
+
+export function setValue(id, val) {
+	var el = document.getElementById(id);
+	if (el) {
+		el.value = val;
 	}
 }

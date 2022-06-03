@@ -1,13 +1,10 @@
 ﻿namespace Bluefish.Blazor.Components;
 
-public partial class BfDropzone : IDisposable
+public partial class BfDropzone : IAsyncDisposable
 {
-    private DotNetObjectReference<BfDropzone> _jsThisRef;
-    private IJSObjectReference _jsModule;
+    private DotNetObjectReference<BfDropzone> _objRef;
+    private IJSObjectReference _module;
     private bool _initialized;
-
-    [Inject]
-    public NavigationManager NavigationManager { get; set; }
 
     [Parameter]
     public string AcceptedFiles { get; set; }
@@ -32,13 +29,13 @@ public partial class BfDropzone : IDisposable
 
     protected async override Task OnInitializedAsync()
     {
-        _jsThisRef = DotNetObjectReference.Create<BfDropzone>(this);
-        _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", NavigationManager.ToAbsoluteUri("_content/Bluefish.Blazor/js/dropzone.js").AbsolutePath).ConfigureAwait(true);
+        _objRef = DotNetObjectReference.Create<BfDropzone>(this);
+        _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/Components/BfDropzone.razor.js").ConfigureAwait(true);
     }
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!_initialized && JSRuntime != null && _jsModule != null)
+        if (!_initialized && JSRuntime != null && _module != null)
         {
             _initialized = true;
             var options = new
@@ -49,13 +46,13 @@ public partial class BfDropzone : IDisposable
                 AcceptedFiles,
                 PreviewItemTemplate = "#my-dropzone-template"
             };
-            await _jsModule.InvokeVoidAsync("initDropzone", "#my-dropzone", options, _jsThisRef).ConfigureAwait(true);
+            await _module.InvokeVoidAsync("initialize", "#my-dropzone", options, _objRef).ConfigureAwait(true);
         }
     }
 
     private async void OnClear()
     {
-        await _jsModule.InvokeVoidAsync("clearDropzone", "#my-dropzone").ConfigureAwait(true);
+        await _module.InvokeVoidAsync("clear", "#my-dropzone").ConfigureAwait(true);
     }
 
     [JSInvokable("Bluefish.Blazor.BfDropzone.OnAllUploadsComplete")]
@@ -66,12 +63,22 @@ public partial class BfDropzone : IDisposable
 
     private async Task OnClick()
     {
-        await _jsModule.InvokeVoidAsync("dropzoneClick", "#my-dropzone").ConfigureAwait(true);
+        await _module.InvokeVoidAsync("click", "#my-dropzone").ConfigureAwait(true);
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        //_jsModule.InvokeVoidAsync("RemoveTextEditor", Id);
-        _jsThisRef?.Dispose();
+        try
+        {
+            GC.SuppressFinalize(this);
+            if (_module != null)
+            {
+                await _module.DisposeAsync().ConfigureAwait(false);
+            }
+            _objRef?.Dispose();
+        }
+        catch
+        {
+        }
     }
 }

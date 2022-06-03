@@ -19,9 +19,6 @@ public partial class BfDropDown : IAsyncDisposable
     [Inject]
     public IJSRuntime JSRuntime { get; set; }
 
-    [Inject]
-    public NavigationManager NavigationManager { get; set; }
-
     [Parameter]
     public RenderFragment ButtonContent { get; set; }
 
@@ -120,8 +117,8 @@ public partial class BfDropDown : IAsyncDisposable
         if (firstRender)
         {
             _objRef = DotNetObjectReference.Create(this);
-            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", NavigationManager.ToAbsoluteUri("_content/Bluefish.Blazor/js/interop.js").AbsolutePath).ConfigureAwait(true);
-            _dropdown = await _module.InvokeAsync<IJSObjectReference>("initDropDown", Id, _objRef).ConfigureAwait(true);
+            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/Components/BfDropDown.razor.js").ConfigureAwait(true);
+            _dropdown = await _module.InvokeAsync<IJSObjectReference>("initialize", Id, _objRef).ConfigureAwait(true);
         }
     }
 

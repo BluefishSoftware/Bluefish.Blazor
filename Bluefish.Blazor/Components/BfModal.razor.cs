@@ -10,9 +10,6 @@ public partial class BfModal : IAsyncDisposable
     [Inject]
     public IJSRuntime JSRuntime { get; set; }
 
-    [Inject]
-    public NavigationManager NavigationManager { get; set; }
-
     [Parameter]
     public EventCallback Cancel { get; set; }
 
@@ -99,8 +96,8 @@ public partial class BfModal : IAsyncDisposable
             _objRef = DotNetObjectReference.Create(this);
             Initialization = Task.Run(async () =>
             {
-                _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", NavigationManager.ToAbsoluteUri("_content/Bluefish.Blazor/js/interop.js").AbsolutePath).ConfigureAwait(true);
-                _modal = await _module.InvokeAsync<IJSObjectReference>("initModal", Id, _objRef).ConfigureAwait(true);
+                _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/Components/BfModal.razor.js").ConfigureAwait(true);
+                _modal = await _module.InvokeAsync<IJSObjectReference>("initialize", Id, _objRef).ConfigureAwait(true);
             });
         }
     }

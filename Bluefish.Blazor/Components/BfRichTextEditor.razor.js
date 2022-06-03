@@ -1,4 +1,4 @@
-﻿export function InitialiseTextEditor(id, value, reference, height, width, resize) {
+﻿export function initialize(id, value, reference, height, width, resize) {
 	var options = {
 		selector: '#' + id, setup: function (ed) {
 			ed.on('Change', function (e) {
@@ -25,15 +25,15 @@
 		});
 }
 
-export function SetTextEditorValue(id, value) {
+export function setValue(id, value) {
 	return tinymce.get(id).setContent(value);
 }
 
-//export function GetTextEditorValue(id) {
+//export function getValue(id) {
 //	return tinymce.get(id).getContent();
 //}
 
-export function RemoveTextEditor(id) {
+export function dispose(id) {
 	var editor = tinymce.get(id);
 	if (editor) {
 		editor.off('init');

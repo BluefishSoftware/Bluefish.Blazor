@@ -1,0 +1,34 @@
+﻿.edit-field {
+    display: inline-block;
+    border: 1px solid transparent;
+    width: 100%;
+}
+
+.edit-field input {
+    background-color: inherit;
+    border: none;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    outline: none;
+    padding: 0px;
+    width: 100%;
+}
+
+.edit-field input:focus {
+    background-color: whitesmoke;
+}
+
+.edit-field span {
+    min-height: 49px;
+}
+
+.edit-field.editable {
+    cursor: pointer;
+}
+
+.edit-field.editable:hover {
+    background-color: whitesmoke;
+    border: 1px solid silver;
+    padding: 0px;
+}
