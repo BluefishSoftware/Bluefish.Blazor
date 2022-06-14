@@ -1,13 +1,13 @@
 ﻿namespace Bluefish.Blazor.Components;
 
-public partial class BfEditField : IAsyncDisposable
+public partial class BfEditField<TValue> : IAsyncDisposable where TValue : IConvertible
 {
     private static int _sequence;
     private bool _isEditing;
     private IJSObjectReference _module;
     private IJSObjectReference _commonModule;
-    private DotNetObjectReference<BfEditField> _objRef;
-    private PersistingComponentStateSubscription _stateSubscription;
+    private DotNetObjectReference<BfEditField<TValue>> _objRef;
+    //private PersistingComponentStateSubscription _stateSubscription;
 
     #region Inject
 
@@ -20,16 +20,16 @@ public partial class BfEditField : IAsyncDisposable
     #endregion
 
     [Parameter]
-    public string Id { get; set; } = $"edit-field-{++_sequence}";
+    public string Id { get; set; } = $"edit-field-{System.Threading.Interlocked.Increment(ref _sequence)}";
 
     [Parameter]
     public EditOptions Options { get; set; } = new();
 
     [Parameter]
-    public string Value { get; set; } = string.Empty;
+    public TValue Value { get; set; } = default;
 
     [Parameter]
-    public EventCallback<string> ValueChanged { get; set; }
+    public EventCallback<TValue> ValueChanged { get; set; }
 
     private string EditorId => $"{Id}-editor";
     private string LabelId => $"{Id}-label";
@@ -49,12 +49,17 @@ public partial class BfEditField : IAsyncDisposable
         }
     }
 
+    private TValue ConvertValue(string value)
+    {
+        return (TValue)Convert.ChangeType(value, typeof(TValue));
+    }
+
     public async ValueTask DisposeAsync()
     {
         try
         {
             GC.SuppressFinalize(this);
-            _stateSubscription.Dispose();
+            //_stateSubscription.Dispose();
             if (_module != null)
             {
                 await _module.InvokeVoidAsync("dispose", Id).ConfigureAwait(true);
@@ -79,18 +84,28 @@ public partial class BfEditField : IAsyncDisposable
             if (!cancelEdit)
             {
                 // has value changed?
-                var editValue = Value;
                 if (_commonModule != null)
                 {
-                    editValue = await _commonModule.InvokeAsync<string>("getValue", EditorId).ConfigureAwait(true);
-                }
-                if (editValue != Value)
-                {
-                    // update value only if valid
-                    if (Validate(editValue))
+                    try
                     {
-                        Value = editValue;
-                        await ValueChanged.InvokeAsync(Value).ConfigureAwait(true);
+                        // get users value and convert to type
+                        var textValue = await _commonModule.InvokeAsync<string>("getValue", EditorId).ConfigureAwait(true);
+                        var editValue = ConvertValue(textValue);
+
+                        // has value changed
+                        if (!editValue.Equals(Value))
+                        {
+                            // update value only if valid
+                            if (Validate(editValue))
+                            {
+                                Value = editValue;
+                                await ValueChanged.InvokeAsync(Value).ConfigureAwait(true);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // conversion error - value is invalid
                     }
                 }
             }
@@ -140,30 +155,41 @@ public partial class BfEditField : IAsyncDisposable
         return EndEditAsync();
     }
 
-    protected override void OnInitialized()
-    {
-        _stateSubscription = ApplicationState.RegisterOnPersisting(PersistValue);
-
-        if (ApplicationState.TryTakeFromJson<string>("value", out var stored))
-        {
-            Value = stored;
-        }
-    }
+    //protected override void OnInitialized()
+    //{
+    //    _stateSubscription = ApplicationState.RegisterOnPersisting(PersistValue);
+    //    if (ApplicationState.TryTakeFromJson<string>(Id, out var stored))
+    //    {
+    //        try
+    //        {
+    //            Value = ConvertValue(stored);
+    //        }
+    //        catch
+    //        {
+    //        }
+    //    }
+    //}
 
     private void OnInputBlur()
     {
         _ = EndEditAsync();
     }
 
-    private Task PersistValue()
-    {
-        ApplicationState.PersistAsJson("value", Value);
-        return Task.CompletedTask;
-    }
+    //private Task PersistValue()
+    //{
+    //    try
+    //    {
+    //        ApplicationState.PersistAsJson(Id, Value.ToString());
+    //    }
+    //    catch
+    //    {
+    //    }
+    //    return Task.CompletedTask;
+    //}
 
-    private bool Validate(string value)
+    private bool Validate(TValue value)
     {
-        if (Options.Required && string.IsNullOrWhiteSpace(value))
+        if (Options.Required && string.IsNullOrWhiteSpace(value?.ToString()))
         {
             return false;
         }
