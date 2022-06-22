@@ -1,0 +1,14 @@
+﻿@typeparam TKey
+
+<div class="select-list">
+    @foreach(var option in Options)
+    {
+        <div @key="option.Key" class="option">
+            <input class="form-check-input"
+                   type="checkbox"
+                   checked="@(Value.Contains(option.Key))"
+                   @oninput="@((a) => OnOptionInput(option.Key, Convert.ToBoolean(a.Value)))" />
+            <label class="class=form-check-label ms-1">@option.Value</label>
+        </div>
+    }
+</div>
