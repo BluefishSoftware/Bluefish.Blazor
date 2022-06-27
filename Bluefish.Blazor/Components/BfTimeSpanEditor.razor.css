@@ -1,0 +1,23 @@
+﻿.timespan-editor {
+    align-items: center;
+    display: flex;
+}
+
+input {
+    margin: 0px 5px;
+    max-width: 50px;
+}
+
+input.days {
+    max-width: 70px;
+}
+
+
+.input-group {
+    width: unset;
+    flex-wrap: nowrap !important;
+}
+
+span {
+    margin-right: 5px;
+}

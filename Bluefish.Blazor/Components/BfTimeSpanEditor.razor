@@ -1,0 +1,41 @@
+﻿<div class="timespan-editor">
+
+    <div class="input-group">
+        <input class="form-control form-control-sm days"
+               min="0"
+               type="number"
+               value="@_days"
+               @oninput="OnDaysChanged" />
+        <span class="input-group-text">days</span>
+    </div>
+
+    <div class="input-group">
+        <input class="form-control form-control-sm"
+               min="0"
+               max="23"
+               type="number"
+               value="@_hours"
+               @oninput="OnHoursChanged" />
+        <span class="input-group-text">hours</span>
+    </div>
+
+    <div class="input-group">
+        <input class="form-control form-control-sm"
+               min="0"
+               max="59"
+               type="number"
+               value="@_minutes"
+               @oninput="OnMinutesChanged" />
+        <span class="input-group-text">mins</span>
+    </div>
+
+    <div class="input-group">
+        <input class="form-control form-control-sm"
+               min="0"
+               max="59"
+               type="number"
+               value="@_seconds"
+               @oninput="OnSecondsChanged" />
+        <span class="input-group-text">secs</span>
+    </div>
+</div>
