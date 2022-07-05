@@ -4,6 +4,7 @@ public partial class BfModal : IAsyncDisposable
 {
     private static int _seq;
     private DotNetObjectReference<BfModal> _objRef;
+    private IJSObjectReference _commonModule;
     private IJSObjectReference _module;
     private IJSObjectReference _modal;
 
@@ -18,6 +19,9 @@ public partial class BfModal : IAsyncDisposable
 
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string FocusElementId { get; set; } = String.Empty;
 
     [Parameter]
     public RenderFragment Footer { get; set; }
@@ -96,6 +100,7 @@ public partial class BfModal : IAsyncDisposable
             _objRef = DotNetObjectReference.Create(this);
             Initialization = Task.Run(async () =>
             {
+                _commonModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/js/common.js").ConfigureAwait(true);
                 _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/Components/BfModal.razor.js").ConfigureAwait(true);
                 _modal = await _module.InvokeAsync<IJSObjectReference>("initialize", Id, _objRef).ConfigureAwait(true);
             });
@@ -116,6 +121,10 @@ public partial class BfModal : IAsyncDisposable
 
     public async Task ShowAsync()
     {
+        if (!string.IsNullOrWhiteSpace(FocusElementId) && _commonModule != null)
+        {
+            await _commonModule.InvokeVoidAsync("selectText", FocusElementId).ConfigureAwait(true);
+        }
         await _modal.InvokeVoidAsync("show").ConfigureAwait(true);
     }
 }
