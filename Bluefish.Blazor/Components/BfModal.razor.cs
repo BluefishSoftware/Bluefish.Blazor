@@ -121,10 +121,10 @@ public partial class BfModal : IAsyncDisposable
 
     public async Task ShowAsync()
     {
+        await _modal.InvokeVoidAsync("show").ConfigureAwait(true);
         if (!string.IsNullOrWhiteSpace(FocusElementId) && _commonModule != null)
         {
             await _commonModule.InvokeVoidAsync("selectText", FocusElementId).ConfigureAwait(true);
         }
-        await _modal.InvokeVoidAsync("show").ConfigureAwait(true);
     }
 }
