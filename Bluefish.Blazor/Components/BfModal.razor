@@ -33,15 +33,16 @@
                         <div class="modal-buttons">
                             @if (ShowSave)
                             {
-                                <BfButton IconCssClass="fas fa-save"
-                                      Click="Save"
-                                      CssClass="btn-primary me-2"
-                                      Enabled="SaveEnabled"
-                                      Text="@SaveText" />
+                                <BfButton Id="modal-save-button"
+                              IconCssClass="fas fa-save"
+                              Click="Save"
+                              CssClass="btn-primary me-2"
+                              Enabled="SaveEnabled"
+                              Text="@SaveText" />
                             }
                             <BfButton IconCssClass="fas fa-times"
-                                  Click="Cancel"
-                                  Text="@CancelText" />
+                              Click="Cancel"
+                              Text="@CancelText" />
                         </div>
                     }
                     else

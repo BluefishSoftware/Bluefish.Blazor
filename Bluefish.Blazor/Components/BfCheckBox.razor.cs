@@ -25,7 +25,16 @@ public partial class BfCheckBox
 
     private async Task OnChange(ChangeEventArgs args)
     {
-        Value = System.Convert.ToBoolean(args.Value);
+        Value = Convert.ToBoolean(args.Value);
         await ValueChanged.InvokeAsync(Value).ConfigureAwait(true);
+    }
+
+    private async Task OnLabelClick()
+    {
+        if (Enabled)
+        {
+            Value = !Value;
+            await ValueChanged.InvokeAsync(Value).ConfigureAwait(true);
+        }
     }
 }

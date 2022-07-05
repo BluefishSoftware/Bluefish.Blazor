@@ -36,6 +36,10 @@ public partial class BfModal : IAsyncDisposable
     public EventCallback Save { get; set; }
 
     [Parameter]
+    public string SaveButtonId { get; set; } = "modal-save-button";
+
+
+    [Parameter]
     public bool SaveEnabled { get; set; } = true;
 
     [Parameter]
@@ -102,19 +106,31 @@ public partial class BfModal : IAsyncDisposable
             {
                 _commonModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/js/common.js").ConfigureAwait(true);
                 _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/Components/BfModal.razor.js").ConfigureAwait(true);
-                _modal = await _module.InvokeAsync<IJSObjectReference>("initialize", Id, _objRef).ConfigureAwait(true);
+                _modal = await _module.InvokeAsync<IJSObjectReference>("initialize", Id, _objRef, SaveButtonId).ConfigureAwait(true);
             });
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnEnterKey()
+    {
+        if (SaveEnabled && !string.IsNullOrWhiteSpace(SaveButtonId))
+        {
+            await _commonModule.InvokeVoidAsync("focus", SaveButtonId).ConfigureAwait(true);
+            await Task.Delay(100).ConfigureAwait(true);
+            await Save.InvokeAsync().ConfigureAwait(true);
         }
     }
 
     [JSInvokable]
     public async Task OnModalShown()
     {
+        StateHasChanged();
         if (!string.IsNullOrWhiteSpace(FocusElementId) && _commonModule != null)
         {
+            await Task.Delay(100);
             await _commonModule.InvokeVoidAsync("selectText", FocusElementId).ConfigureAwait(true);
         }
-        StateHasChanged();
     }
 
     [JSInvokable]
