@@ -108,7 +108,7 @@ public partial class BfModal : IAsyncDisposable
     }
 
     [JSInvokable]
-    public void OnModalShown()
+    public async Task OnModalShown()
     {
         if (!string.IsNullOrWhiteSpace(FocusElementId) && _commonModule != null)
         {
