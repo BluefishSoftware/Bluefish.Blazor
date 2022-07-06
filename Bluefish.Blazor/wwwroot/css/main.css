@@ -3,46 +3,50 @@
   --bg-color-dark: #151515;
   --bg-color-accent: #82f300;
   --bg-color-accent-rgb: 130,243,0;
-  --bg-color-accent-dark: #59a700;
+  --bg-color-accent-dark: darken(#82f300, 15% );
   --fg-color: #cccccc;
   --fg-color-accent: #1e1e1e;
   --border-color: #4e4e4e;
   --error-color: red;
   --bg-color-accent: #ffb300;
-  --bg-color-accent-dark: #b37d00; }
+  --bg-color-accent-dark: darken(#ffb300, 15% );
+}
 
 .theme-light {
   --bg-color: #ffffff;
   --bg-color-dark: #f7f7f7;
   --bg-color-accent: #007bff;
   --bg-color-accent-rgb: 0,123,255;
-  --bg-color-accent-dark: #0062cc;
+  --bg-color-accent-dark: darken(#007bff, 10% );
   --fg-color: #000000;
   --fg-color-accent: var(--bg-color);
   --border-color: #dee2e6;
-  --error-color: red; }
+  --error-color: red;
+}
 
 .theme-dark {
   --bg-color: #1e1e1e;
   --bg-color-dark: #151515;
   --bg-color-accent: #82f300;
   --bg-color-accent-rgb: 130,243,0;
-  --bg-color-accent-dark: #59a700;
+  --bg-color-accent-dark: darken(#82f300, 15% );
   --fg-color: #cccccc;
   --fg-color-accent: #1e1e1e;
   --border-color: #4e4e4e;
-  --error-color: red; }
+  --error-color: red;
+}
 
 :root {
   --bg-color: #ffffff;
   --bg-color-dark: #f7f7f7;
   --bg-color-accent: #007bff;
   --bg-color-accent-rgb: 0,123,255;
-  --bg-color-accent-dark: #0062cc;
+  --bg-color-accent-dark: darken(#007bff, 10% );
   --fg-color: #000000;
   --fg-color-accent: var(--bg-color);
   --border-color: #dee2e6;
-  --error-color: red; }
+  --error-color: red;
+}
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -50,27 +54,39 @@
     --bg-color-dark: #f7f7f7;
     --bg-color-accent: #007bff;
     --bg-color-accent-rgb: 0,123,255;
-    --bg-color-accent-dark: #0062cc;
+    --bg-color-accent-dark: darken(#007bff, 10% );
     --fg-color: #000000;
     --fg-color-accent: var(--bg-color);
     --border-color: #dee2e6;
-    --error-color: red; } }
-
+    --error-color: red;
+  }
+}
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-color: #1e1e1e;
     --bg-color-dark: #151515;
     --bg-color-accent: #82f300;
     --bg-color-accent-rgb: 130,243,0;
-    --bg-color-accent-dark: #59a700;
+    --bg-color-accent-dark: darken(#82f300, 15% );
     --fg-color: #cccccc;
     --fg-color-accent: #1e1e1e;
     --border-color: #4e4e4e;
-    --error-color: red; } }
-
+    --error-color: red;
+  }
+}
 body {
   color: var(--fg-color);
-  background-color: var(--bg-color); }
+  background-color: var(--bg-color);
+}
 
 .cursor-pointer {
-  cursor: pointer; }
+  cursor: pointer;
+}
+
+.form-control:focus {
+  color: var(--fg-color-accent);
+  background-color: #fff;
+  border-color: var(--fg-color-accent);
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(var(--bg-color-accent-rgb), 0.3);
+}

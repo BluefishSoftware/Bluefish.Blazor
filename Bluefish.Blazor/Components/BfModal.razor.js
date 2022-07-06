@@ -13,11 +13,6 @@
         });
         el.addEventListener("keydown", function (ev) {
             if (ev.code == 'Enter') {
-                // shift focus to save button and click
-                //var buttonEl = document.getElementById(saveButtonId);
-                //if (buttonEl) {
-                //    buttonEl.click();
-                //}
                 ref.invokeMethodAsync("OnEnterKey");
             }
         });

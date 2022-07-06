@@ -4,14 +4,14 @@
     border-color: var(--border-color);
 }
 
-.table thead th {
-    border-bottom: 2px solid var(--border-color) !important;
-}
+    .table thead th {
+        border-bottom: 2px solid var(--border-color) !important;
+    }
 
-.table th, .table td {
-    padding: 0.3rem;
-    border-top: 1px solid var(--border-color);
-}
+    .table th, .table td {
+        padding: 0.3rem;
+        border-top: 1px solid var(--border-color);
+    }
 
 .table-spinner {
     display: flex;
@@ -19,7 +19,7 @@
     padding: 20px;
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
+.table-striped tbody tr:nth-of-type(odd) * {
     background-color: var(--bg-color-dark);
     color: var(--fg-color);
 }

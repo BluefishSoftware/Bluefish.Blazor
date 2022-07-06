@@ -1,0 +1,21 @@
+﻿.btn-check:active + .btn-outline-primary, .btn-check:checked + .btn-outline-primary,
+.btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show,
+.btn-outline-primary:active {
+    color: var(--fg-color-accent);
+    background-color: var(--bg-color-accent);
+    border-color: var(--bg-color-accent);
+}
+
+.btn-outline-primary {
+    color: var(--fg-color);
+    border-color: var(--bg-color-accent);
+}
+
+    .btn-check:focus + .btn-outline-primary,
+    .btn-outline-primary:focus {
+        box-shadow: 0 0 0 .2rem rgba(var(--bg-color-accent-rgb), 0.6);
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--bg-color);
+    }
