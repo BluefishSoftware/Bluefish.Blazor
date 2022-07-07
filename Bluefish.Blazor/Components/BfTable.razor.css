@@ -19,14 +19,19 @@
     padding: 20px;
 }
 
-.table-striped tbody tr:nth-of-type(odd) * {
-    background-color: var(--bg-color-dark);
-    color: var(--fg-color);
-}
-
-tr.selected {
+tr.selected[b-3tr2p629jn] {
     color: var(--fg-color-accent) !important;
     background-color: var(--bg-color-accent) !important;
+}
+
+.table-striped tbody tr.selected:nth-of-type(odd) [b-3tr2p629jn] {
+    color: var(--fg-color-accent) !important;
+    background-color: var(--bg-color-accent) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) [b-3tr2p629jn] {
+    background-color: var(--bg-color-dark);
+    color: var(--fg-color);
 }
 
 .bottom-pager {
