@@ -18,6 +18,9 @@ public partial class BfButton
     public bool IsPrimary { get; set; }
 
     [Parameter]
+    public bool IsSubmit { get; set; }
+
+    [Parameter]
     public bool PreventDefault { get; set; }
 
     [Parameter]

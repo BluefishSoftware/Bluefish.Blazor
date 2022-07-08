@@ -1,23 +1,24 @@
 ﻿@inherits BfComponentBase
 
-@if(string.IsNullOrWhiteSpace(Url))
+@if (string.IsNullOrWhiteSpace(Url))
 {
     <button @attributes="ActualAttributes"
-            aria-pressed="false"
-            autocomplete="off"
-            data-toggle="button"
-            id="@Id"
-            title="@Title"
-            @onclick="Click"
-            @onclick:preventDefault="PreventDefault"
-            @onclick:stopPropagation="StopPropagation">
+        aria-pressed="false"
+        autocomplete="off"
+        data-toggle="button"
+        id="@Id"
+        title="@Title"
+        type="@(IsSubmit ? "submit" : "button")"
+        @onclick="Click"
+        @onclick:preventDefault="PreventDefault"
+        @onclick:stopPropagation="StopPropagation">
 
         @if (ChildContent is null)
         {
             <BfLabel IconCssClass="@IconCssClass"
-                     Text="@Text"
-                     TextCssClass="@TextCssClass"
-                     Title="@Title">
+             Text="@Text"
+             TextCssClass="@TextCssClass"
+             Title="@Title">
             </BfLabel>
         }
         else
@@ -30,16 +31,16 @@
 else
 {
     <a @attributes="ActualAttributes"
-       id="@Id"
-       href="@Url"
-       target="@UrlTarget"
-       title="@Title">
+   id="@Id"
+   href="@Url"
+   target="@UrlTarget"
+   title="@Title">
         @if (ChildContent is null)
         {
             <BfLabel IconCssClass="@IconCssClass"
-                     Text="@Text"
-                     TextCssClass="@TextCssClass"
-                     Title="@Title">
+             Text="@Text"
+             TextCssClass="@TextCssClass"
+             Title="@Title">
             </BfLabel>
         }
         else
