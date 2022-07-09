@@ -33,7 +33,7 @@ public partial class BfButton
     public string Text { get; set; }
 
     [Parameter]
-    public string TextCssClass { get; set; } = "d-none d-lg-inline-block";
+    public string TextCssClass { get; set; } = "d-none d-sm-inline-block";
 
     [Parameter]
     public string Title { get; set; }
