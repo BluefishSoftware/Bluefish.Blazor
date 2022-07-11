@@ -24,19 +24,20 @@ tr.selected {
     background-color: var(--bg-color-accent) !important;
 }
 
-    tr.selected a {
-        color: var(--bg-color-accent-dark) !important;
-    }
+::deep tr.selected td a {
+    color: var(--bg-color-accent-dark) !important;
+}
 
-.table-striped tbody tr.selected:nth-of-type(odd) {
+.table-striped tbody tr.selected:nth-of-type(odd) > * {
     color: var(--fg-color-accent) !important;
     background-color: var(--bg-color-accent) !important;
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
+.table-striped > tbody > tr:nth-of-type(odd) > * {
     background-color: var(--bg-color-dark);
     color: var(--fg-color);
 }
+
 
 .bottom-pager {
     border-top: solid 2px var(--border-color);
