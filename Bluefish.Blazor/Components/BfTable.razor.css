@@ -19,17 +19,21 @@
     padding: 20px;
 }
 
-tr.selected[b-3tr2p629jn] {
+tr.selected {
     color: var(--fg-color-accent) !important;
     background-color: var(--bg-color-accent) !important;
 }
 
-.table-striped tbody tr.selected:nth-of-type(odd) [b-3tr2p629jn] {
+    tr.selected a {
+        color: var(--bg-color-accent-dark) !important;
+    }
+
+.table-striped tbody tr.selected:nth-of-type(odd) {
     color: var(--fg-color-accent) !important;
     background-color: var(--bg-color-accent) !important;
 }
 
-.table-striped tbody tr:nth-of-type(odd) [b-3tr2p629jn] {
+.table-striped tbody tr:nth-of-type(odd) {
     background-color: var(--bg-color-dark);
     color: var(--fg-color);
 }
