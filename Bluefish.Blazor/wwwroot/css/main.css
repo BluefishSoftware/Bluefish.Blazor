@@ -84,8 +84,6 @@ body {
 }
 
 .form-control:focus {
-  color: var(--fg-color);
-  background-color: #fff;
   border-color: var(--fg-color-accent);
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(var(--bg-color-accent-rgb), 0.3);
