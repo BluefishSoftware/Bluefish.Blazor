@@ -47,7 +47,7 @@ public partial class BfCronExpression
                 if (parts.Length > 6) years = parts[6];
             }
         }
-        description = ExpressionDescriptor.GetDescription(Value, new Options { DayOfWeekStartIndexZero = false, Use24HourTimeFormat = true });
+        description = ExpressionDescriptor.GetDescription(Value, new CronExpressionDescriptor.Options { DayOfWeekStartIndexZero = false, Use24HourTimeFormat = true });
     }
 
     private async void UpdateValue()
@@ -57,7 +57,7 @@ public partial class BfCronExpression
         dayOfWeek = dayOfWeek.Any(x => x == '*' || x == '-' || x == '/' || x == 'L') ? dayOfWeek : EncodeDayNames(dayOfWeek);
         var month = months.Any(x => x == '*' || x == '-' || x == '/' || x == '?' || x == 'L' || x == '#') ? months : EncodeMonthNames(months);
         Value = IncludeYears ? $"{seconds} {minutes} {hours} {dayOfMonth} {month} {dayOfWeek} {years}" : $"{seconds} {minutes} {hours} {dayOfMonth} {month} {dayOfWeek}";
-        description = ExpressionDescriptor.GetDescription(Value, new Options { DayOfWeekStartIndexZero = false, Use24HourTimeFormat = true });
+        description = ExpressionDescriptor.GetDescription(Value, new CronExpressionDescriptor.Options { DayOfWeekStartIndexZero = false, Use24HourTimeFormat = true });
         await ValueChanged.InvokeAsync(Value);
     }
 

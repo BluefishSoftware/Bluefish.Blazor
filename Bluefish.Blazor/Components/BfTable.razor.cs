@@ -156,7 +156,7 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
             sb.Append(_selectedKeys.Contains(key) ? "selected " : string.Empty);
         }
 
-        return sb.ToString().Trim();
+        return sb.ToString()?.Trim();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

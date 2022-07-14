@@ -8,7 +8,7 @@ public static class StringExtensions
     {
         return ExpressionDescriptor.GetDescription(
             expression,
-            new Options
+            new CronExpressionDescriptor.Options
             {
                 DayOfWeekStartIndexZero = dayOfWeekStartIndexZero,
                 Use24HourTimeFormat = use24HourTimeFormat
