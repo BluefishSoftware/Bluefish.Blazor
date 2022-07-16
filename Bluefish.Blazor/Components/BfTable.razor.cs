@@ -16,6 +16,8 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
+    #region parameters
+
     [Parameter]
     public bool AllowSort { get; set; } = false;
 
@@ -26,7 +28,28 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
     public RenderFragment ChildContent { get; set; }
 
     [Parameter]
+    public FilterInfo FilterInfo { get; set; } = new();
+
+    [Parameter]
+    public Func<TItem, TKey> GetItemKey { get; set; } = (_) => default;
+
+    [Parameter]
+    public Func<BfColumn<TItem, TKey>, IEnumerable<TItem>, string> GetFooterTextAsync { get; set; }
+
+    [Parameter]
+    public Func<PageInfo, SortInfo, FilterInfo, Task<IEnumerable<TItem>>> GetPagedDataAsync { get; set; }
+
+    [Parameter]
+    public Func<IEnumerable<TKey>, Task<IEnumerable<TItem>>> GetSelectedDataAsync { get; set; }
+
+    [Parameter]
     public bool IgnoreRowOnClickWhenCheckboxes { get; set; }
+
+    [Parameter]
+    public RenderFragment NoDataTemplate { get; set; }
+
+    [Parameter]
+    public PageInfo PageInfo { get; set; }
 
     [Parameter]
     public string QueryStringPrefix { get; set; } = string.Empty;
@@ -36,24 +59,6 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
 
     [Parameter]
     public EventCallback<TItem> RowDoubleClick { get; set; }
-
-    [Parameter]
-    public Func<TItem, TKey> GetItemKey { get; set; } = (_) => default;
-
-    [Parameter]
-    public Func<BfColumn<TItem, TKey>, IEnumerable<TItem>, string> GetFooterTextAsync { get; set; }
-
-    [Parameter]
-    public Func<PageInfo, SortInfo, Task<IEnumerable<TItem>>> GetPagedDataAsync { get; set; }
-
-    [Parameter]
-    public Func<IEnumerable<TKey>, Task<IEnumerable<TItem>>> GetSelectedDataAsync { get; set; }
-
-    [Parameter]
-    public RenderFragment NoDataTemplate { get; set; }
-
-    [Parameter]
-    public PageInfo PageInfo { get; set; }
 
     [Parameter]
     public EventCallback<IEnumerable<TKey>> SelectionChanged { get; set; }
@@ -82,6 +87,8 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
 
     [Parameter]
     public Func<TItem, string> TrCssClass { get; set; } = (_) => string.Empty;
+
+    #endregion
 
     public BfColumn<TItem, TKey>[] AllColumns => _columns.ToArray();
 
@@ -302,7 +309,7 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
         }
         else
         {
-            _dataItems = await GetPagedDataAsync(PageInfo, SortInfo).ConfigureAwait(true);
+            _dataItems = await GetPagedDataAsync(PageInfo, SortInfo, FilterInfo).ConfigureAwait(true);
         }
         _isLoading = false;
         StateHasChanged();

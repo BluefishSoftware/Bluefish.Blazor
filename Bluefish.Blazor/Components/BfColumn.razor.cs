@@ -19,6 +19,12 @@ public partial class BfColumn<TItem, TKey>
     public Expression<Func<TItem, object>> DataMember { get; set; }
 
     [Parameter]
+    public Type DataType { get; set; }
+
+    [Parameter]
+    public string FilterKey { get; set; } = string.Empty;
+
+    [Parameter]
     public string FooterCssClass { get; set; } = string.Empty;
 
     [Parameter]

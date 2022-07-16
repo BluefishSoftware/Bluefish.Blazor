@@ -1,0 +1,12 @@
+﻿.table-toolbar {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+    .table-toolbar .left {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+    }

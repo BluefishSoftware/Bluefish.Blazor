@@ -1,0 +1,40 @@
+﻿@inherits BfComponentBase
+@typeparam TItem
+@typeparam TKey
+
+<div class="table-toolbar @(Visible ? "" : "d-none")">
+    <div class="left w-100">
+
+        @LeftContent
+
+        <BfDropDown @ref="_filterDropdown"
+                    CssClass="text-nowrap"
+                    IconCssClass="fas fa-filter"
+                    Text="Filter">
+            <BfFilterPanel Apply="OnFilterPanelApply"
+                           Close="OnFilterPanelClose"
+                           FilterInfo="_table?.FilterInfo"
+                           FilterChanged="OnFilterChanged"
+                           FilterKeys="GetFilterKeys()"
+                           GetFieldName="GetFilterName"
+                           GetFieldType="GetFilterType" />
+        </BfDropDown>
+
+        <input @onchange="OnSearchTextChanged"
+               @onkeypress="OnSearchTextKeyPress"
+               class="ms-1 search-text form-control form-control-sm w-100"
+               disabled="@(!Enabled)"
+               id="@($"{Id}-searchbox")"
+               type="text"
+               value="@_table?.FilterInfo.SearchText" />
+        <BfButton CssClass="ms-1 text-nowrap" Click="OnRefreshAsync"
+                  Enabled="Enabled"
+                  IconCssClass="fas fa-sync-alt"
+                  Text="Refresh" />
+    </div>
+    <div class="right">
+
+        @RightContent
+
+    </div>
+</div>

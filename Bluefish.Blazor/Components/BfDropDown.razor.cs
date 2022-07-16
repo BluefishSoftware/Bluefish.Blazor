@@ -53,7 +53,7 @@ public partial class BfDropDown : IAsyncDisposable
     public bool ShowCaret { get; set; } = true;
 
     [Parameter]
-    public Sizes Size { get; set; } = Sizes.Medium;
+    public Sizes Size { get; set; }
 
     [Parameter]
     public bool StopPropagation { get; set; }
@@ -62,7 +62,7 @@ public partial class BfDropDown : IAsyncDisposable
     public string Text { get; set; }
 
     [Parameter]
-    public string TextCssClass { get; set; }
+    public string TextCssClass { get; set; } = "d-none d-sm-inline-block";
 
     [Parameter]
     public string Title { get; set; }

@@ -31,7 +31,7 @@ public partial class BfLabel
             var attr = base.RootAttributes;
             if (!attr.ContainsKey("class"))
             {
-                attr.Add("class", $"bf-label {(Enabled ? "" : "disabled")}");
+                attr.Add("class", $"bf-label {(Enabled ? "" : "disabled")} {(string.IsNullOrEmpty(CssClass) ? "text-nowrap" : CssClass)}");
             }
             return attr;
         }

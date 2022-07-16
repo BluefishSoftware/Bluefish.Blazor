@@ -8,18 +8,22 @@
     {
         <thead>
             <tr>
-                @if(!_isLoading && _dataItems?.Count() > 0 && SelectionMode == SelectionModes.Multiple && ShowCheckboxes)
+                @if (!_isLoading && _dataItems?.Count() > 0 && SelectionMode == SelectionModes.Multiple && ShowCheckboxes)
                 {
                     <th>
                         <BfCheckBox Value="@(GetItemKey != null && _dataItems.Count() > 0 && _dataItems.All(x => _selectedKeys.Contains(GetItemKey(x))))"
-                                    ValueChanged="@((x) => OnAllCheckboxInput(x))"
-                                    StopPropagation="true" />
+                            ValueChanged="@((x) => OnAllCheckboxInput(x))"
+                            StopPropagation="true" />
                     </th>
                 }
                 @foreach (var col in VisibleColumns)
                 {
                     <th class="@col.GetHeaderCssClass(this)" @onclick="() => OnColumnHeaderClick(col)">
                         <span title="@col.HeaderToolTip">@col.HeaderText</span>
+                        @if (FilterInfo.Filters.Any(x => x.Key == col.FilterKey))
+                        {
+                            <i class="ml-1 fas fa-filter" title="Filter"></i>
+                        }
                         @if (AllowSort && SortInfo != null && col.IsSortable && col.Id == SortInfo?.ColumnId)
                         {
                             @if (SortInfo.Direction == SortDirections.Ascending)
@@ -67,22 +71,22 @@
             foreach (var item in _dataItems)
             {
                 <tr class="@(TrCssClass?.Invoke(item)) @(GetSelectionCssClass(item))"
-                    @onclick="@((e) => OnRowClickAsync(e, item))"
-                    @ondblclick="@((e) => OnRowDoubleClickAsync(e, item))">
+            @onclick="@((e) => OnRowClickAsync(e, item))"
+            @ondblclick="@((e) => OnRowDoubleClickAsync(e, item))">
 
                     @if (SelectionMode == SelectionModes.Multiple && ShowCheckboxes)
                     {
                         <td>
                             <BfCheckBox Value="@(_selectedKeys.Contains(GetItemKey(item)))"
-                                        ValueChanged="@((chk) => OnItemCheckChange(item, chk))"
-                                        StopPropagation="true" />
+                            ValueChanged="@((chk) => OnItemCheckChange(item, chk))"
+                            StopPropagation="true" />
                         </td>
                     }
 
                     @foreach (var col in VisibleColumns)
                     {
                         <td class="@col.GetBodyCssClass()"
-                            title="@col?.ToolTip?.Invoke(item)">
+                title="@col?.ToolTip?.Invoke(item)">
                             @if (col.Template is null)
                             {
                                 @col.FormatValue(item)
@@ -116,8 +120,8 @@
 {
     <div class="bottom-pager pt-2">
         <BfPager PageInfo="PageInfo"
-                 PageSizes="@WebConstants.DEFAULT_PAGE_SIZES"
-                 Size="Size" />
+             PageSizes="@WebConstants.DEFAULT_PAGE_SIZES"
+             Size="Size" />
     </div>
 }
 

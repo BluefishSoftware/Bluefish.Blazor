@@ -1,0 +1,198 @@
+﻿<div class="filter-panel">
+
+    @if (FilterInfo != null)
+    {
+        <div class="title-row">
+            <div>
+                <i class="fas fa-filter me-1"></i>
+                <span>Filters</span>
+            </div>
+            <div>
+                <BfButton Click="OnClear"
+                      CssClass="ms-1 text-danger"
+                      IconCssClass="fas fa-times"
+                      Text="Clear All"
+                      Title="Clear all filters" />
+            </div>
+        </div>
+
+        <hr class="mb-3 mt-1" />
+
+        @foreach (var filter in FilterInfo.Filters)
+        {
+            <div class="filter-row">
+                <BfButton Click="@(() => OnRemove(filter))"
+                  CssClass="text-danger p-1"
+                  IconCssClass="fas fa-fw fa-times"
+                  Title="Remove filter" />
+                <div class="ms-1 filter-name">@(GetFieldName(filter))</div>
+                <div class="ms-1 filter-type">@(filter.Type.GetDisplayName().ToLower())</div>
+                <div class="ms-1 filter-value">
+                    @if (filter.Type == FilterTypes.In)
+                    {
+                        <span>@(string.Join(", ", filter.Values.Select(x => x.ToString())))</span>
+                    }
+                    else if (filter.Type == FilterTypes.Range)
+                    {
+                        <span>@(filter.Values[0]?.ToString()) - @(filter.Values[1]?.ToString())</span>
+                    }
+                    else
+                    {
+                        <span>@(filter.Values[0]?.ToString())</span>
+                    }
+                </div>
+            </div>
+        }
+
+        @if (_newFilter is null)
+        {
+            <div class="mt-1">
+                <BfButton Click="OnAdd"
+                  CssClass="text-success"
+                  Enabled="_newFilter is null"
+                  IconCssClass="fas fa-plus"
+                  Text="Add Filter"
+                  Title="Add new filter" />
+            </div>
+        }
+        else
+        {
+            <EditForm Model="_newFilter">
+
+                <DataAnnotationsValidator />
+
+                <div class="add-row row gx-1 gy-2">
+                    <div class="col-12 col-md-3">
+                        <InputSelect Value="@_newFilter.Key"
+                             ValueChanged="OnNewFilterKeyChanged"
+                             ValueExpression="() => _newFilter.Key"
+                             class="form-control form-control-sm"
+                             TValue="string">
+                            @foreach (var key in FilterKeys)
+                            {
+                                <option value="@key">@GetFieldName(new Filter(key))</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="col-12 col-md-3">
+                        <InputSelect @bind-Value="_newFilter.Type"
+                             class="form-control form-control-sm"
+                             TValue="FilterTypes">
+                            <option value="@FilterTypes.Equals">@FilterTypes.Equals.GetDisplayName()</option>
+                            <option value="@FilterTypes.DoesNotEqual">@FilterTypes.DoesNotEqual.GetDisplayName()</option>
+                            @if (_newFilter.DataType.IsText() || _newFilter.DataType.IsEnum)
+                            {
+                                <option value="@FilterTypes.In">@FilterTypes.In.GetDisplayName()</option>
+                            }
+                            @if (_newFilter.DataType.IsText())
+                            {
+                                <option value="@FilterTypes.Contains">@FilterTypes.Contains.GetDisplayName()</option>
+                                <option value="@FilterTypes.DoesNotContain">@FilterTypes.DoesNotContain.GetDisplayName()</option>
+                                <option value="@FilterTypes.EndsWith">@FilterTypes.EndsWith.GetDisplayName()</option>
+                                <option value="@FilterTypes.IsEmpty">@FilterTypes.IsEmpty.GetDisplayName()</option>
+                                <option value="@FilterTypes.IsNotEmpty">@FilterTypes.IsNotEmpty.GetDisplayName()</option>
+                                <option value="@FilterTypes.StartsWith">@FilterTypes.StartsWith.GetDisplayName()</option>
+                            }
+                            else if (_newFilter.DataType.IsEnum || _newFilter.DataType.IsBool())
+                            {
+                                // enum or bool - can only be equal / not equal
+                            }
+                            else // numeric
+                            {
+                                <option value="@FilterTypes.GreaterThan">@FilterTypes.GreaterThan.GetDisplayName()</option>
+                                <option value="@FilterTypes.GreaterThanOrEqual">@FilterTypes.GreaterThanOrEqual.GetDisplayName()</option>
+                                <option value="@FilterTypes.LessThan">@FilterTypes.LessThan.GetDisplayName()</option>
+                                <option value="@FilterTypes.LessThanOrEqual">@FilterTypes.LessThanOrEqual.GetDisplayName()</option>
+                                <option value="@FilterTypes.Range">@FilterTypes.Range.GetDisplayName()</option>
+                            }
+                            @if (_newFilter.DataType.IsNullable())
+                            {
+                                <option value="@FilterTypes.IsNotNull">@FilterTypes.IsNotNull.GetDisplayName()</option>
+                                <option value="@FilterTypes.IsNull">@FilterTypes.IsNull.GetDisplayName()</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        @if (_newFilter.Type != FilterTypes.IsEmpty && _newFilter.Type != FilterTypes.IsNotEmpty
+                       && _newFilter.Type != FilterTypes.IsNull && _newFilter.Type != FilterTypes.IsNotNull)
+                        {
+                            @if (_newFilter.DataType.IsEnum && (_newFilter.Type == FilterTypes.Equals || _newFilter.Type == FilterTypes.DoesNotEqual))
+                            {
+                                <select @onchange="@((a) => _newFilter.Values = a.Value.ToString())" class="form-control form-control-sm">
+                                    @foreach (var value in Enum.GetNames(_newFilter.DataType))
+                                    {
+                                        <option value="@value" selected="@(value == _newFilter.Values)">@value</option>
+                                    }
+                                </select>
+                            }
+                            else if (_newFilter.DataType.IsDate())
+                            {
+                                @if (_newFilter.Type == FilterTypes.Range)
+                                {
+                                    <BfDateTime @bind-Value="_newFilter.Date1" />
+                                    <span>to</span>
+                                    <BfDateTime @bind-Value="_newFilter.Date2" />
+                                }
+                                else
+                                {
+                                    <BfDateTime @bind-Value="_newFilter.Date1" />
+                                }
+                            }
+                            else if (_newFilter.DataType.IsBool())
+                            {
+                                <InputSelect @bind-Value="_newFilter.Values" class="form-control form-control-sm">
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
+                                </InputSelect>
+                            }
+                            else
+                            {
+                                <InputText @bind-Value="_newFilter.Values" class="form-control form-control-sm" />
+                            }
+                        }
+
+                    </div>
+                </div>
+
+                <div class="mt-1">
+                    <div class="toolbar">
+                        <div></div>
+                        <div>
+                            <BfButton Click="OnSaveAdd"
+                              IconCssClass="fas fa-plus"
+                              Text="Add"
+                              Title="Add new filter" />
+
+                            <BfButton Click="OnCancelAdd"
+                              CssClass="ms-1"
+                              IconCssClass="fas fa-times"
+                              Text="Cancel"
+                              Title="Cancel adding a new filter" />
+                        </div>
+                    </div>
+                </div>
+            </EditForm>
+        }
+
+        <hr />
+
+        <div class="toolbar">
+            <div></div>
+            <div>
+                <BfButton Click="OnApply"
+                      CssClass="btn-primary"
+                      Enabled="_newFilter is null"
+                      IconCssClass="fas fa-sync-alt"
+                      Text="Apply"
+                      Title="Apply Filter" />
+
+                <BfButton Click="OnClose"
+                      CssClass="ms-1"
+                      Text="Close" />
+            </div>
+        </div>
+    }
+
+</div>

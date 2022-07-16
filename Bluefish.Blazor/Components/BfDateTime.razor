@@ -1,0 +1,16 @@
+﻿<div class="sc-date-time">
+    <div class="row gx-1">
+        <div class="col-8">
+            <input class="@CssClass"
+                   type="date"
+                   @onchange="OnDateChanged"
+                   value="@Value.ToString("yyyy-MM-dd")" />
+        </div>
+        <div class="col-4">
+            <input class="@CssClass"
+                   type="time"
+                   @onchange="OnTimeChanged"
+                   value="@Value.ToString("HH:mm")" />
+        </div>
+    </div>
+</div>
