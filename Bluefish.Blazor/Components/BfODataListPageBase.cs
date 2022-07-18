@@ -28,15 +28,25 @@ namespace Bluefish.Blazor.Components
 
         protected virtual IBoundClient<TItem> ApplyFilter(IBoundClient<TItem> query, Filter filter)
         {
-            Expression<Func<TItem, bool>>? newPredicate = null;
+            Expression<Func<TItem, bool>> newPredicate = null;
 
             var col = _table.AllColumns.FirstOrDefault(x => x.FilterKey == filter.Key);
             if (col?.DataMember != null)
             {
+                var prefix = string.Empty;
+                var suffix = string.Empty;
                 var property = GetPropertyName(filter, col);
                 var propertyType = GetPropertyType(filter, col);
                 var op = filter.Type.GetOperator();
                 var v1 = filter.Values.FirstOrDefault() ?? String.Empty;
+                var subMember = col.DataSubMember;
+                if (!string.IsNullOrWhiteSpace(col.DataSubMember))
+                {
+                    // property is parent property - collection
+                    prefix = $"{property}.Any(";
+                    suffix = ")";
+                    property = col.DataSubMember;
+                }
 
                 if (propertyType is null)
                 {
@@ -44,27 +54,27 @@ namespace Bluefish.Blazor.Components
                 }
                 else if (propertyType.IsNullable() && (filter.Type == FilterTypes.IsNull || filter.Type == FilterTypes.IsNotNull))
                 {
-                    newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property} {op} null");
+                    newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property} {op} null{suffix}");
                 }
                 else if (propertyType.IsBool())
                 {
-                    newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property} {op} {v1}");
+                    newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property} {op} {v1}{suffix}");
                 }
                 else if (propertyType.IsEnum)
                 {
                     if (filter.Type == FilterTypes.DoesNotEqual)
                     {
-                        newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property} != @0", v1);
+                        newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property} != @0{suffix}", v1);
                     }
                     else if (filter.Type == FilterTypes.In)
                     {
-                        var q = string.Join(" || ", filter.Values.Select((x, i) => $"it.{property} == @{i}").ToArray());
+                        var q = string.Join(" || ", filter.Values.Select((x, i) => $"it.{prefix}{property} == @{i}{suffix}").ToArray());
                         var vs = filter.Values.ToArray();
                         newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, q, vs);
                     }
                     else
                     {
-                        newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property} == @0", v1);
+                        newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property} == @0{suffix}", v1);
                     }
                 }
                 else if (propertyType.IsText())
@@ -73,46 +83,46 @@ namespace Bluefish.Blazor.Components
                     switch (filter.Type)
                     {
                         case FilterTypes.Contains:
-                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property}.ToLower().Contains(@0)", v1);
+                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property}.ToLower().Contains(@0){suffix}", v1);
                             break;
 
                         case FilterTypes.DoesNotContain:
-                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"!{property}.ToLower().Contains(@0)", v1);
+                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}!{property}.ToLower().Contains(@0){suffix}", v1);
                             break;
 
                         case FilterTypes.DoesNotEqual:
-                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property}.ToLower() != @0", v1);
+                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property}.ToLower() != @0{suffix}", v1);
                             break;
 
                         case FilterTypes.Equals:
-                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property}.ToLower() == @0", v1);
+                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property}.ToLower() == @0{suffix}", v1);
                             break;
 
                         case FilterTypes.EndsWith:
-                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property}.ToLower().EndsWith(@0)", v1);
+                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property}.ToLower().EndsWith(@0){suffix}", v1);
                             break;
 
                         case FilterTypes.In:
-                            var q = string.Join(" || ", filter.Values.Select((x, i) => $"it.{property}.ToLower() == @{i}").ToArray());
+                            var q = string.Join(" || ", filter.Values.Select((x, i) => $"it.{prefix}{property}.ToLower() == @{i}{suffix}").ToArray());
                             var vs = filter.Values.Select(x => x?.RemoveQuotes()?.ToLower() ?? "").ToArray();
                             newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, q, vs);
                             break;
 
                         case FilterTypes.IsEmpty:
-                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property} == @0", String.Empty);
+                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property} == @0{suffix}", String.Empty);
                             break;
 
                         case FilterTypes.IsNotEmpty:
-                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property} != @0", String.Empty);
+                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property} != @0{suffix}", String.Empty);
                             break;
 
                         case FilterTypes.Range:
                             var v2 = filter.Values[1]?.ToString()?.RemoveQuotes().ToLower() ?? String.Empty;
-                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property} >= @0 && {property} <= @1", v1, v2);
+                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property} >= @0 && {property}{suffix} <= @1", v1, v2);
                             break;
 
                         case FilterTypes.StartsWith:
-                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property}.ToLower().StartsWith(@0)", v1);
+                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property}.ToLower().StartsWith(@0){suffix}", v1);
                             break;
                     }
                 }
@@ -129,14 +139,14 @@ namespace Bluefish.Blazor.Components
                             case FilterTypes.GreaterThanOrEqual:
                             case FilterTypes.LessThan:
                             case FilterTypes.LessThanOrEqual:
-                                newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property} {op} @0", d1.UtcDateTime);
+                                newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property} {op} @0{suffix}", d1.UtcDateTime.ToString("yyyy-MM-ddTHH:mm:ssZ"));
                                 break;
 
                             case FilterTypes.Range:
                                 var s2 = filter.Values[1] ?? String.Empty;
                                 if (DateTimeOffset.TryParse(s2, out DateTimeOffset d2))
                                 {
-                                    newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property} >= @0 && {property} <= @1", d1.UtcDateTime, d2.UtcDateTime);
+                                    newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property} >= @0 && {property} <= @1{suffix}", d1.UtcDateTime.ToString("yyyy-MM-ddTHH:mm:ssZ"), d2.UtcDateTime.ToString("yyyy-MM-ddTHH:mm:ssZ"));
                                 }
                                 break;
                         }
@@ -154,13 +164,13 @@ namespace Bluefish.Blazor.Components
                         case FilterTypes.GreaterThanOrEqual:
                         case FilterTypes.LessThan:
                         case FilterTypes.LessThanOrEqual:
-                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property} {op} @0", n1);
+                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property} {op} @0{suffix}", n1);
                             break;
 
                         case FilterTypes.Range:
                             var s2 = filter.Values[1]?.ToString() ?? String.Empty;
                             var n2 = Convert.ChangeType(s2, propertyType);
-                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{property} >= @0 && {property} <= @1", n1, n2);
+                            newPredicate = DynamicExpressionParser.ParseLambda<TItem, bool>(ParsingConfig.Default, false, $"{prefix}{property} >= @0 && {property} <= @1{suffix}", n1, n2);
                             break;
                     }
                 }

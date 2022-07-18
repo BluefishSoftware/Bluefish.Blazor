@@ -9,6 +9,7 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
     private IJSObjectReference _commonModule;
     private readonly List<TKey> _selectedKeys = new();
     private readonly List<BfColumn<TItem, TKey>> _columns = new();
+    private FilterInfo _previousFilterInfo = null;
 
     [Inject]
     public IJSRuntime JSRuntime { get; set; }
@@ -132,6 +133,10 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
         try
         {
             GC.SuppressFinalize(this);
+            if (FilterInfo != null)
+            {
+                FilterInfo.FilterChanged -= FilterInfo_FilterChanged;
+            }
             if (PageInfo != null)
             {
                 PageInfo.Changed -= PageInfo_Changed;
@@ -144,6 +149,11 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
         catch
         {
         }
+    }
+
+    private async void FilterInfo_FilterChanged(object sender, EventArgs e)
+    {
+        await UpdateUriAsync().ConfigureAwait(true);
     }
 
     public string GetSelectionCssClass(TItem item)
@@ -208,6 +218,15 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
                 }
                 SortInfo.ColumnId = columnId;
                 SortInfo.Direction = direction;
+            }
+
+            // get initial filter info
+            if (FilterInfo != null)
+            {
+                if (query.TryGetValue($"{QueryStringPrefix}q", out var val1))
+                {
+                    FilterInfo.SearchText = val1;
+                }
             }
 
             if (AutoLoad)
@@ -276,6 +295,28 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
 
             // refresh table
             await RefreshAsync().ConfigureAwait(true);
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        FilterInfo.FilterChanged += FilterInfo_FilterChanged;
+        _previousFilterInfo = FilterInfo;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (FilterInfo != _previousFilterInfo)
+        {
+            if (_previousFilterInfo != null)
+            {
+                _previousFilterInfo.FilterChanged += FilterInfo_FilterChanged;
+            }
+            if (FilterInfo != null)
+            {
+                FilterInfo.FilterChanged += FilterInfo_FilterChanged;
+                _previousFilterInfo = FilterInfo;
+            }
         }
     }
 
@@ -401,6 +442,18 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
             if (SortInfo.Direction != SortDirections.Ascending)
             {
                 dict.Add($"{QueryStringPrefix}sd", SortInfo.Direction.ToString());
+            }
+        }
+
+        if (FilterInfo != null)
+        {
+            if (string.IsNullOrWhiteSpace(FilterInfo.SearchText))
+            {
+                dict.Remove($"{QueryStringPrefix}q");
+            }
+            else
+            {
+                dict.Add($"{QueryStringPrefix}q", FilterInfo.SearchText);
             }
         }
 

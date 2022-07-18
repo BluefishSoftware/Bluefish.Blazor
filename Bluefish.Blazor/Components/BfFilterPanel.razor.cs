@@ -79,6 +79,7 @@ public partial class BfFilterPanel
         _newFilter.Key = key;
         _newFilter.Type = FilterTypes.Equals;
         _newFilter.DataType = GetFieldType(new Filter(key));
+        _newFilter.Values = _newFilter.DataType.IsBool() ? "true" : String.Empty;
     }
 
     private async Task OnSaveAdd()

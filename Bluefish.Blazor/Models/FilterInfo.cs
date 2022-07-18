@@ -79,6 +79,7 @@ public class FilterInfo
             Filters.AddRange(filters);
         }
         _searchText = text;
+        FilterChanged.Invoke(this, new EventArgs());
     }
 
     private static IEnumerable<Filter> ParseMany(string text)

@@ -23,6 +23,10 @@ public partial class BfTableToolbar<TItem, TKey> : IAsyncDisposable
         try
         {
             GC.SuppressFinalize(this);
+            if (_table?.FilterInfo != null)
+            {
+                _table.FilterInfo.FilterChanged -= FilterInfo_FilterChanged;
+            }
             if (_commonModule != null)
             {
                 await _commonModule.DisposeAsync().ConfigureAwait(true);
@@ -31,6 +35,12 @@ public partial class BfTableToolbar<TItem, TKey> : IAsyncDisposable
         catch
         {
         }
+    }
+
+
+    private void FilterInfo_FilterChanged(object sender, EventArgs e)
+    {
+        StateHasChanged();
     }
 
     private string GetFilterName(Filter filter)
@@ -74,6 +84,10 @@ public partial class BfTableToolbar<TItem, TKey> : IAsyncDisposable
     public void SetTable(BfTable<TItem, TKey> table)
     {
         _table = table;
+        if (table.FilterInfo != null)
+        {
+            table.FilterInfo.FilterChanged += FilterInfo_FilterChanged;
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
