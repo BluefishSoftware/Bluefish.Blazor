@@ -12,14 +12,14 @@ namespace Bluefish.Blazor.Components
         protected FilterInfo _filterInfo = new();
         protected BfTable<TItem, TKey> _table = null!;
         protected BfTableToolbar<TItem, TKey> _tableToolbar = null!;
-        protected TKey? _selectedId;
+        protected TKey _selectedId;
 
         [Inject]
         public INotificationService NotificationService { get; set; } = null!;
 
         protected abstract IBoundClient<TItem> GetBaseQuery();
 
-        protected virtual SortInfo? DefaultSort { get; set; }
+        protected virtual SortInfo DefaultSort { get; set; }
 
         protected virtual IBoundClient<TItem> ApplyBasicFilter(IBoundClient<TItem> query, string searchText)
         {
@@ -202,7 +202,7 @@ namespace Bluefish.Blazor.Components
             return string.Join(".", members.Select(p => p.Name));
         }
 
-        protected virtual Type? GetPropertyType(Filter filter, BfColumn<TItem, TKey> column)
+        protected virtual Type GetPropertyType(Filter filter, BfColumn<TItem, TKey> column)
         {
             if (column.DataType != null)
             {

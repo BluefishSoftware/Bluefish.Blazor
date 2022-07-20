@@ -43,7 +43,7 @@ public static class ExpressionExtensions
         return memberExpr.Member;
     }
 
-    public static IEnumerable<MemberExpression> MemberClauses(this Expression? expr)
+    public static IEnumerable<MemberExpression> MemberClauses(this Expression expr)
     {
         if (expr is not MemberExpression mexpr)
         {

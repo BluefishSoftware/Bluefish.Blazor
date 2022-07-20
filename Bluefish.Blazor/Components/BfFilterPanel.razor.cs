@@ -1,4 +1,6 @@
-﻿namespace Bluefish.Blazor.Components;
+﻿using System.Linq.Dynamic.Core;
+
+namespace Bluefish.Blazor.Components;
 
 public partial class BfFilterPanel
 {
@@ -45,10 +47,7 @@ public partial class BfFilterPanel
             Key = FilterKeys.FirstOrDefault() ?? String.Empty
         };
         _newFilter.DataType = GetFieldType(new Filter(_newFilter.Key));
-        if (_newFilter.DataType.IsBool())
-        {
-            _newFilter.Values = "true";
-        }
+        _newFilter.DefaultValues();
     }
 
     private async Task OnApply()
@@ -79,7 +78,7 @@ public partial class BfFilterPanel
         _newFilter.Key = key;
         _newFilter.Type = FilterTypes.Equals;
         _newFilter.DataType = GetFieldType(new Filter(key));
-        _newFilter.Values = _newFilter.DataType.IsBool() ? "true" : String.Empty;
+        _newFilter.DefaultValues();
     }
 
     private async Task OnSaveAdd()
@@ -143,5 +142,30 @@ public partial class BfFilterPanel
         public string Values { get; set; } = String.Empty;
         public DateTime Date1 { get; set; } = DateTime.Today;
         public DateTime Date2 { get; set; } = DateTime.Today.AddDays(1);
+
+
+        public void DefaultValues()
+        {
+            if (DataType.IsBool())
+            {
+                Values = "true";
+            }
+            else if (DataType.IsEnum)
+            {
+                Values = Enum.GetNames(DataType).AsQueryable().First();
+            }
+            else if (DataType.IsDate())
+            {
+                Values = DateTimeOffset.Now.ToString("yyyy-MM-ddTHH:mm:ssZ");
+            }
+            else if (DataType.IsText())
+            {
+                Values = String.Empty;
+            }
+            else
+            {
+                Values = "0";
+            }
+        }
     }
 }

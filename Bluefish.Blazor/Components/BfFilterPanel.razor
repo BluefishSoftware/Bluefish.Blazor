@@ -30,11 +30,11 @@
                 <div class="ms-1 filter-value">
                     @if (filter.Type == FilterTypes.In)
                     {
-                        <span>@(string.Join(", ", filter.Values.Select(x => x.ToString())))</span>
+                        <span>@(string.Join(", ", filter.Values))</span>
                     }
                     else if (filter.Type == FilterTypes.Range)
                     {
-                        <span>@(filter.Values[0]?.ToString()) - @(filter.Values[1]?.ToString())</span>
+                        <span>@(filter.Values[0]) - @(filter.Values[1])</span>
                     }
                     else
                     {
