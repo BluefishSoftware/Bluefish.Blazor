@@ -36,6 +36,9 @@ public partial class BfModal : IAsyncDisposable
     public EventCallback Save { get; set; }
 
     [Parameter]
+    public bool SaveOnEnter { get; set; } = true;
+
+    [Parameter]
     public string SaveButtonId { get; set; } = "modal-save-button";
 
 
@@ -117,8 +120,11 @@ public partial class BfModal : IAsyncDisposable
         if (SaveEnabled && !string.IsNullOrWhiteSpace(SaveButtonId))
         {
             await _commonModule.InvokeVoidAsync("focus", SaveButtonId).ConfigureAwait(true);
-            await Task.Delay(100).ConfigureAwait(true);
-            await Save.InvokeAsync().ConfigureAwait(true);
+            if (SaveOnEnter)
+            {
+                await Task.Delay(100).ConfigureAwait(true);
+                await Save.InvokeAsync().ConfigureAwait(true);
+            }
         }
     }
 
