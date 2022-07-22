@@ -19,6 +19,9 @@ public partial class BfDropzone : IAsyncDisposable
     public IJSRuntime JSRuntime { get; set; }
 
     [Parameter]
+    public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
+
+    [Parameter]
     public int MaxFilesize { get; set; } = 50;
 
     [Parameter]
@@ -44,7 +47,8 @@ public partial class BfDropzone : IAsyncDisposable
                 Timeout,
                 MaxFilesize,
                 AcceptedFiles,
-                PreviewItemTemplate = "#my-dropzone-template"
+                PreviewItemTemplate = "#my-dropzone-template",
+                Headers = Headers
             };
             await _module.InvokeVoidAsync("initialize", "#my-dropzone", options, _objRef).ConfigureAwait(true);
         }

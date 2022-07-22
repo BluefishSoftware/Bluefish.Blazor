@@ -1,0 +1,60 @@
+﻿.dropzone {
+    border: 2px dashed silver;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 100px;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+    .dropzone.dz-started .dz-message {
+        display: none;
+    }
+
+.dropzone-toolbar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dz-bar {
+    width: 100%;
+}
+
+.dz-error-mark {
+    color: var(--bs-danger);
+    display: none;
+}
+
+.dz-message {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+}
+
+.dz-preview.dz-complete .dz-progress {
+    display: none;
+}
+
+.dz-preview.dz-success .dz-success-mark {
+    display: inline-block;
+}
+
+.dz-preview.dz-error .dz-error-mark {
+    display: inline-block;
+}
+
+.dz-progress {
+    height: 10px;
+    width: 100%;
+}
+
+.dz-upload {
+    background-color: var(--bg-color-accent);
+    height: 5px;
+}
+
+.dz-success-mark {
+    color: var(--bs-success);
+    display: none;
+}

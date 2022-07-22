@@ -4,25 +4,29 @@
             <span class="dz-name" data-dz-name></span>
             <div>
                 <span data-dz-errormessage></span>
-                <div class="d-none success-mark">
+                <div class="dz-success-mark success-mark">
                     <i class="far fa-check-circle"></i>
                 </div>
-                <div class="d-none error-mark">
+                <div class="dz-error-mark error-mark">
                     <i class="far fa-times-circle"></i>
                 </div>
             </div>
         </div>
-        <div style="width: 0px" class="dz-progress" data-dz-uploadprogress></div>
+        <div class="dz-progress" style="">
+            <div class="dz-upload" style="width: 0%" data-dz-uploadprogress></div>
+        </div>
     </div>
 </template>
 
 
-<div class="dropzone @CssClass" id="my-dropzone">
-    <div class="dz-message-2" @onclick="OnClick">
-        <span>Drag and drop files here, or click to browse</span>
+<div class="dropzone dz-clickable @CssClass" id="my-dropzone">
+    <div class="dz-message">
+        <span class="">Drag and drop files here, or click to browse</span>
     </div>
 </div>
-<button class="btn btn-sm" @onclick="OnClear">
-    <i class="fas fa-times"></i>
-    Clear
-</button>
+<div class="dropzone-toolbar">
+    <BfButton CssClass="text-danger mt-1"
+              Click="OnClear"
+              IconCssClass="fas fa-times"
+              Text="Clear" />
+</div>
