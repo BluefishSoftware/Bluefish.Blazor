@@ -117,6 +117,10 @@ public partial class BfFilterPanel
             {
                 values = new string[] { _newFilter.Values };
             }
+            else
+            {
+                values = new string[] { _newFilter.Values };
+            }
 
             // add new filter
             var filter = new Filter(_newFilter.Key, _newFilter.Type, values);
@@ -142,7 +146,6 @@ public partial class BfFilterPanel
         public string Values { get; set; } = String.Empty;
         public DateTime Date1 { get; set; } = DateTime.Today;
         public DateTime Date2 { get; set; } = DateTime.Today.AddDays(1);
-
 
         public void DefaultValues()
         {
