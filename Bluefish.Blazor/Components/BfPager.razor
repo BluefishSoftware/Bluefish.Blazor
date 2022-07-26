@@ -47,7 +47,7 @@
     {
         <div class="d-none d-sm-flex align-items-center">
             <div class="pr-2 text-nowrap d-none d-sm-block">Page Size:</div>
-            <select class="form-control form-control-sm" @bind="PageInfo.PageSize">
+            <select class="form-select form-select-sm" @bind="PageInfo.PageSize">
                 @foreach (var size in PageSizes)
                 {
                     <option value="@size">@size</option>

@@ -66,7 +66,7 @@
                         <InputSelect Value="@_newFilter.Key"
                              ValueChanged="OnNewFilterKeyChanged"
                              ValueExpression="() => _newFilter.Key"
-                             class="form-control form-control-sm"
+                             class="form-select form-select-sm"
                              TValue="string">
                             @foreach (var key in FilterKeys)
                             {
@@ -77,7 +77,7 @@
 
                     <div class="col-12 col-md-3">
                         <InputSelect @bind-Value="_newFilter.Type"
-                             class="form-control form-control-sm"
+                             class="form-select form-select-sm"
                              TValue="FilterTypes">
                             <option value="@FilterTypes.Equals">@FilterTypes.Equals.GetDisplayName()</option>
                             <option value="@FilterTypes.DoesNotEqual">@FilterTypes.DoesNotEqual.GetDisplayName()</option>
@@ -120,7 +120,7 @@
                         {
                             @if (_newFilter.DataType.IsEnum && (_newFilter.Type == FilterTypes.Equals || _newFilter.Type == FilterTypes.DoesNotEqual))
                             {
-                                <select @onchange="@((a) => _newFilter.Values = a.Value.ToString())" class="form-control form-control-sm">
+                                <select @onchange="@((a) => _newFilter.Values = a.Value.ToString())" class="form-select form-select-sm">
                                     @foreach (var value in Enum.GetNames(_newFilter.DataType))
                                     {
                                         <option value="@value" selected="@(value == _newFilter.Values)">@value</option>
@@ -142,7 +142,7 @@
                             }
                             else if (_newFilter.DataType.IsBool())
                             {
-                                <InputSelect @bind-Value="_newFilter.Values" class="form-control form-control-sm">
+                                <InputSelect @bind-Value="_newFilter.Values" class="form-select form-select-sm">
                                     <option value="true">True</option>
                                     <option value="false">False</option>
                                 </InputSelect>
