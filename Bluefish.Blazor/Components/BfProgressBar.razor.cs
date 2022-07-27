@@ -6,10 +6,13 @@ public partial class BfProgressBar
     public RenderFragment<BfProgressBar> BarContent { get; set; }
 
     [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    [Parameter]
     public ushort DecimalPlaces { get; set; }
 
     [Parameter]
-    public string Height { get; set; } = "10px";
+    public string Height { get; set; } = "100%";
 
     [Parameter]
     public double Total { get; set; } = 100;
