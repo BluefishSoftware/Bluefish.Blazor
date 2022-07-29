@@ -23,7 +23,7 @@ public partial class BfTabPanel
         StateHasChanged();
     }
     private string GetButtonClass(BfTabPage page)
-        => $"{(page == ActivePage ? "btn-primary" : "btn-secondary")} {Size.CssClass("btn-sm", "", "btn-lg")}";
+        => page == ActivePage ? "btn-primary" : "btn-secondary";
 
     private void ActivatePage(BfTabPage page)
     {

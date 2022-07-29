@@ -3,11 +3,11 @@
     <div class="btn-group d-block" role="group">
         @foreach (BfTabPage tabPage in Pages)
         {
-            <button type="button"
-                    class="btn @GetButtonClass(tabPage)"
-                    @onclick=@( () => ActivatePage(tabPage) )>
+            <BfButton Click="@(() => ActivatePage(tabPage))"
+                  CssClass="@GetButtonClass(tabPage)"
+                  Size="Size">
                 @tabPage.Text
-            </button>
+            </BfButton>
         }
     </div>
 
