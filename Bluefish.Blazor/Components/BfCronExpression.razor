@@ -14,7 +14,7 @@
         </div>
     }
 
-    <BfTabPanel CssClass="@CssClass">
+    <BfTabPanel Size="Size" CssClass="@CssClass">
         <BfTabPage Text="Seconds">
             <BfCronExpressionTab ItemName="second"
                                  CssClass="bordered"
@@ -78,10 +78,10 @@
         {
             <BfTabPage Text="Year">
                 <BfCronExpressionTab ItemName="year"
-                                     DropdownWidth="100px"
-                                     CssClass="bordered"
-                                     @bind-Value="Years"
-                                     Items="@(Enumerable.Range(DateTime.Now.Year, 50).Select(x => new Tuple<string, int>(x.ToString(), x)).ToArray())">
+                                 DropdownWidth="100px"
+                                 CssClass="bordered"
+                                 @bind-Value="Years"
+                                 Items="@(Enumerable.Range(DateTime.Now.Year, 50).Select(x => new Tuple<string, int>(x.ToString(), x)).ToArray())">
                 </BfCronExpressionTab>
             </BfTabPage>
         }

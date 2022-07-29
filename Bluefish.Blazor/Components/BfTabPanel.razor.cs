@@ -10,6 +10,9 @@ public partial class BfTabPanel
     [Parameter]
     public string CssClass { get; set; }
 
+    [Parameter]
+    public Sizes Size { get; set; }
+
     public BfTabPage ActivePage { get; set; }
 
     internal void AddPage(BfTabPage tabPage)
@@ -20,9 +23,7 @@ public partial class BfTabPanel
         StateHasChanged();
     }
     private string GetButtonClass(BfTabPage page)
-    {
-        return page == ActivePage ? "btn-primary" : "btn-secondary";
-    }
+        => $"{(page == ActivePage ? "btn-primary" : "btn-secondary")} {Size.CssClass("btn-sm", "", "btn-lg")}";
 
     private void ActivatePage(BfTabPage page)
     {

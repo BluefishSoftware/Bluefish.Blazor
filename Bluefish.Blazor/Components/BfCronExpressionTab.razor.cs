@@ -15,6 +15,9 @@ public partial class BfCronExpressionTab
     public string DropdownWidth { get; set; } = "80px";
 
     [Parameter]
+    public Sizes Size { get; set; }
+
+    [Parameter]
     public string Value { get; set; }
 
     [Parameter]

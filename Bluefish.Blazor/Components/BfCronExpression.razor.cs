@@ -25,6 +25,9 @@ public partial class BfCronExpression
     public bool ShowExpression { get; set; } = true;
 
     [Parameter]
+    public Sizes Size { get; set; }
+
+    [Parameter]
     public string Value { get; set; }
 
     [Parameter]
