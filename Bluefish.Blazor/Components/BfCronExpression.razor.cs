@@ -33,7 +33,7 @@ public partial class BfCronExpression
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         if (string.IsNullOrEmpty(Value))
             Value = IncludeYears ? "0 0 * ? * * *" : "0 0 * ? * *";
