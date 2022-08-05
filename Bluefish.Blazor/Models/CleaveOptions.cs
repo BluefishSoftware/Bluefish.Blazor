@@ -4,4 +4,5 @@ public class CleaveOptions
 {
     public bool Numeral { get; set; }
     public string NumeralThousandsGroupStyle { get; set; } = "thousand";
-    public int NumeralDecimalScale { get; set } = 2;
+    public int NumeralDecimalScale { get; set; } = 2;
+}

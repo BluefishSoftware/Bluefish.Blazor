@@ -1,0 +1,28 @@
+﻿<div class="node">
+    <div class="node-header">
+        @if (Node.HasChildNodes == false)
+        {
+            <i class="me-1"></i>
+        }
+        else
+        {
+            <i @onclick="() => OnToggleExpandAsync()"
+           @onclick:preventDefault
+           class="cursor-pointer fas @(Node.IsExpanded ? "fa-fw fa-minus-square": "fa-fw fa-plus-square") me-1"></i>
+        }
+        <span class="node-label @GetCssClass()">
+            <BfLabel Click="OnClickAsync"
+                     IconCssClass="@Node.IconCssClass"
+                     Text="@Node.Text" />
+        </span>
+    </div>
+    @if (Node.IsExpanded)
+    {
+        <div class="sub-nodes">
+            @foreach (var node in Node.ChildNodes)
+            {
+                <BfTreeNode Node="node" />
+            }
+        </div>
+    }
+</div>

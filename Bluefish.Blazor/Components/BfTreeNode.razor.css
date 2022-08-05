@@ -1,0 +1,16 @@
+﻿.node {
+    user-select: none;
+}
+
+.node-label.selectable {
+    cursor: pointer;
+}
+
+.node-label.selected {
+    color: var(--bg-color-accent);
+    background-color: var(--bg-color);
+}
+
+.sub-nodes {
+    margin-left: 1.25rem;
+}

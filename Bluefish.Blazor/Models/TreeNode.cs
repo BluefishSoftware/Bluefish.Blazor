@@ -1,52 +1,37 @@
 ﻿namespace Bluefish.Blazor.Models;
 
-public class TreeNode<TItem> : ITreeNode<TItem>
+public class TreeNode : ITreeNode
 {
-    private List<ITreeNode<TItem>> _childNodes = new();
-
     /// <summary>
     /// Initializes a new TreeNode instance.
     /// </summary>
-    /// <param name="item">Data for this node.</param>
-    public TreeNode(TItem item)
+    public TreeNode()
     {
-        Item = item;
-    }
-
-    /// <summary>
-    /// Attempts to add a new child node for the given item.
-    /// </summary>
-    /// <param name="item">Item to be added.</param>
-    /// <returns>The newly created node.</returns>
-    public ITreeNode<TItem> AddNode(TItem item)
-    {
-        // TODO: check key is unique in collection
-        var newNode = new TreeNode<TItem>(item)
-        {
-            Parent = this
-        };
-        _childNodes.Add(newNode);
-        return newNode;
     }
 
     /// <summary>
     /// Gets the child nodes that are parented by this node.
     /// </summary>
-    public ITreeNode<TItem>[] ChildNodes => _childNodes.ToArray();
+    public List<ITreeNode> ChildNodes { get; } = new();
+
+    /// <summary>
+    /// Gets or sets the nodes CSS classes.
+    /// </summary>
+    public string CssClass { get; set; } = String.Empty;
 
     /// <summary>
     /// Gets a function that returns the Key for the nodes data item.
     /// </summary>
     /// <remarks>The Key property is used to build a full path for any given node.</remarks>
-    public Func<TItem, string> GetKey => (item) => item.ToString();
+    //public Func<TItem, string> GetKey => (item) => item.ToString();
 
     /// <summary>
     /// Gets a stack containing this node and all parent nodes.
     /// </summary>
-    public Stack<ITreeNode<TItem>> GetNodeStack()
+    public Stack<ITreeNode> GetNodeStack()
     {
-        Stack<ITreeNode<TItem>> stack = new();
-        ITreeNode<TItem> n = this;
+        Stack<ITreeNode> stack = new();
+        ITreeNode n = this;
         while (n != null)
         {
             stack.Push(n);
@@ -58,10 +43,7 @@ public class TreeNode<TItem> : ITreeNode<TItem>
     /// <summary>
     /// Gets the full path to this node.
     /// </summary>
-    public string GetPath()
-    {
-        return "/" + String.Join("/", GetNodeStack().Select(x => x.GetKey(x.Item)));
-    }
+    public string Path => "/" + String.Join("/", GetNodeStack().Select(x => x.Key));
 
     /// <summary>
     /// Does this node contain child nodes?
@@ -71,37 +53,56 @@ public class TreeNode<TItem> : ITreeNode<TItem>
     public bool? HasChildNodes { get; set; }
 
     /// <summary>
-    /// Gets the item for this node.
+    /// Gets or sets the nodes icon.
     /// </summary>
-    public TItem Item { get; private set; }
+    public string IconCssClass { get; set; }
 
     /// <summary>
-    /// Gets the identifier for this node, must be unique between siblings.
+    /// Gets or sets whether the node is expanded.
     /// </summary>
-    /// <remarks>The Key property is used to build a full path for any given node.</remarks>
-    public string Key { get; set; }
+    public bool IsExpanded { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the node can be selected.
+    /// </summary>
+    public bool IsSelectable { get; set; } = true;
+
+    /// <summary>
+    /// Gets the nodes key.
+    /// </summary>
+    public string Key { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets the parent node of this node.
     /// </summary>
     /// <remarks>A null value indicates the root node of a tree structure.</remarks>
-    public ITreeNode<TItem> Parent { get; set; }
+    public ITreeNode Parent { get; set; }
 
     /// <summary>
     /// Gets an array of all the nodes siblings.
     /// </summary>
     /// <param name="includeSelf">Should the node isteld be included in the result?</param>
-    public ITreeNode<TItem>[] GetSiblings(bool includeSelf)
+    public ITreeNode[] GetSiblings(bool includeSelf)
     {
-        if(Parent is null)
+        if (Parent is null)
         {
-            return includeSelf ? new[] { this } : Array.Empty<ITreeNode<TItem>>();
+            return includeSelf ? new[] { this } : Array.Empty<ITreeNode>();
         }
         return includeSelf ? Parent.ChildNodes.ToArray() : Parent.ChildNodes.Except(new[] { this }).ToArray();
     }
 
+    /// <summary>
+    /// Gets the nodes optional state.
+    /// </summary>
+    public object State { get; set; }
+
+    /// <summary>
+    /// Gets the nodes text.
+    /// </summary>
+    public string Text { get; set; } = string.Empty;
+
     public override string ToString()
     {
-        return GetPath();
+        return Path;
     }
 }
