@@ -112,4 +112,161 @@ public static class StringExtensions
         }
         return text;
     }
+
+    public static Boolean ToBoolean(this string value, bool defaultValue)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return defaultValue;
+        }
+        if (Boolean.TryParse(value, out bool temp))
+        {
+            return temp;
+        }
+        return defaultValue;
+    }
+
+    public static DateTime ToDateTime(this string value, DateTime defaultValue)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return defaultValue;
+        }
+        if (DateTime.TryParse(value, out DateTime temp))
+        {
+            return temp;
+        }
+        return defaultValue;
+    }
+
+    public static DateTimeOffset ToDateTimeOffset(this string value, DateTimeOffset defaultValue)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return defaultValue;
+        }
+        if (DateTimeOffset.TryParse(value, out DateTimeOffset temp))
+        {
+            return temp;
+        }
+        return defaultValue;
+    }
+
+    public static Decimal ToDecimal(this string value, decimal defaultValue = default)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return defaultValue;
+        }
+        if (Decimal.TryParse(value, out decimal temp))
+        {
+            return temp;
+        }
+        return defaultValue;
+    }
+
+    public static Int32 ToInt32(this string value, int defaultValue = default)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return defaultValue;
+        }
+        if (Int32.TryParse(value, out int temp))
+        {
+            return temp;
+        }
+        return defaultValue;
+    }
+
+    public static Int64 ToInt64(this string value, long defaultValue = default)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return defaultValue;
+        }
+        if (Int64.TryParse(value, out long temp))
+        {
+            return temp;
+        }
+        return defaultValue;
+    }
+
+    public static Boolean? ToNullableBoolean(this string value, bool? defaultValue = null)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+        if (Boolean.TryParse(value, out bool temp))
+        {
+            return temp;
+        }
+        return defaultValue;
+    }
+
+    public static DateTime? ToNullableDateTime(this string value, DateTime? defaultValue = null)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+        if (DateTime.TryParse(value, out DateTime temp))
+        {
+            return temp;
+        }
+        return defaultValue;
+    }
+
+    public static DateTimeOffset? ToNullableDateTimeOffset(this string value, DateTimeOffset? defaultValue = null)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+        if (DateTimeOffset.TryParse(value, out DateTimeOffset temp))
+        {
+            return temp;
+        }
+        return defaultValue;
+    }
+
+    public static Decimal? ToNullableDecimal(this string value, decimal? defaultValue = null)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+        if (Decimal.TryParse(value, out decimal temp))
+        {
+            return temp;
+        }
+        return defaultValue;
+    }
+
+    public static Int32? ToNullableInt32(this string value, int? defaultValue = null)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+        if (Int32.TryParse(value, out int temp))
+        {
+            return temp;
+        }
+        return defaultValue;
+    }
+
+    public static Int64? ToNullableInt64(this string value, long? defaultValue = null)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+        if (Int64.TryParse(value, out long temp))
+        {
+            return temp;
+        }
+        return defaultValue;
+    }
+
 }

@@ -1,5 +1,7 @@
 ﻿@inherits BfComponentBase
+@attribute [CascadingTypeParameter(nameof(TItem))]
 @typeparam TItem
+@attribute [CascadingTypeParameter(nameof(TKey))]
 @typeparam TKey
 @using Bluefish.Blazor.Models
 
@@ -70,9 +72,7 @@
         {
             foreach (var item in _dataItems)
             {
-                <tr class="@(TrCssClass?.Invoke(item)) @(GetSelectionCssClass(item))"
-            @onclick="@((e) => OnRowClickAsync(e, item))"
-            @ondblclick="@((e) => OnRowDoubleClickAsync(e, item))">
+                <tr @onclick="@((e) => OnRowClickAsync(e, item))" @ondblclick="@((e) => OnRowDoubleClickAsync(e, item))" class="@(TrCssClass?.Invoke(item)) @(GetSelectionCssClass(item))">
 
                     @if (SelectionMode == SelectionModes.Multiple && ShowCheckboxes)
                     {
@@ -85,9 +85,15 @@
 
                     @foreach (var col in VisibleColumns)
                     {
-                        <td class="@col.GetBodyCssClass()"
-                title="@col?.ToolTip?.Invoke(item)">
-                            @if (col.Template is null)
+                        <td class="@col.GetBodyCssClass()" title="@col?.ToolTip?.Invoke(item)">
+                            @if (col.IsEditable && EditMode == TableEditModes.Cell && col.Template is null)
+                            {
+                                <BfEditField2 CssClass="@col.GetCssClass(col.Align)"
+                              DisplayValue="@col.FormatValue(item)"
+                              Value="@(col.GetValue(item)?.ToString() ?? string.Empty)"
+                              ValueChanged="@((v) => OnApplyEditAsync(item, col, v))" />
+                            }
+                            else if (col.Template is null)
                             {
                                 @col.FormatValue(item)
                             }

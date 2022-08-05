@@ -43,10 +43,20 @@ public partial class BfColumn<TItem, TKey>
     public string Id { get; set; }
 
     [Parameter]
+    public bool IsEditable { get; set; }
+
+    [Parameter]
     public bool IsSortable { get; set; } = true;
 
     [Parameter]
     public bool IsVisible { get; set; } = true;
+
+    [Parameter]
+    public Func<string, object> EditConversion { get; set; } = (v) => v;
+
+    [Parameter]
+    public Action<TItem, object> ApplyEdit { get; set; }
+
 
     [CascadingParameter(Name = "Table")]
     public BfTable<TItem, TKey> Table { get; set; }
@@ -66,15 +76,17 @@ public partial class BfColumn<TItem, TKey>
         {
             return string.Empty;
         }
-        return (!string.IsNullOrWhiteSpace(CustomFormat) && value is IFormattable formattable) ? formattable.ToString(CustomFormat, CultureInfo.CurrentCulture) : value.ToString();
+        return (!string.IsNullOrWhiteSpace(CustomFormat) && value is IFormattable formattable)
+            ? formattable.ToString(CustomFormat, CultureInfo.CurrentCulture)
+            : value.ToString();
     }
 
     public string GetBodyCssClass()
     {
-        return $"{CssClass} {GetCssClass(Align)}";
+        return $"{Id} {CssClass} {GetCssClass(Align)}";
     }
 
-    private static string GetCssClass(Alignment align) => align switch
+    public string GetCssClass(Alignment align) => align switch
     {
         Alignment.Start => "text-start",
         Alignment.Center => "text-center",
@@ -84,12 +96,12 @@ public partial class BfColumn<TItem, TKey>
 
     public string GetFooterCssClass()
     {
-        return $"{FooterCssClass} {GetCssClass(Align)}";
+        return $"{Id} {FooterCssClass} {GetCssClass(Align)}";
     }
 
     public string GetHeaderCssClass(BfTable<TItem, TKey> table)
     {
-        return $"{HeaderCssClass} {(table.AllowSort && IsSortable ? "cursor-pointer" : "")} {GetCssClass(Align)}";
+        return $"{Id} {HeaderCssClass} {(table.AllowSort && IsSortable ? "cursor-pointer" : "")} {GetCssClass(Align)}";
     }
 
     public object GetValue(TItem item)
@@ -111,10 +123,19 @@ public partial class BfColumn<TItem, TKey>
         }
     }
 
+    public void SetValue(TItem item, string value)
+    {
+        if (IsEditable)
+        {
+            var typedValue = EditConversion?.Invoke(value);
+            DataMember?.GetPropertyInfo().SetValue(item, typedValue);
+            ApplyEdit?.Invoke(item, typedValue);
+        }
+    }
+
     protected override void OnInitialized()
     {
         Table?.AddColumn(this);
-
         if (DataMember != null)
         {
             _dataMemberGetter = new Lazy<Func<TItem, object>>(() => DataMember.Compile());

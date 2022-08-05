@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.WebUtilities;
+﻿using Bluefish.Blazor.Utility;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Bluefish.Blazor.Components;
 
@@ -27,6 +28,12 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
 
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public object DataSource { get; set; }
+
+    [Parameter]
+    public TableEditModes EditMode { get; set; }
 
     [Parameter]
     public FilterInfo FilterInfo { get; set; } = new();
@@ -265,6 +272,31 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
         }
     }
 
+    private async Task OnApplyEditAsync(TItem item, BfColumn<TItem, TKey> col, string value)
+    {
+        // attempt to apply to item
+        if (col.IsEditable)
+        {
+            // get typed value
+            var typedValue = col.EditConversion?.Invoke(value);
+
+            // apply to item
+            col.DataMember?.GetPropertyInfo().SetValue(item, typedValue);
+
+            // apply to backend?
+            if (DataSource is IDataUpdater<TItem> dp)
+            {
+                var members = PropertyPath<TItem>.Get(col.DataMember);
+                if (members.Count > 2)
+                {
+                    throw new Exception("Unable to update nested properties");
+                }
+                var property = string.Join(".", members.Select(p => p.Name));
+                await dp.UpdateAsync(item, new Dictionary<string, object> { { property, typedValue } }).ConfigureAwait(true);
+            }
+        }
+    }
+
     private async Task OnItemCheckChange(TItem item, bool value)
     {
         var key = GetItemKey(item);
@@ -346,7 +378,18 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
         _isLoading = true;
         if (GetPagedDataAsync is null)
         {
-            _dataItems = Array.Empty<TItem>();
+            if (DataSource is IDataSource<TItem> ds)
+            {
+                _dataItems = await ds.FetchAsync(PageInfo, SortInfo, FilterInfo).ConfigureAwait(true);
+            }
+            else if (DataSource is IEnumerable<TItem> list)
+            {
+                _dataItems = list;
+            }
+            else
+            {
+                _dataItems = Array.Empty<TItem>();
+            }
         }
         else
         {

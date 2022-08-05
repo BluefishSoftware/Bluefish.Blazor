@@ -1,0 +1,13 @@
+﻿<div class="edit-field2 @(Options.IsEditable ? "editable" : "")"
+     id="@Id"
+     @onclick="OnClick">
+
+    <span id="@LabelId" class="@CssClass">@DisplayValue</span>
+
+    <input id="@EditorId"
+           class="d-none @CssClass"
+           autocomplete="off"
+           @onblur="OnInputBlur"
+           @onclick:stopPropagation />
+
+</div>
