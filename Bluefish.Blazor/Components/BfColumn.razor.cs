@@ -10,6 +10,9 @@ public partial class BfColumn<TItem, TKey>
     public Alignment Align { get; set; }
 
     [Parameter]
+    public Func<TItem, bool> AllowEdit { get; set; } = (_) => true;
+
+    [Parameter]
     public string CssClass { get; set; }
 
     [Parameter]
@@ -23,6 +26,12 @@ public partial class BfColumn<TItem, TKey>
 
     [Parameter]
     public Type DataType { get; set; }
+
+    [Parameter]
+    public EditOptions EditOptions { get; set; } = new();
+
+    [Parameter]
+    public Func<TItem, string> GetEditValue { get; set; } = (_) => "";
 
     [Parameter]
     public string FilterKey { get; set; } = string.Empty;
@@ -41,9 +50,6 @@ public partial class BfColumn<TItem, TKey>
 
     [Parameter]
     public string Id { get; set; }
-
-    [Parameter]
-    public bool IsEditable { get; set; }
 
     [Parameter]
     public bool IsSortable { get; set; } = true;
@@ -125,7 +131,7 @@ public partial class BfColumn<TItem, TKey>
 
     public void SetValue(TItem item, string value)
     {
-        if (IsEditable)
+        if (EditOptions.IsEditable)
         {
             var typedValue = EditConversion?.Invoke(value);
             DataMember?.GetPropertyInfo().SetValue(item, typedValue);
@@ -139,6 +145,7 @@ public partial class BfColumn<TItem, TKey>
         if (DataMember != null)
         {
             _dataMemberGetter = new Lazy<Func<TItem, object>>(() => DataMember.Compile());
+            GetEditValue = (item) => GetValue(item)?.ToString() ?? string.Empty;
         }
     }
 }

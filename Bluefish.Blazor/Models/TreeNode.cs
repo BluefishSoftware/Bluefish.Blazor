@@ -10,6 +10,30 @@ public class TreeNode : ITreeNode
     }
 
     /// <summary>
+    /// Adds a new node with the given details and returns.
+    /// </summary>
+    /// <param name="key">Node key</param>
+    /// <param name="text">Node text</param>
+    /// <param name="iconCssClass">Node icon</param>
+    /// <param name="hasChildNodes">Does the node have child nodes?</param>
+    /// <param name="state">Node state</param>
+    /// <returns>A new ITreeNode.</returns>
+    public ITreeNode AddNode(string key = null, string text = null, string iconCssClass = null, bool hasChildNodes = false, object state = null)
+    {
+        var node = new TreeNode
+        {
+            HasChildNodes = hasChildNodes,
+            IconCssClass = iconCssClass,
+            Parent = this,
+            Key = key,
+            State = state,
+            Text = text
+        };
+        ChildNodes.Add(node);
+        return node;
+    }
+
+    /// <summary>
     /// Gets the child nodes that are parented by this node.
     /// </summary>
     public List<ITreeNode> ChildNodes { get; } = new();
@@ -43,7 +67,7 @@ public class TreeNode : ITreeNode
     /// <summary>
     /// Gets the full path to this node.
     /// </summary>
-    public string Path => "/" + String.Join("/", GetNodeStack().Select(x => x.Key));
+    public string Path => "/" + String.Join("/", GetNodeStack().Select(x => x.Key)).TrimStart('/');
 
     /// <summary>
     /// Does this node contain child nodes?

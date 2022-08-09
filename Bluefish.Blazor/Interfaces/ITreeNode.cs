@@ -3,6 +3,17 @@
 public interface ITreeNode
 {
     /// <summary>
+    /// Adds a new node with the given details and returns.
+    /// </summary>
+    /// <param name="key">Node key</param>
+    /// <param name="text">Node text</param>
+    /// <param name="iconCssClass">Node icon</param>
+    /// <param name="hasChildNodes">Does the node have child nodes?</param>
+    /// <param name="state">Node state</param>
+    /// <returns>A new ITreeNode.</returns>
+    ITreeNode AddNode(string key = null, string text = null, string iconCssClass = null, bool hasChildNodes = false, object state = null);
+
+    /// <summary>
     /// Gets or sets the nodes CSS classes.
     /// </summary>
     string CssClass { get; set; }

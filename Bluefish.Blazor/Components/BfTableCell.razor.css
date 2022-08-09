@@ -10,6 +10,7 @@
         outline: 1px dashed;
     }
 
-.edit-field.editable span {
+
+.table-cell.editable span {
     cursor: text;
 }

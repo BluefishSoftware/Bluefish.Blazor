@@ -38,6 +38,10 @@ tr.selected {
     color: var(--fg-color);
 }
 
+td {
+    vertical-align: middle;
+    user-select: none;
+}
 
 .bottom-pager {
     border-top: solid 2px var(--border-color);

@@ -1,8 +1,8 @@
-﻿<div class="edit-field2 @(Options.IsEditable ? "editable" : "")"
+﻿<div class="table-cell @(EditOptions.IsEditable ? "editable" : "")"
      id="@Id"
      @onclick="OnClick">
 
-    <span id="@LabelId" class="@CssClass">@DisplayValue</span>
+    <span id="@LabelId">@DisplayValue</span>
 
     <input id="@EditorId"
            class="d-none @CssClass"

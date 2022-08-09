@@ -1,17 +1,19 @@
 ﻿@typeparam TValue
 
 <div class="edit-field @(Options.IsEditable ? "editable" : "")"
-    id="@Id"
-    @onclick="OnClick">
+     id="@Id"
+     @onclick="OnClick">
 
-    <span id="@LabelId">@(!string.IsNullOrWhiteSpace(Options.Format) && Value is IFormattable fv
-                            ? fv.ToString(Options.Format, null)
-                            : Value?.ToString())</span>
+    <span id="@LabelId">
+        @(!string.IsNullOrWhiteSpace(Options.Format) && Value is IFormattable fv
+        ? fv.ToString(Options.Format, null)
+        : Value?.ToString())
+    </span>
 
     <input id="@EditorId"
-        class="d-none"
-        autocomplete="off"
-        @onblur="OnInputBlur"
-        @onclick:stopPropagation/>
+           class="d-none"
+           autocomplete="off"
+           @onblur="OnInputBlur"
+           @onclick:stopPropagation />
 
 </div>

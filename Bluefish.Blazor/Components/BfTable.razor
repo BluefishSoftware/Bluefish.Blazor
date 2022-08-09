@@ -86,16 +86,13 @@
                     @foreach (var col in VisibleColumns)
                     {
                         <td class="@col.GetBodyCssClass()" title="@col?.ToolTip?.Invoke(item)">
-                            @if (col.IsEditable && EditMode == TableEditModes.Cell && col.Template is null)
+                            @if (col.Template is null)
                             {
-                                <BfEditField2 CssClass="@col.GetCssClass(col.Align)"
-                              DisplayValue="@col.FormatValue(item)"
-                              Value="@(col.GetValue(item)?.ToString() ?? string.Empty)"
-                              ValueChanged="@((v) => OnApplyEditAsync(item, col, v))" />
-                            }
-                            else if (col.Template is null)
-                            {
-                                @col.FormatValue(item)
+                                <BfTableCell CssClass="@col.GetCssClass(col.Align)"
+                             EditOptions="GetEditOptions(item, col)"
+                             DisplayValue="@col.FormatValue(item)"
+                             Value="@col.GetEditValue(item)"
+                             ValueChanged="@((v) => OnApplyEditAsync(item, col, v))" />
                             }
                             else
                             {

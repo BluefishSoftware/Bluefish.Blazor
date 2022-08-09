@@ -1,16 +1,17 @@
 ﻿namespace Bluefish.Blazor.Components;
 
-public partial class BfEditField2 : IAsyncDisposable
+public partial class BfTableCell : IAsyncDisposable
 {
-    private bool _isEditing;
     private static int _sequence;
+    private bool _isEditing;
     private IJSObjectReference _module;
-    private IJSObjectReference _cleaveRef;
     private IJSObjectReference _commonModule;
-    private DotNetObjectReference<BfEditField2> _objRef;
-
+    private DotNetObjectReference<BfTableCell> _objRef;
 
     #region Inject
+
+    [Inject]
+    public PersistentComponentState ApplicationState { get; set; }
 
     [Inject]
     public IJSRuntime JSRuntime { get; set; }
@@ -21,30 +22,29 @@ public partial class BfEditField2 : IAsyncDisposable
     public string CssClass { get; set; } = string.Empty;
 
     [Parameter]
-    public Type DataType { get; set; } = typeof(String);
+    public EditOptions EditOptions { get; set; } = new();
 
     [Parameter]
-    public string Id { get; set; } = $"edit-field2-{System.Threading.Interlocked.Increment(ref _sequence)}";
+    public string Id { get; set; } = $"edit-field-{System.Threading.Interlocked.Increment(ref _sequence)}";
 
     [Parameter]
-    public EditOptions Options { get; set; } = new();
+    public bool IsRequired { get; set; }
 
     [Parameter]
-    public string DisplayValue { get; set; } = string.Empty;
+    public string DisplayValue { get; set; } = default;
 
     [Parameter]
-    public string Value { get; set; } = string.Empty;
+    public string Value { get; set; } = default;
 
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
 
     private string EditorId => $"{Id}-editor";
-
     private string LabelId => $"{Id}-label";
 
     public async Task BeginEditAsync()
     {
-        if (Options.IsEditable && !_isEditing)
+        if (EditOptions.IsEditable && !_isEditing)
         {
             _isEditing = true;
             if (_commonModule != null)
@@ -52,7 +52,14 @@ public partial class BfEditField2 : IAsyncDisposable
                 await _commonModule.InvokeVoidAsync("addClass", LabelId, "d-none").ConfigureAwait(true);
                 await _commonModule.InvokeVoidAsync("setValue", EditorId, Value).ConfigureAwait(true);
                 await _commonModule.InvokeVoidAsync("removeClass", EditorId, "d-none").ConfigureAwait(true);
-                await _commonModule.InvokeVoidAsync("selectText", EditorId).ConfigureAwait(true);
+                if (EditOptions.SelectAllOnEdit)
+                {
+                    await _commonModule.InvokeVoidAsync("selectText", EditorId).ConfigureAwait(true);
+                }
+                else
+                {
+                    await _commonModule.InvokeVoidAsync("focus", EditorId).ConfigureAwait(true);
+                }
             }
         }
     }
@@ -128,17 +135,21 @@ public partial class BfEditField2 : IAsyncDisposable
         {
             // listen for esc and enter key presses
             _objRef = DotNetObjectReference.Create(this);
-            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/Components/BfEditField2.razor.js").ConfigureAwait(true);
+            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/Components/BfTableCell.razor.js").ConfigureAwait(true);
             _commonModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/js/common.js").ConfigureAwait(true);
             if (_module != null)
             {
-                _cleaveRef = await _module.InvokeAsync<IJSObjectReference>("initialize", EditorId, _objRef).ConfigureAwait(true);
+                await _module.InvokeVoidAsync("initialize", EditorId, _objRef, new CleaveOptions
+                {
+                    Numeral = EditOptions.IsNumber,
+                    NumeralDecimalScale = EditOptions.DecimalPlaces
+                }).ConfigureAwait(true);
             }
         }
     }
     private async Task OnClick()
     {
-        if (Options.IsEditable)
+        if (EditOptions.IsEditable)
         {
             await BeginEditAsync().ConfigureAwait(true);
         }
@@ -155,7 +166,6 @@ public partial class BfEditField2 : IAsyncDisposable
     {
         return EndEditAsync();
     }
-
     private void OnInputBlur()
     {
         _ = EndEditAsync();
@@ -163,7 +173,7 @@ public partial class BfEditField2 : IAsyncDisposable
 
     private bool Validate(string value)
     {
-        if (Options.Required && string.IsNullOrWhiteSpace(value))
+        if (IsRequired && string.IsNullOrWhiteSpace(value?.ToString()))
         {
             return false;
         }

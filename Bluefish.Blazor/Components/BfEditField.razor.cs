@@ -36,7 +36,7 @@ public partial class BfEditField<TValue> : IAsyncDisposable where TValue : IConv
 
     public async Task BeginEditAsync()
     {
-        if (Options.IsEditable && !_isEditing)
+        if (!_isEditing && Options.IsEditable)
         {
             _isEditing = true;
             if (_commonModule != null)
@@ -44,7 +44,14 @@ public partial class BfEditField<TValue> : IAsyncDisposable where TValue : IConv
                 await _commonModule.InvokeVoidAsync("addClass", LabelId, "d-none").ConfigureAwait(true);
                 await _commonModule.InvokeVoidAsync("setValue", EditorId, Value).ConfigureAwait(true);
                 await _commonModule.InvokeVoidAsync("removeClass", EditorId, "d-none").ConfigureAwait(true);
-                await _commonModule.InvokeVoidAsync("selectText", EditorId).ConfigureAwait(true);
+                if (Options.SelectAllOnEdit)
+                {
+                    await _commonModule.InvokeVoidAsync("selectText", EditorId).ConfigureAwait(true);
+                }
+                else
+                {
+                    await _commonModule.InvokeVoidAsync("focus", EditorId).ConfigureAwait(true);
+                }
             }
         }
     }
@@ -131,7 +138,11 @@ public partial class BfEditField<TValue> : IAsyncDisposable where TValue : IConv
             _commonModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/js/common.js").ConfigureAwait(true);
             if (_module != null)
             {
-                await _module.InvokeVoidAsync("initialize", Id, _objRef).ConfigureAwait(true);
+                await _module.InvokeVoidAsync("initialize", EditorId, _objRef, new CleaveOptions
+                {
+                    Numeral = Options.IsNumber,
+                    NumeralDecimalScale = Options.DecimalPlaces
+                }).ConfigureAwait(true);
             }
         }
     }
@@ -155,37 +166,10 @@ public partial class BfEditField<TValue> : IAsyncDisposable where TValue : IConv
         return EndEditAsync();
     }
 
-    //protected override void OnInitialized()
-    //{
-    //    _stateSubscription = ApplicationState.RegisterOnPersisting(PersistValue);
-    //    if (ApplicationState.TryTakeFromJson<string>(Id, out var stored))
-    //    {
-    //        try
-    //        {
-    //            Value = ConvertValue(stored);
-    //        }
-    //        catch
-    //        {
-    //        }
-    //    }
-    //}
-
     private void OnInputBlur()
     {
         _ = EndEditAsync();
     }
-
-    //private Task PersistValue()
-    //{
-    //    try
-    //    {
-    //        ApplicationState.PersistAsJson(Id, Value.ToString());
-    //    }
-    //    catch
-    //    {
-    //    }
-    //    return Task.CompletedTask;
-    //}
 
     private bool Validate(TValue value)
     {

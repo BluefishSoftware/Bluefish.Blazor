@@ -36,6 +36,9 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
     public TableEditModes EditMode { get; set; }
 
     [Parameter]
+    public EventCallback<TableEditInfo> CellEdited { get; set; }
+
+    [Parameter]
     public FilterInfo FilterInfo { get; set; } = new();
 
     [Parameter]
@@ -121,6 +124,19 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
             }
             return attr;
         }
+    }
+
+    private EditOptions GetEditOptions(TItem item, BfColumn<TItem, TKey> column)
+    {
+        return new EditOptions
+        {
+            IsEditable = column.EditOptions.IsEditable && column.AllowEdit(item),
+            DecimalPlaces = column.EditOptions.DecimalPlaces,
+            IsNumber = column.EditOptions.IsNumber,
+            Format = column.EditOptions.Format,
+            Required = column.EditOptions.Required
+
+        };
     }
 
     public void AddColumn(BfColumn<TItem, TKey> column)
@@ -275,7 +291,7 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
     private async Task OnApplyEditAsync(TItem item, BfColumn<TItem, TKey> col, string value)
     {
         // attempt to apply to item
-        if (col.IsEditable)
+        if (col.EditOptions.IsEditable)
         {
             // get typed value
             var typedValue = col.EditConversion?.Invoke(value);
@@ -294,6 +310,8 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
                 var property = string.Join(".", members.Select(p => p.Name));
                 await dp.UpdateAsync(item, new Dictionary<string, object> { { property, typedValue } }).ConfigureAwait(true);
             }
+
+            await CellEdited.InvokeAsync(new TableEditInfo { ColumnId = col.Id, NewValue = typedValue });
         }
     }
 
