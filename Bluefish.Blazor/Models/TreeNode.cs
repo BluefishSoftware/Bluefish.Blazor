@@ -65,9 +65,17 @@ public class TreeNode : ITreeNode
     }
 
     /// <summary>
-    /// Gets the full path to this node.
+    /// Gets an array of all the nodes siblings.
     /// </summary>
-    public string Path => "/" + String.Join("/", GetNodeStack().Select(x => x.Key)).TrimStart('/');
+    /// <param name="includeSelf">Should the node isteld be included in the result?</param>
+    public ITreeNode[] GetSiblings(bool includeSelf)
+    {
+        if (Parent is null)
+        {
+            return includeSelf ? new[] { this } : Array.Empty<ITreeNode>();
+        }
+        return includeSelf ? Parent.ChildNodes.ToArray() : Parent.ChildNodes.Except(new[] { this }).ToArray();
+    }
 
     /// <summary>
     /// Does this node contain child nodes?
@@ -103,16 +111,24 @@ public class TreeNode : ITreeNode
     public ITreeNode Parent { get; set; }
 
     /// <summary>
-    /// Gets an array of all the nodes siblings.
+    /// Gets the full path to this node.
     /// </summary>
-    /// <param name="includeSelf">Should the node isteld be included in the result?</param>
-    public ITreeNode[] GetSiblings(bool includeSelf)
+    public string Path => "/" + String.Join("/", GetNodeStack().Select(x => x.Key)).TrimStart('/');
+
+
+    /// <summary>
+    /// Requests that the given node is removed from this nodes child collection.
+    /// </summary>
+    /// <param name="node">The node to be removed.</param>
+    /// <returns>true if the node was removed, otherwise false.</returns>
+    public bool RemoveNode(ITreeNode node)
     {
-        if (Parent is null)
+        if (ChildNodes.Contains(node))
         {
-            return includeSelf ? new[] { this } : Array.Empty<ITreeNode>();
+            ChildNodes.Remove(node);
+            return true;
         }
-        return includeSelf ? Parent.ChildNodes.ToArray() : Parent.ChildNodes.Except(new[] { this }).ToArray();
+        return false;
     }
 
     /// <summary>

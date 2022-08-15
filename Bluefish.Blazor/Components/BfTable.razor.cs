@@ -36,7 +36,7 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
     public TableEditModes EditMode { get; set; }
 
     [Parameter]
-    public EventCallback<TableEditInfo> CellEdited { get; set; }
+    public EventCallback<TableEditInfo<TKey>> CellEdited { get; set; }
 
     [Parameter]
     public FilterInfo FilterInfo { get; set; } = new();
@@ -135,7 +135,6 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
             IsNumber = column.EditOptions.IsNumber,
             Format = column.EditOptions.Format,
             Required = column.EditOptions.Required
-
         };
     }
 
@@ -293,6 +292,9 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
         // attempt to apply to item
         if (col.EditOptions.IsEditable)
         {
+            // get current / old value
+            var oldValue = col.GetValue(item);
+
             // get typed value
             var typedValue = col.EditConversion?.Invoke(value);
 
@@ -311,7 +313,17 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
                 await dp.UpdateAsync(item, new Dictionary<string, object> { { property, typedValue } }).ConfigureAwait(true);
             }
 
-            await CellEdited.InvokeAsync(new TableEditInfo { ColumnId = col.Id, NewValue = typedValue });
+            // notify cell has been edited
+            if (GetItemKey != null)
+            {
+                await CellEdited.InvokeAsync(new TableEditInfo<TKey>
+                {
+                    ItemId = GetItemKey(item),
+                    ColumnId = col.Id,
+                    NewValue = typedValue,
+                    OldValue = oldValue
+                });
+            }
         }
     }
 
@@ -402,7 +414,15 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
             }
             else if (DataSource is IEnumerable<TItem> list)
             {
-                _dataItems = list;
+                if (PageInfo != null)
+                {
+                    PageInfo.TotalCount = list.Count();
+                    _dataItems = list.Skip(PageInfo.PageRangeStart - 1).Take(PageInfo.PageSize);
+                }
+                else
+                {
+                    _dataItems = list;
+                }
             }
             else
             {

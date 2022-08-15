@@ -10,7 +10,11 @@
         outline: 1px dashed;
     }
 
-
-.table-cell.editable span {
-    cursor: text;
+.table-cell {
+    width: 100%;
 }
+
+
+    .table-cell.editable {
+        cursor: text;
+    }

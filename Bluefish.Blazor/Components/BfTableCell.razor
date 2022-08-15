@@ -2,7 +2,16 @@
      id="@Id"
      @onclick="OnClick">
 
-    <span id="@LabelId">@DisplayValue</span>
+    <span class="label" id="@LabelId">
+        @if (string.IsNullOrWhiteSpace(DisplayValue))
+        {
+            <span>&nbsp;</span>
+        }
+        else
+        {
+            @DisplayValue
+        }
+    </span>
 
     <input id="@EditorId"
            class="d-none @CssClass"

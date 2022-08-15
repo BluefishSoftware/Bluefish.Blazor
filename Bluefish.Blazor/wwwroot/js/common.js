@@ -5,6 +5,13 @@
     }
 }
 
+export function cleave(id, cleaveOpt) {
+    var el = document.getElementById(id);
+    if (el && cleaveOpt) {
+        return new Cleave(el, cleaveOpt);
+    }
+}
+
 export function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {

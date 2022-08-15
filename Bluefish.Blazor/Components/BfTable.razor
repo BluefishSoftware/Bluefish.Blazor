@@ -20,7 +20,7 @@
                 }
                 @foreach (var col in VisibleColumns)
                 {
-                    <th class="@col.GetHeaderCssClass(this)" @onclick="() => OnColumnHeaderClick(col)">
+                    <th class="@col.GetHeaderCssClass(this)" style="@col.GetHeaderStyle()" @onclick="() => OnColumnHeaderClick(col)">
                         <span title="@col.HeaderToolTip">@col.HeaderText</span>
                         @if (FilterInfo.Filters.Any(x => x.Key == col.FilterKey))
                         {
@@ -85,7 +85,7 @@
 
                     @foreach (var col in VisibleColumns)
                     {
-                        <td class="@col.GetBodyCssClass()" title="@col?.ToolTip?.Invoke(item)">
+                        <td class="@col.GetBodyCssClass()" title="@col?.ToolTip?.Invoke(item)" style="@col.GetBodyStyle()">
                             @if (col.Template is null)
                             {
                                 <BfTableCell CssClass="@col.GetCssClass(col.Align)"
@@ -110,7 +110,7 @@
             <tr>
                 @foreach (var col in VisibleColumns)
                 {
-                    <th class="@col.GetFooterCssClass()">
+                    <th class="@col.GetFooterCssClass()" style="@col.GetFooterStyle()">
                         <span>@(GetFooterTextAsync(col, _dataItems))</span>
                     </th>
                 }

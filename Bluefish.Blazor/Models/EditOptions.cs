@@ -8,7 +8,7 @@ public class EditOptions
 
     public bool IsEditable { get; set; }
 
-    public bool IsNumber { get; set; } = true;
+    public bool IsNumber { get; set; }
 
     public bool Required { get; set; }
 

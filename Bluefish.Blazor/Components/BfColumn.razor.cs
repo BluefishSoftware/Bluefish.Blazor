@@ -63,6 +63,8 @@ public partial class BfColumn<TItem, TKey>
     [Parameter]
     public Action<TItem, object> ApplyEdit { get; set; }
 
+    [Parameter]
+    public string Width { get; set; } = string.Empty;
 
     [CascadingParameter(Name = "Table")]
     public BfTable<TItem, TKey> Table { get; set; }
@@ -92,6 +94,12 @@ public partial class BfColumn<TItem, TKey>
         return $"{Id} {CssClass} {GetCssClass(Align)}";
     }
 
+    public string GetBodyStyle()
+    {
+        return string.IsNullOrWhiteSpace(Width) ? string.Empty : $"width: {Width}";
+    }
+
+
     public string GetCssClass(Alignment align) => align switch
     {
         Alignment.Start => "text-start",
@@ -105,9 +113,19 @@ public partial class BfColumn<TItem, TKey>
         return $"{Id} {FooterCssClass} {GetCssClass(Align)}";
     }
 
+    public string GetFooterStyle()
+    {
+        return string.IsNullOrWhiteSpace(Width) ? string.Empty : $"width: {Width}";
+    }
+
     public string GetHeaderCssClass(BfTable<TItem, TKey> table)
     {
         return $"{Id} {HeaderCssClass} {(table.AllowSort && IsSortable ? "cursor-pointer" : "")} {GetCssClass(Align)}";
+    }
+
+    public string GetHeaderStyle()
+    {
+        return string.IsNullOrWhiteSpace(Width) ? string.Empty : $"width: {Width}";
     }
 
     public object GetValue(TItem item)

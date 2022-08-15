@@ -14,6 +14,13 @@ public interface ITreeNode
     ITreeNode AddNode(string key = null, string text = null, string iconCssClass = null, bool hasChildNodes = false, object state = null);
 
     /// <summary>
+    /// Requests that the given node is removed from this nodes child collection.
+    /// </summary>
+    /// <param name="node">The node to be removed.</param>
+    /// <returns>true if the node was removed, otherwise false.</returns>
+    bool RemoveNode(ITreeNode node);
+
+    /// <summary>
     /// Gets or sets the nodes CSS classes.
     /// </summary>
     string CssClass { get; set; }
@@ -48,7 +55,7 @@ public interface ITreeNode
     /// <summary>
     /// Gets the nodes key value.
     /// </summary>
-    string Key { get; }
+    string Key { get; set; }
 
     /// <summary>
     /// Gets a stack containing this node and all parent nodes.
@@ -80,5 +87,5 @@ public interface ITreeNode
     /// <summary>
     /// Gets the nodes text.
     /// </summary>
-    string Text { get; }
+    string Text { get; set; }
 }
