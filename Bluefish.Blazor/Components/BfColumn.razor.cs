@@ -147,6 +147,31 @@ public partial class BfColumn<TItem, TKey>
         }
     }
 
+    public void SetCssClass(string cssClass)
+    {
+        CssClass = cssClass;
+    }
+
+    public void SetFooterCssClass(string cssClass)
+    {
+        FooterCssClass = cssClass;
+    }
+
+    public void SetHeaderCssClass(string cssClass)
+    {
+        HeaderCssClass = cssClass;
+    }
+
+    public void SetHeaderText(string text)
+    {
+        HeaderText = text;
+    }
+
+    public void SetIsVisible(bool visible)
+    {
+        IsVisible = visible;
+    }
+
     public void SetValue(TItem item, string value)
     {
         if (EditOptions.IsEditable)
@@ -155,11 +180,6 @@ public partial class BfColumn<TItem, TKey>
             DataMember?.GetPropertyInfo().SetValue(item, typedValue);
             ApplyEdit?.Invoke(item, typedValue);
         }
-    }
-
-    public void SetIsVisible(bool visible)
-    {
-        IsVisible = visible;
     }
 
     protected override void OnInitialized()
