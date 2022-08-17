@@ -127,9 +127,9 @@ public class TreeNode : ITreeNode
         if (ChildNodes.Contains(node))
         {
             ChildNodes.Remove(node);
+            HasChildNodes = ChildNodes.Count > 0;
             return true;
         }
-        HasChildNodes = ChildNodes.Count > 0;
         return false;
     }
 
