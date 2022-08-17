@@ -157,6 +157,11 @@ public partial class BfColumn<TItem, TKey>
         }
     }
 
+    public void SetIsVisible(bool visible)
+    {
+        IsVisible = visible;
+    }
+
     protected override void OnInitialized()
     {
         Table?.AddColumn(this);
