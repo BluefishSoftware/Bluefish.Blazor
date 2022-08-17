@@ -30,6 +30,7 @@ public class TreeNode : ITreeNode
             Text = text
         };
         ChildNodes.Add(node);
+        HasChildNodes = true;
         return node;
     }
 
@@ -128,6 +129,7 @@ public class TreeNode : ITreeNode
             ChildNodes.Remove(node);
             return true;
         }
+        HasChildNodes = ChildNodes.Count > 0;
         return false;
     }
 
