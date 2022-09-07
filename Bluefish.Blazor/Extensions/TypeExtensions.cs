@@ -34,7 +34,7 @@
             || type == typeof(UInt64?);
 
         public static bool IsNullable(this Type type) => type == typeof(String)
-            || type.FullName.StartsWith("Nullable");
+            || type.FullName.StartsWith("Nullable") || type.FullName.StartsWith("System.Nullable");
 
         public static bool IsText(this Type type) => type == typeof(String);
     }

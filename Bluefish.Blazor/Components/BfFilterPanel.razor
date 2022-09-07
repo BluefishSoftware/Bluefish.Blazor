@@ -36,7 +36,7 @@
                     {
                         <span>@(filter.Values[0]) - @(filter.Values[1])</span>
                     }
-                    else
+                    else if ((filter.Type != FilterTypes.IsNull && filter.Type != FilterTypes.IsNotNull && filter.Type != FilterTypes.IsEmpty && filter.Type != FilterTypes.IsNotEmpty) && filter.Values.Any())
                     {
                         <span>@(filter.Values[0]?.ToString())</span>
                     }
