@@ -50,3 +50,23 @@
 
     </Demo>
 </Example>
+
+<Example Title="Split Button">
+    <Description>
+        <p>A basic Split Button</p>
+    </Description>
+    <Code>
+        <pre>
+&lt;BfSplitButton IconCssClass="fa fa-tools"
+          IsPrimary="true"
+          Text="Create" /&gt;
+</pre>
+    </Code>
+    <Demo>
+        <BfSplitButton IconCssClass="fa fa-tools"
+                       IsPrimary="false"
+                       Options="@(new Option[] { new Option("One"), new Option("Two") })"
+                       Text="Create" />
+
+    </Demo>
+</Example>

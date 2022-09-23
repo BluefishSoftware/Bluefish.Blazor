@@ -1,0 +1,29 @@
+﻿@inherits BfComponentBase
+
+<div class="dropdown">
+    <button @attributes="ActualAttributes"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            title="@(string.IsNullOrWhiteSpace(Title) ? Text : Title)"
+            @onclick:preventDefault="PreventDefault"
+            @onclick:stopPropagation="StopPropagation">
+        <BfLabel IconCssClass="@IconCssClass"
+                 Text="@Text"
+                 TextCssClass="@TextCssClass"
+                 Title="@Title">
+        </BfLabel>
+    </button>
+    <ul class="dropdown-menu">
+        @foreach (var option in Options)
+        {
+            <li>
+                <span class="dropdown-item" href="#"
+                  @onclick="@(() => OnClickAsync(option))"
+                  @onclick:preventDefault="PreventDefault"
+                  @onclick:stopPropagation="StopPropagation"
+                  title="@option.ToolTip">@option.Text</span>
+            </li>
+        }
+    </ul>
+</div>
