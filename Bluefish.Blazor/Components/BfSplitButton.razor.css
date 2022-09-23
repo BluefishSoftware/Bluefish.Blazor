@@ -30,6 +30,7 @@
 
 .dropdown-item {
     color: var(--fg-color);
+    cursor: pointer;
 }
 
     .dropdown-item:hover {
