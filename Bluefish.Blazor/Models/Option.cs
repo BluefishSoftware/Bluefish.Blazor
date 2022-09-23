@@ -21,7 +21,7 @@ public class Option
     {
         Text = text;
         Value = value;
-        ToolTip = ToolTip;
+        ToolTip = toolTip;
     }
 
     public string Text { get; set; }
