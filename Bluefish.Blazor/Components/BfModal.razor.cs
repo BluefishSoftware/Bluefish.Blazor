@@ -119,7 +119,7 @@ public partial class BfModal : IAsyncDisposable
     {
         if (SaveEnabled && !string.IsNullOrWhiteSpace(SaveButtonId))
         {
-            await _commonModule.InvokeVoidAsync("focus", SaveButtonId).ConfigureAwait(true);
+            //await _commonModule.InvokeVoidAsync("focus", SaveButtonId).ConfigureAwait(true);
             if (SaveOnEnter)
             {
                 await Task.Delay(100).ConfigureAwait(true);
@@ -143,6 +143,14 @@ public partial class BfModal : IAsyncDisposable
     public void OnModalHidden()
     {
         StateHasChanged();
+    }
+
+    private async Task OnSave()
+    {
+        if (SaveEnabled)
+        {
+            await Save.InvokeAsync().ConfigureAwait(true);
+        }
     }
 
     public async Task ShowAsync()

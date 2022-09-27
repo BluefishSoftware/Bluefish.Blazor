@@ -16,7 +16,9 @@
                 ref.invokeMethodAsync("OnEnterKey");
             }
         });
-        return new bootstrap.Modal(el);
+        return new bootstrap.Modal(el, {
+            // options
+        });
     }
     return null;
 }
