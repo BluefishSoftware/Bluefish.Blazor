@@ -33,6 +33,8 @@ public class Filter
 
     public string Key { get; set; } = string.Empty;
 
+    public string PropertyName { get; set; } = string.Empty;
+
     public FilterTypes Type { get; set; }
 
     public List<string> Values { get; } = new();

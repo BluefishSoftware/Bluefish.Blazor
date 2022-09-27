@@ -269,4 +269,12 @@ public static class StringExtensions
         return defaultValue;
     }
 
+    public static string LowerFirstChar(this string text) => string.IsNullOrWhiteSpace(text)
+    ? text
+    : text[0].ToString().ToLower() + text[1..];
+
+    public static string UpperFirstChar(this string text) => string.IsNullOrWhiteSpace(text)
+        ? text
+        : text[0].ToString().ToUpper() + text[1..];
+
 }
