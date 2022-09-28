@@ -43,6 +43,11 @@ public interface ITreeNode
     string IconCssClass { get; }
 
     /// <summary>
+    /// Gets the index of the node relative to its siblings.
+    /// </summary>
+    int Index { get; }
+
+    /// <summary>
     /// Gets or sets whether the node is expanded.
     /// </summary>
     bool IsExpanded { get; set; }

@@ -91,6 +91,11 @@ public class TreeNode : ITreeNode
     public string IconCssClass { get; set; }
 
     /// <summary>
+    /// Gets the index of the node relative to its siblings.
+    /// </summary>
+    public int Index => Parent is null ? -1 : Parent.ChildNodes.IndexOf(this);
+
+    /// <summary>
     /// Gets or sets whether the node is expanded.
     /// </summary>
     public bool IsExpanded { get; set; }
