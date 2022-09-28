@@ -27,7 +27,7 @@ public partial class BfTree
         {
             SelectedNode = node;
         }
-        await SelectedNodeChanged.InvokeAsync(node).ConfigureAwait(true);
+        await SelectedNodeChanged.InvokeAsync(SelectedNode).ConfigureAwait(true);
         StateHasChanged();
     }
 
