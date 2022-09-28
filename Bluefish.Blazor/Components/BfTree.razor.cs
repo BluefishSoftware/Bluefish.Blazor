@@ -14,9 +14,19 @@ public partial class BfTree
     [Parameter]
     public bool ShowRoot { get; set; } = true;
 
+    [Parameter]
+    public bool SelectionToggle { get; set; }
+
     public async Task OnNodeClickAsync(ITreeNode node)
     {
-        SelectedNode = node;
+        if (SelectionToggle && SelectedNode == node)
+        {
+            SelectedNode = null;
+        }
+        else
+        {
+            SelectedNode = node;
+        }
         await SelectedNodeChanged.InvokeAsync(node).ConfigureAwait(true);
         StateHasChanged();
     }
