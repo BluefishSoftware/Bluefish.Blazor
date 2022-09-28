@@ -10,8 +10,9 @@ public interface ITreeNode
     /// <param name="iconCssClass">Node icon</param>
     /// <param name="hasChildNodes">Does the node have child nodes?</param>
     /// <param name="state">Node state</param>
+    /// <param name="index">Index of the new node, -1 to append.</param>
     /// <returns>A new ITreeNode.</returns>
-    ITreeNode AddNode(string key = null, string text = null, string iconCssClass = null, bool hasChildNodes = false, object state = null);
+    ITreeNode AddNode(string key = null, string text = null, string iconCssClass = null, bool hasChildNodes = false, object state = null, int index = -1);
 
     /// <summary>
     /// Requests that the given node is removed from this nodes child collection.

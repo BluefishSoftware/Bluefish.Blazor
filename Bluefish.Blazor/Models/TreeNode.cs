@@ -17,8 +17,9 @@ public class TreeNode : ITreeNode
     /// <param name="iconCssClass">Node icon</param>
     /// <param name="hasChildNodes">Does the node have child nodes?</param>
     /// <param name="state">Node state</param>
+    /// <param name="index">Index of the new node, -1 to append.</param>
     /// <returns>A new ITreeNode.</returns>
-    public ITreeNode AddNode(string key = null, string text = null, string iconCssClass = null, bool hasChildNodes = false, object state = null)
+    public ITreeNode AddNode(string key = null, string text = null, string iconCssClass = null, bool hasChildNodes = false, object state = null, int index = -1)
     {
         var node = new TreeNode
         {
@@ -29,7 +30,14 @@ public class TreeNode : ITreeNode
             State = state,
             Text = text
         };
-        ChildNodes.Add(node);
+        if (index == -1 || index > ChildNodes.Count - 1)
+        {
+            ChildNodes.Add(node);
+        }
+        else
+        {
+            ChildNodes.Insert(index, node);
+        }
         HasChildNodes = true;
         return node;
     }
