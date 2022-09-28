@@ -1,13 +1,15 @@
-﻿<CascadingValue Value="(BfTree)this">
-    @if (ShowRoot)
-    {
-        <BfTreeNode Node="Root" />
-    }
-    else
-    {
-        foreach (var node in Root.ChildNodes)
+﻿<div class="bf-tree">
+    <CascadingValue Value="(BfTree)this">
+        @if (ShowRoot)
         {
-            <BfTreeNode Node="node" />
+            <BfTreeNode Node="Root" />
         }
-    }
-</CascadingValue>
+        else
+        {
+            foreach (var node in Root.ChildNodes)
+            {
+                <BfTreeNode Node="node" />
+            }
+        }
+    </CascadingValue>
+</div>
