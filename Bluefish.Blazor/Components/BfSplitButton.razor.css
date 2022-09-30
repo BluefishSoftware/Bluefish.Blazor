@@ -1,4 +1,5 @@
 ﻿.bf-split-button {
+    display: inline-block;
     width: auto;
 }
 
