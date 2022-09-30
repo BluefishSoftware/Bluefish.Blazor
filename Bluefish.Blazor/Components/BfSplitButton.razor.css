@@ -1,5 +1,4 @@
 ﻿.bf-split-button {
-    display: inline-block;
     width: auto;
 }
 
@@ -22,6 +21,10 @@
 .btn:disabled {
     opacity: 0.2;
     cursor: default;
+}
+
+.dropdown {
+    display: inline-block;
 }
 
 .dropdown-menu {
