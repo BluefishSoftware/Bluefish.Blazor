@@ -30,6 +30,9 @@ public partial class BfModal : IAsyncDisposable
     public RenderFragment Header { get; set; }
 
     [Parameter]
+    public EventCallback Hidden { get; set; }
+
+    [Parameter]
     public string Id { get; set; } = $"bf-modal-{++_seq}";
 
     [Parameter]
@@ -56,6 +59,9 @@ public partial class BfModal : IAsyncDisposable
 
     [Parameter]
     public bool ShowHeader { get; set; } = true;
+
+    [Parameter]
+    public EventCallback Shown { get; set; }
 
     [Parameter]
     public bool ShowSave { get; set; } = true;
@@ -137,12 +143,14 @@ public partial class BfModal : IAsyncDisposable
             await Task.Delay(100);
             await _commonModule.InvokeVoidAsync("selectText", FocusElementId).ConfigureAwait(true);
         }
+        await Shown.InvokeAsync().ConfigureAwait(true);
     }
 
     [JSInvokable]
-    public void OnModalHidden()
+    public async Task OnModalHidden()
     {
         StateHasChanged();
+        await Hidden.InvokeAsync().ConfigureAwait(true);
     }
 
     private async Task OnSave()
