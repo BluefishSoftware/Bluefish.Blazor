@@ -1,0 +1,24 @@
+﻿.bf-button {
+    width: auto;
+}
+
+.btn:not(.btn-danger, .btn-primary, .btn-secondary) {
+    color: var(--fg-color);
+    background-color: var(--bg-color);
+    border-color: var(--bg-color);
+}
+
+.btn.focus:not(.btn-danger), .btn:focus:not(.btn-danger) {
+    box-shadow: 0 0 0 .2rem rgba(var(--bg-color-accent-rgb), 0.6);
+}
+
+.btn-primary {
+    color: var(--fg-color-accent);
+    background-color: var(--bg-color-accent);
+    border-color: var(--bg-color-accent);
+}
+
+.btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+}

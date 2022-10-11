@@ -2,6 +2,11 @@
      id="@Id"
      @onclick="OnClick">
 
+    @if (!_isEditing && CopyToClipboard == CopyToClipboardAlignments.Left)
+    {
+        <BfCopyToClipboardButton CssClass="me-1" FetchData="() => DisplayValue" />
+    }
+
     <span class="label" id="@LabelId">
         @if (string.IsNullOrWhiteSpace(DisplayValue))
         {
@@ -18,5 +23,10 @@
            autocomplete="off"
            @onblur="OnInputBlur"
            @onclick:stopPropagation />
+
+    @if (!_isEditing && CopyToClipboard == CopyToClipboardAlignments.Right)
+    {
+        <BfCopyToClipboardButton CssClass="ms-1" FetchData="() => DisplayValue" />
+    }
 
 </div>

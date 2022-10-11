@@ -1,0 +1,27 @@
+﻿@inherits BfComponentBase
+
+<button @attributes="ActualAttributes"
+        aria-pressed="false"
+        autocomplete="off"
+        data-toggle="button"
+        id="@Id"
+        title="@(string.IsNullOrWhiteSpace(Title) ? Text : Title)"
+        type="@(IsSubmit ? "submit" : "button")"
+        @onclick="OnClick"
+        @onclick:preventDefault="PreventDefault"
+        @onclick:stopPropagation="StopPropagation">
+
+    @if (ChildContent is null)
+    {
+        <BfLabel IconCssClass="@ActualIconCssClass"
+             Text="@Text"
+             TextCssClass="@TextCssClass"
+             Title="@Title">
+        </BfLabel>
+    }
+    else
+    {
+        @ChildContent
+    }
+
+</button>

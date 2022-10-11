@@ -36,6 +36,7 @@
             <BfColumn TItem="Car"
                       TKey="int"
                       Id="Make"
+                      CopyToClipboard="CopyToClipboardAlignments.Left"
                       DataMember="x => x.Make"
                       HeaderText="Make"
                       IsSortable="true" />
@@ -43,6 +44,7 @@
             <BfColumn TItem="Car"
                       TKey="int"
                       Id="Model"
+                      CopyToClipboard="CopyToClipboardAlignments.Right"
                       DataMember="x => x.Model"
                       HeaderText="Model"
                       IsSortable="true" />
@@ -55,7 +57,7 @@
     private BfTable<Car, int> _table;
     private PageInfo _pageInfo = new();
     private SortInfo _sortInfo = new();
-    private Car[] _data = new []
+    private Car[] _data = new[]
     {
         new Car(1, "BMW", "118i"),
         new Car(2, "BMW", "318i"),
@@ -78,13 +80,13 @@
     {
         var query = _data.AsEnumerable();
 
-        if(pageInfo != null)
+        if (pageInfo != null)
         {
             query = query.Skip(pageInfo.PageRangeStart - 1).Take(pageInfo.PageSize);
             pageInfo.TotalCount = _data.Count();
         }
 
-        if(!string.IsNullOrEmpty(sortInfo?.ColumnId))
+        if (!string.IsNullOrEmpty(sortInfo?.ColumnId))
         {
             var col = _table.AllColumns.FirstOrDefault(x => x.Id == sortInfo.ColumnId);
             if (col != null)

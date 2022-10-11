@@ -85,10 +85,13 @@
 
                     @foreach (var col in VisibleColumns)
                     {
-                        <td class="@col.GetBodyCssClass()" title="@col?.ToolTip?.Invoke(item)" style="@col.GetBodyStyle()">
+                        <td class="@(col.GetBodyCssClass())"
+                style="@col.GetBodyStyle()"
+                title="@col?.ToolTip?.Invoke(item)">
                             @if (col.Template is null)
                             {
                                 <BfTableCell CssClass="@col.GetCssClass(col.Align)"
+                             CopyToClipboard="@col.CopyToClipboard"
                              EditOptions="GetEditOptions(item, col)"
                              DisplayValue="@col.FormatValue(item)"
                              Value="@col.GetEditValue(item)"

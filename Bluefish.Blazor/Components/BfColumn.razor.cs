@@ -13,6 +13,9 @@ public partial class BfColumn<TItem, TKey>
     public Func<TItem, bool> AllowEdit { get; set; } = (_) => true;
 
     [Parameter]
+    public CopyToClipboardAlignments CopyToClipboard { get; set; }
+
+    [Parameter]
     public string CssClass { get; set; }
 
     [Parameter]

@@ -19,6 +19,9 @@ public partial class BfTableCell : IAsyncDisposable
     #endregion
 
     [Parameter]
+    public CopyToClipboardAlignments CopyToClipboard { get; set; }
+
+    [Parameter]
     public string CssClass { get; set; } = string.Empty;
 
     [Parameter]
