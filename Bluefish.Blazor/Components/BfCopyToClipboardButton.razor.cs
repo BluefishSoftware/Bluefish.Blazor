@@ -60,7 +60,7 @@ public partial class BfCopyToClipboardButton : IAsyncDisposable
                     { "disabled", Enabled ? null : true },
                     { "class", $"bf-button btn {Size.CssClass("btn-sm", "", "btn-lg")} {(IsPrimary ? "btn-primary" : "")} {CssClass}" }
                 };
-            if (!Visible)
+            if (!Visible || string.IsNullOrWhiteSpace(FetchData?.Invoke()))
             {
                 attr.Add("style", "display: none;");
             }
