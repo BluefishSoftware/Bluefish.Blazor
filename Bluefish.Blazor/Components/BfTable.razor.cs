@@ -531,6 +531,7 @@ public partial class BfTable<TItem, TKey> : IAsyncDisposable
             if (string.IsNullOrWhiteSpace(FilterInfo.SearchText))
             {
                 dict.Remove($"{QueryStringPrefix}q");
+                dict.Add($"{QueryStringPrefix}q", string.Empty);
             }
             else
             {

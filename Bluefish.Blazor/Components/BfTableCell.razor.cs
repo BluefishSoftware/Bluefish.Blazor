@@ -134,20 +134,27 @@ public partial class BfTableCell : IAsyncDisposable
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && JSRuntime != null)
+        try
         {
-            // listen for esc and enter key presses
-            _objRef = DotNetObjectReference.Create(this);
-            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/Components/BfTableCell.razor.js").ConfigureAwait(true);
-            _commonModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/js/common.js").ConfigureAwait(true);
-            if (_module != null)
+            if (firstRender && JSRuntime != null)
             {
-                await _module.InvokeVoidAsync("initialize", EditorId, _objRef, new CleaveOptions
+                // listen for esc and enter key presses
+                _objRef = DotNetObjectReference.Create(this);
+                _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/Components/BfTableCell.razor.js").ConfigureAwait(true);
+                _commonModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/js/common.js").ConfigureAwait(true);
+                if (_module != null)
                 {
-                    Numeral = EditOptions.IsNumber,
-                    NumeralDecimalScale = EditOptions.DecimalPlaces
-                }).ConfigureAwait(true);
+                    await _module.InvokeVoidAsync("initialize", EditorId, _objRef, new CleaveOptions
+                    {
+                        Numeral = EditOptions.IsNumber,
+                        NumeralDecimalScale = EditOptions.DecimalPlaces
+                    }).ConfigureAwait(true);
+                }
             }
+        }
+        catch
+        {
+            // object disposed ?
         }
     }
     private async Task OnClick()
