@@ -1,4 +1,6 @@
-﻿export function initialize(idSelector, opt, dnRef) {
+﻿var _url = "";
+
+export function initialize(idSelector, opt, dnRef) {
     var el = document.querySelector(idSelector);
     if (el) {
         if (opt.previewItemTemplate) {
@@ -12,8 +14,19 @@
                 dnRef.invokeMethodAsync('Bluefish.Blazor.BfDropzone.OnAllUploadsComplete');
             });
         };
+        // default url to those set in options
+        _url = opt.url;
+        opt.url = getUrl;
         el.dropzone = new Dropzone(idSelector, opt);
     }
+}
+
+function getUrl(files) {
+    return _url;
+}
+
+export function setUrl(url) {
+    _url = url;
 }
 
 export function clear(idSelector, opt) {

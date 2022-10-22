@@ -65,10 +65,18 @@ public partial class BfDropzone : IAsyncDisposable
         await AllUploadsComplete.InvokeAsync(null).ConfigureAwait(true);
     }
 
-    private async Task OnClick()
+    protected override async Task OnParametersSetAsync()
     {
-        await _module.InvokeVoidAsync("click", "#my-dropzone").ConfigureAwait(true);
+        if (_module != null)
+        {
+            await _module.InvokeVoidAsync("setUrl", Url).ConfigureAwait(true);
+        }
     }
+
+    //private async Task OnClick()
+    //{
+    //    await _module.InvokeVoidAsync("click", "#my-dropzone").ConfigureAwait(true);
+    //}
 
     public async ValueTask DisposeAsync()
     {
