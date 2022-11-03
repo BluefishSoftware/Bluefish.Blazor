@@ -57,10 +57,10 @@ public partial class BfCopyToClipboardButton : IAsyncDisposable
         {
             var attr = new Dictionary<string, object>(Attributes ?? new())
                 {
-                    { "disabled", Enabled ? null : true },
+                    { "disabled", Enabled || string.IsNullOrWhiteSpace(FetchData?.Invoke()) ? null : true },
                     { "class", $"bf-button btn {Size.CssClass("btn-sm", "", "btn-lg")} {(IsPrimary ? "btn-primary" : "")} {CssClass}" }
                 };
-            if (!Visible || string.IsNullOrWhiteSpace(FetchData?.Invoke()))
+            if (!Visible)
             {
                 attr.Add("style", "display: none;");
             }
