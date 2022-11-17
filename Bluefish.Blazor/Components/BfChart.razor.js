@@ -88,7 +88,6 @@ export function initialize(el, config, ref) {
 export function update(chart, data) {
     if (chart) {
         if (data) {
-            console.dir(data);
             chart.data = data;
         }
         chart.update();
