@@ -6,6 +6,9 @@ public partial class BfChart : IDisposable
     private IJSObjectReference _module;
     private IJSObjectReference _chart;
     private ElementReference _canvasElement;
+    private static int _seq;
+    private int _dataHashCode;
+    private int _modelHashCode;
 
     [Inject]
     public IJSRuntime JSRuntime { get; set; }
@@ -15,6 +18,9 @@ public partial class BfChart : IDisposable
 
     [Parameter]
     public string Height { get; set; } = "100px";
+
+    [Parameter]
+    public string Id { get; set; } = $"chart-{++_seq}";
 
     [Parameter]
     public string Width { get; set; } = "100px";
@@ -27,6 +33,7 @@ public partial class BfChart : IDisposable
         if (_chart != null)
         {
             _chart.InvokeVoidAsync("destroy");
+            //Console.WriteLine($"Chart: {Id} destroyed - dispose");
         }
     }
 
@@ -36,19 +43,34 @@ public partial class BfChart : IDisposable
         {
             _objRef = DotNetObjectReference.Create(this);
             _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Bluefish.Blazor/Components/BfChart.razor.js").ConfigureAwait(true);
+            _chart = await _module.InvokeAsync<IJSObjectReference>("initialize", _canvasElement, Model, _objRef).ConfigureAwait(true);
+            _modelHashCode = Model.GetHashCode();
+            _dataHashCode = Model.Data.GetHashCode();
+            //Console.WriteLine($"Chart: {Id} created");
         }
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        if (Model != null && _module != null)
+        //Console.WriteLine($"OnParametersSetAsync: Chart: {Id} Height: {Height}, Width: {Width}, CssClass: {CssClass}, Model: {Model.GetHashCode()}");
+        if (_chart != null)
         {
-            if (_chart != null)
+            if (Model.GetHashCode() != _modelHashCode)
             {
+                // destroy and re-create chart
                 await _chart.InvokeVoidAsync("destroy").ConfigureAwait(true);
-                _chart = null;
+                //Console.WriteLine($"Chart: {Id} destroyed");
+                _chart = await _module.InvokeAsync<IJSObjectReference>("initialize", _canvasElement, Model, _objRef).ConfigureAwait(true);
+                _modelHashCode = Model.GetHashCode();
+                //Console.WriteLine($"Chart: {Id} created");
             }
-            _chart = await _module.InvokeAsync<IJSObjectReference>("initialize", _canvasElement, Model, _objRef).ConfigureAwait(true);
+            else if (Model.Data.GetHashCode() != _dataHashCode)
+            {
+                // update data
+                await _module.InvokeVoidAsync("update", _chart, Model.Data).ConfigureAwait(true);
+                _dataHashCode = Model.Data.GetHashCode();
+                //Console.WriteLine($"Chart: {Id} data updated");
+            }
         }
     }
 }

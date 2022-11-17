@@ -36,12 +36,7 @@ export function initialize(el, config, ref) {
         initNumeral();
 
         // insert function to style Y axis ticks
-        if (config &&
-            config.options &&
-            config.options.scales &&
-            config.options.scales.y &&
-            config.options.scales.y.ticks &&
-            config.options.scales.y.ticks.format) {
+        if (config?.options?.scales?.y?.ticks?.format) {
             var fmt = config.options.scales.y.ticks.format;
             config.options.scales.y.ticks.callback = function (value, index, values) {
                 if (fmt.includes('%')) {
@@ -52,12 +47,7 @@ export function initialize(el, config, ref) {
         }
 
         // insert function to style Y2 axis ticks
-        if (config &&
-            config.options &&
-            config.options.scales &&
-            config.options.scales.y2 &&
-            config.options.scales.y2.ticks &&
-            config.options.scales.y2.ticks.format) {
+        if (config?.options?.scales?.y2?.ticks?.format) {
             var fmt = config.options.scales.y2.ticks.format;
             config.options.scales.y2.ticks.callback = function (value, index, values) {
                 if (fmt.includes('%')) {
@@ -68,7 +58,7 @@ export function initialize(el, config, ref) {
         }
 
         // tooltip callbacks
-        if (config && config.data && config.data.datasets) {
+        if (config?.data?.datasets) {
             for (var i = 0; i < config.data.datasets.length; i++) {
                 var ds = config.data.datasets[i];
                 if (ds.format) {
@@ -95,26 +85,24 @@ export function initialize(el, config, ref) {
     return new Chart(el, config);
 }
 
-export function update(chart) {
+export function update(chart, data) {
     if (chart) {
+        if (data) {
+            console.dir(data);
+            chart.data = data;
+        }
         chart.update();
     }
 }
 
 export function updateScaleX(chart, scale) {
-    if (chart &&
-        chart.options &&
-        chart.options.scales &&
-        chart.options.scales.x) {
+    if (chart?.options?.scales?.x) {
         chart.options.scales.x = scale
     }
 }
 
 export function updateScaleY2(chart, min) {
-    if (chart &&
-        chart.options &&
-        chart.options.scales &&
-        chart.options.scales.y2) {
+    if (chart?.options?.scales?.y2) {
         chart.options.scales.y2.min = min;
     }
 }

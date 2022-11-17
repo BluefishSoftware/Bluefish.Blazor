@@ -9,4 +9,9 @@ public class Chart
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Options Options { get; set; }
+
+    public override string ToString()
+    {
+        return $"Type: {Type}, Labels: {string.Join(", ", Data.Labels)}";
+    }
 }
