@@ -20,6 +20,9 @@ public partial class BfEditField<TValue> : IAsyncDisposable where TValue : IConv
     #endregion
 
     [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    [Parameter]
     public string Id { get; set; } = $"edit-field-{System.Threading.Interlocked.Increment(ref _sequence)}";
 
     [Parameter]

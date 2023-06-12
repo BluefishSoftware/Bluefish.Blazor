@@ -10,6 +10,8 @@ public class EditOptions
 
     public bool IsNumber { get; set; }
 
+    public string PlaceHolder { get; set; } = string.Empty;
+
     public bool Required { get; set; }
 
     public bool SelectAllOnEdit { get; set; }

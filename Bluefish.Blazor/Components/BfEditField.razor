@@ -1,6 +1,6 @@
 ﻿@typeparam TValue
 
-<div class="edit-field @(Options.IsEditable ? "editable" : "")"
+<div class="edit-field @(Options.IsEditable ? "editable" : "") @CssClass"
      id="@Id"
      @onclick="OnClick">
 
@@ -13,6 +13,7 @@
     <input id="@EditorId"
            class="d-none"
            autocomplete="off"
+           placeholder="@Options.PlaceHolder"
            @onblur="OnInputBlur"
            @onclick:stopPropagation />
 
