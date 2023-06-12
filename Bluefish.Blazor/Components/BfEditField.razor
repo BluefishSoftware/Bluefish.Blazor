@@ -6,8 +6,10 @@
 
     <span id="@LabelId">
         @(!string.IsNullOrWhiteSpace(Options.Format) && Value is IFormattable fv
-        ? fv.ToString(Options.Format, null)
-        : Value?.ToString())
+            ? fv.ToString(Options.Format, null)
+            : (string.IsNullOrWhiteSpace(Value?.ToString())
+                ? Options.PlaceHolder
+                : Value?.ToString()))
     </span>
 
     <input id="@EditorId"
