@@ -10,6 +10,10 @@
       "provider": "unpkg",
       "library": "bootstrap@5.0.2",
       "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "library": "cleave.js@1.6.0",
+      "destination": "wwwroot/lib/cleavejs/"
     }
   ]
 }

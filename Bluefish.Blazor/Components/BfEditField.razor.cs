@@ -144,7 +144,8 @@ public partial class BfEditField<TValue> : IAsyncDisposable where TValue : IConv
                 await _module.InvokeVoidAsync("initialize", EditorId, _objRef, new CleaveOptions
                 {
                     Numeral = Options.IsNumber,
-                    NumeralDecimalScale = Options.DecimalPlaces
+                    NumeralDecimalScale = Options.DecimalPlaces,
+                    Delimiter = Options.IsNumber ? "," : " "
                 }).ConfigureAwait(true);
             }
         }

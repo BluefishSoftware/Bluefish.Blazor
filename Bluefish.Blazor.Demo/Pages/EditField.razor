@@ -1,0 +1,24 @@
+﻿@page "/editfield"
+
+<h1>BfEditField</h1>
+
+<Example Title="Simple Usage">
+    <Description>
+        <p>Example of the Edit Field.</p>
+    </Description>
+    <Code>
+<pre>
+&lt;BfEditField/BfButton&gt;
+</pre>
+    </Code>
+    <Demo>
+        <BfEditField
+            TValue="decimal"
+                     Options="@(new EditOptions { Required = true, Format = "£0,0.00", IsEditable=true, IsNumber=true })"
+            @bind-Value="_value" />
+    </Demo>
+</Example>
+
+@code {
+    private decimal _value = 12345.67m;
+}
