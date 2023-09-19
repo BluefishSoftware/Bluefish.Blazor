@@ -147,7 +147,8 @@ public partial class BfTableCell : IAsyncDisposable
                     await _module.InvokeVoidAsync("initialize", EditorId, _objRef, new CleaveOptions
                     {
                         Numeral = EditOptions.IsNumber,
-                        NumeralDecimalScale = EditOptions.DecimalPlaces
+                        NumeralDecimalScale = EditOptions.DecimalPlaces,
+                        Delimiter = EditOptions.IsNumber ? "," : " "
                     }).ConfigureAwait(true);
                 }
             }
