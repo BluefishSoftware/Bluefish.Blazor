@@ -13,11 +13,11 @@ public class ToastNotificationService : INotificationService
 
     public void Notify(NotificationLevels level, string message, string title = "")
     {
-        _toastService.ShowToast((ToastLevel)level, message, title);
+        _toastService.ShowToast((ToastLevel)level, message);
     }
 
     public void Notify(NotificationLevels level, RenderFragment message, string title = "")
     {
-        _toastService.ShowToast((ToastLevel)level, message, title);
+        _toastService.ShowToast((ToastLevel)level, message);
     }
 }
