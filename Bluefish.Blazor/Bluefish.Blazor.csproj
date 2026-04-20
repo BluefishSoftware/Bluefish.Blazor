@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<Authors>Mark Goldring</Authors>
 		<Company>Bluefish Software Ltd</Company>
 		<Description>A collection of useful Razor components</Description>
 		<PackageIcon>BluefishIcon.png</PackageIcon>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-		<Copyright>2021 Bluefish Software Ltd</Copyright>
+		<Copyright>2026 Bluefish Software Ltd</Copyright>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	</PropertyGroup>
 
@@ -25,9 +25,9 @@
 	<ItemGroup>
 		<PackageReference Include="Blazored.Toast" Version="4.2.1" />
 		<PackageReference Include="CronExpressionDescriptor" Version="2.36.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.8" />
-		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.8" />
-		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.4.5" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.6" />
+		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.6" />
+		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.7.2" />
 		<PackageReference Include="Simple.OData.V4.Client" Version="6.0.1" />
 		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.143">
 			<PrivateAssets>all</PrivateAssets>
