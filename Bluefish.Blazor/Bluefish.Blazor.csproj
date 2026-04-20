@@ -9,6 +9,7 @@
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 		<Copyright>2026 Bluefish Software Ltd</Copyright>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
 	</PropertyGroup>
 
 	<ItemGroup>
