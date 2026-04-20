@@ -1,2 +1,2 @@
 # publish the latest nuget package
-dotnet nuget push Bluefish.Blazor\bin\release\Bluefish.Blazor.1.0.0.nupkg --api-key <key> --source https://api.nuget.org/v3/index.json
+dtnet nuget push Bluefish.Blazor/bin/Release/Bluefish.Blazor.10.0.1.nupkg --source https://api.nuget.org/v3/index.json --api-key <key>
